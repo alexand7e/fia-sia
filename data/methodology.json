@@ -1,0 +1,39 @@
+{
+  "title": "Framework de Design Instrucional com IA",
+  "subtitle": "Para Ensino Médio Público do Piauí",
+  "roadmap": [
+    { "id": "contextualizar", "label": "Contextualizar", "sectionId": "visao-geral" },
+    { "id": "especificar", "label": "Especificar", "sectionId": "como-usar" },
+    { "id": "estruturar", "label": "Estruturar", "sectionId": "templates" },
+    { "id": "validar", "label": "Validar", "sectionId": "validacao" },
+    { "id": "iterar", "label": "Iterar", "sectionId": "exemplos" }
+  ],
+  "sections": [
+    {
+      "id": "visao-geral",
+      "title": "Visão Geral",
+      "markdown_path": "content/visao-geral.md"
+    },
+    {
+      "id": "como-usar",
+      "title": "Como Usar",
+      "markdown_path": "content/como-usar.md"
+    },
+    {
+      "id": "templates",
+      "title": "Templates Essenciais",
+      "markdown_path": "content/templates.md"
+    },
+    {
+      "id": "validacao",
+      "title": "Validação e Anti-Alucinação",
+      "markdown_path": "content/validacao.md"
+    },
+    {
+      "id": "exemplos",
+      "title": "Exemplos Práticos",
+      "markdown_path": "content/exemplos.md"
+    }
+  ],
+  "full_markdown_path": "content/base.md"
+}
