@@ -2,11 +2,12 @@
   "title": "Framework de Design Instrucional com IA",
   "subtitle": "Para Ensino Médio Público do Piauí",
   "roadmap": [
-    { "id": "contextualizar", "label": "Contextualizar", "sectionId": "visao-geral" },
-    { "id": "especificar", "label": "Especificar", "sectionId": "como-usar" },
-    { "id": "estruturar", "label": "Estruturar", "sectionId": "templates" },
-    { "id": "validar", "label": "Validar", "sectionId": "validacao" },
-    { "id": "iterar", "label": "Iterar", "sectionId": "exemplos" }
+    { "id": "contextualizar", "label": "1. Contextualizar", "sectionId": "visao-geral" },
+    { "id": "especificar", "label": "2. Especificar", "sectionId": "como-usar" },
+    { "id": "estruturar", "label": "3. Estruturar", "sectionId": "templates" },
+    { "id": "validar", "label": "4. Validar", "sectionId": "validacao" },
+    { "id": "iterar", "label": "5. Iterar", "sectionId": "exemplos" },
+    { "id": "referencias", "label": "Referências", "sectionId": "referencias" }
   ],
   "sections": [
     {
@@ -16,8 +17,16 @@
     },
     {
       "id": "como-usar",
-      "title": "Como Usar",
-      "markdown_path": "content/como-usar.md"
+      "title": "Como Especificar",
+      "markdown_path": "content/como-usar.md",
+      "sub_sections": [
+        { "id": "tradicional", "label": "Tradicional", "markdown_path": "content/como-usar-tradicional.md" },
+        { "id": "invertida", "label": "Sala Invertida", "markdown_path": "content/como-usar-invertida.md" },
+        { "id": "pbl", "label": "PBL", "markdown_path": "content/como-usar-pbl.md" },
+        { "id": "adaptacao", "label": "Adaptação", "markdown_path": "content/como-usar-adaptacao.md" },
+        { "id": "sequencia", "label": "Sequência Didática", "markdown_path": "content/como-usar-sequencia.md" },
+        { "id": "avaliacao", "label": "Avaliação", "markdown_path": "content/como-usar-avaliacao.md" }
+      ]
     },
     {
       "id": "templates",
@@ -33,7 +42,11 @@
       "id": "exemplos",
       "title": "Exemplos Práticos",
       "markdown_path": "content/exemplos.md"
+    },
+    {
+      "id": "referencias",
+      "title": "Referências",
+      "markdown_path": "content/referencias.md"
     }
-  ],
-  "full_markdown_path": "content/base.md"
+  ]
 }

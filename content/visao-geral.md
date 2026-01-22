@@ -1,4 +1,6 @@
-Este framework ajuda professores do Ensino Médio da rede pública do Piauí a usar LLMs com mais previsibilidade, reduzindo “tentativa e erro” e aumentando a qualidade pedagógica do material produzido.
+O **Framework de Design Instrucional com IA** é uma iniciativa da **SIA Piauí** desenvolvida especificamente para apoiar os **professores da Rede Pública Estadual**. 
+
+Este sistema ajuda a utilizar Large Language Models (LLMs) com mais previsibilidade, reduzindo a "tentativa e erro" e aumentando a qualidade pedagógica do material produzido para o Ensino Médio.
 
 ## O Que Você Consegue Gerar
 
