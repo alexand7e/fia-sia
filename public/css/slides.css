@@ -1,0 +1,149 @@
+:root {
+    --bg: #0B1220;
+    --surface: rgba(15, 23, 42, 0.85);
+    --accent: #2563EB;
+    --accent-2: #1B9A59;
+    --text: #E2E8F0;
+    --text-muted: rgba(226, 232, 240, 0.7);
+    --border: rgba(148, 163, 184, 0.2);
+    --font-main: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+    background: radial-gradient(900px 600px at 20% 0%, rgba(27, 154, 89, 0.15), transparent 60%),
+                radial-gradient(900px 600px at 90% 20%, rgba(37, 99, 235, 0.18), transparent 60%),
+                var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.deck {
+    width: min(1100px, 100%);
+    height: min(70vh, 650px);
+    position: relative;
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.35s ease;
+    display: flex;
+    align-items: center;
+}
+
+.slide.is-active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.slide-content {
+    width: 100%;
+}
+
+h1 {
+    font-size: 2.8rem;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+}
+
+h2 {
+    font-size: 2.1rem;
+    margin-bottom: 1rem;
+}
+
+p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+ul, ol {
+    margin-top: 0.75rem;
+    padding-left: 1.5rem;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+li + li {
+    margin-top: 0.35rem;
+}
+
+.badge {
+    display: inline-flex;
+    margin-top: 1.5rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid rgba(37, 99, 235, 0.4);
+    background: rgba(37, 99, 235, 0.15);
+    color: var(--text);
+    font-weight: 600;
+}
+
+.card {
+    margin-top: 1.25rem;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: rgba(2, 6, 23, 0.6);
+    color: var(--text);
+}
+
+.controls {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--text-muted);
+}
+
+.controls button {
+    background: rgba(37, 99, 235, 0.15);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+    color: var(--text);
+    padding: 0.5rem 0.95rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.controls button:hover {
+    background: rgba(37, 99, 235, 0.3);
+    border-color: rgba(37, 99, 235, 0.5);
+}
+
+@media (max-width: 800px) {
+    .deck {
+        height: auto;
+    }
+
+    .slide {
+        position: relative;
+        margin-bottom: 1rem;
+        opacity: 1;
+        transform: none;
+    }
+
+    .controls {
+        display: none;
+    }
+}
