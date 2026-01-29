@@ -1,0 +1,67 @@
+<div class="flex flex-col items-center justify-center min-h-[60vh] p-8">
+    <!-- Ícone animado -->
+    <div class="mb-8 relative">
+        <span class="material-symbols-outlined text-8xl text-primary animate-bounce">
+            construction
+        </span>
+        <div class="absolute -top-2 -right-2">
+            <span class="material-symbols-outlined text-4xl text-yellow-500 animate-pulse">
+                auto_awesome
+            </span>
+        </div>
+    </div>
+
+    <!-- Mensagem -->
+    <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 text-center">
+        Página em Construção
+    </h2>
+
+    <p class="text-lg text-slate-600 dark:text-slate-400 mb-8 text-center max-w-md">
+        Estamos trabalhando nesta funcionalidade. Em breve estará disponível!
+    </p>
+
+    <!-- Progresso -->
+    <div class="w-full max-w-md mb-8">
+        <div class="flex justify-between text-sm text-slate-500 mb-2">
+            <span>Progresso</span>
+            <span>25%</span>
+        </div>
+        <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+            <div class="bg-primary h-2 rounded-full transition-all duration-500" style="width: 25%"></div>
+        </div>
+    </div>
+
+    <!-- Ações -->
+    <div class="flex gap-4 flex-wrap justify-center">
+        <a href="#/dashboard"
+            class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium flex items-center gap-2">
+            <span class="material-symbols-outlined">arrow_back</span>
+            Voltar ao Dashboard
+        </a>
+        <a href="#/recursos"
+            class="px-6 py-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors font-medium">
+            Ver Recursos
+        </a>
+    </div>
+
+    <!-- Roadmap -->
+    <div class="mt-12 max-w-2xl w-full">
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4 text-center">
+            Próximas Funcionalidades
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg text-center">
+                <span class="material-symbols-outlined text-3xl text-primary mb-2 block">edit_note</span>
+                <p class="text-sm font-medium text-slate-700 dark:text-slate-300">Editor de Prompts</p>
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg text-center">
+                <span class="material-symbols-outlined text-3xl text-primary mb-2 block">share</span>
+                <p class="text-sm font-medium text-slate-700 dark:text-slate-300">Compartilhamento</p>
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg text-center">
+                <span class="material-symbols-outlined text-3xl text-primary mb-2 block">analytics</span>
+                <p class="text-sm font-medium text-slate-700 dark:text-slate-300">Analytics</p>
+            </div>
+        </div>
+    </div>
+</div>

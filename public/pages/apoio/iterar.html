@@ -1,0 +1,204 @@
+<!-- Page Title Section -->
+<section>
+    <div
+        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-100 dark:border-emerald-800 mb-4">
+        <span class="text-xs font-bold text-primary uppercase tracking-wide">Etapa 03</span>
+    </div>
+    <h1 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-2 leading-tight">
+        Iterar
+    </h1>
+    <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl">
+        Refine os prompts e as saídas de IA para adaptá-los aos feedbacks recebidos. Esta etapa é crucial
+        para garantir que o material gerado atenda às expectativas pedagógicas.
+    </p>
+</section>
+
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-4 animate-fade-in">
+    <!-- Left Column - Content -->
+    <div class="lg:col-span-7 space-y-8">
+        <!-- Guide Card -->
+        <div
+            class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+            <details open class="group">
+                <summary
+                    class="bg-emerald-50 dark:bg-emerald-900/10 px-6 py-4 border-b border-emerald-100 dark:border-slate-700 flex items-center justify-between cursor-pointer list-none select-none outline-none">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400">
+                            <span class="material-symbols-outlined">menu_book</span>
+                        </div>
+                        <h2 class="text-lg font-bold text-slate-900 dark:text-white">Guia de Iteração</h2>
+                    </div>
+                    <span
+                        class="material-symbols-outlined transition-transform duration-300 group-open:-rotate-180 text-emerald-600 dark:text-emerald-400">expand_more</span>
+                </summary>
+
+                <div class="p-6 space-y-4 text-slate-600 dark:text-slate-300 animate-fade-in">
+                    <p>
+                        A iteração é essencial para refinar materiais gerados por IA. Avalie criticamente cada
+                        saída e ajuste os prompts conforme necessário:
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex gap-3">
+                            <span class="material-symbols-outlined text-green-500 flex-shrink-0">check_circle</span>
+                            <span><strong>Feedback Inicial:</strong> Teste o material com alguns alunos ou
+                                colegas para obter reações honestas.</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="material-symbols-outlined text-green-500 flex-shrink-0">check_circle</span>
+                            <span><strong>Ajustes Incrementais:</strong> Faça pequenas mudanças nos prompts e
+                                compare os resultados.</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="material-symbols-outlined text-green-500 flex-shrink-0">check_circle</span>
+                            <span><strong>Validação Pedagógica:</strong> Verifique se o conteúdo está alinhado
+                                com os objetivos de aprendizagem.</span>
+                        </li>
+                    </ul>
+                    <div
+                        class="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/10 rounded-xl border border-yellow-100 dark:border-yellow-800/30 flex gap-3">
+                        <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-500">lightbulb</span>
+                        <p class="text-sm text-yellow-800 dark:text-yellow-200">
+                            <strong>Dica:</strong> Mantenha um registro das versões de prompts e resultados para
+                            identificar padrões de sucesso.
+                        </p>
+                    </div>
+                </div>
+            </details>
+        </div>
+
+        <!-- Iteration Form -->
+        <div
+            class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+            <details open class="group">
+                <summary
+                    class="bg-indigo-50 dark:bg-indigo-900/10 px-6 py-4 border-b border-indigo-100 dark:border-slate-700 flex items-center justify-between cursor-pointer list-none select-none outline-none">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400">
+                            <span class="material-symbols-outlined">quiz</span>
+                        </div>
+                        <h2 class="text-lg font-bold text-slate-900 dark:text-white">Refine seu Material</h2>
+                    </div>
+                    <span
+                        class="material-symbols-outlined transition-transform duration-300 group-open:-rotate-180 text-indigo-600 dark:text-indigo-400">expand_more</span>
+                </summary>
+
+                <div class="p-6 space-y-6 animate-fade-in">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Versão
+                            Atual do Prompt</label>
+                        <textarea
+                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-32 resize-none"
+                            placeholder="Cole aqui o prompt que você usou e quer melhorar..."></textarea>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Resultado
+                            Obtido</label>
+                        <textarea
+                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-32 resize-none"
+                            placeholder="Descreva ou cole o resultado que a IA gerou..."></textarea>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Feedback e
+                            Problemas Identificados</label>
+                        <textarea
+                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-24 resize-none"
+                            placeholder="Ex: linguagem muito técnica, exemplos não conectaram com a realidade dos alunos..."></textarea>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Ajuste
+                            Proposto</label>
+                        <textarea
+                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-24 resize-none"
+                            placeholder="Descreva as mudanças que você pretende fazer no prompt..."></textarea>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- Right Column - AI Prompts -->
+    <div class="lg:col-span-5 space-y-8">
+        <div class="bg-slate-900 text-white rounded-2xl overflow-hidden shadow-lg sticky top-24">
+            <div class="bg-gradient-to-r from-emerald-600 to-green-600 px-6 py-5 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-white/90">smart_toy</span>
+                    <h2 class="text-lg font-bold">Sugestões de Prompts</h2>
+                </div>
+                <span class="text-xs font-medium bg-white/20 px-2 py-1 rounded text-white">IA
+                    Generativa</span>
+            </div>
+            <div class="p-6 space-y-6">
+                <p class="text-slate-300 text-sm">Use estes prompts para refinar e melhorar o material
+                    gerado.</p>
+
+                <div
+                    class="bg-slate-800/50 rounded-xl p-4 border border-slate-700 hover:border-slate-500 transition-colors group">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wide">Refinar
+                            Linguagem</h3>
+                        <button class="text-slate-400 hover:text-white transition-colors" title="Copiar prompt">
+                            <span class="material-symbols-outlined text-lg">content_copy</span>
+                        </button>
+                    </div>
+                    <p class="text-sm text-slate-300 font-mono bg-slate-950/50 p-3 rounded-lg border border-slate-800">
+                        "Reescreva o seguinte texto de forma mais [ACESSÍVEL/TÉCNICA/INFORMAL]. O
+                        público-alvo são alunos de [IDADE/NÍVEL]: [TEXTO ORIGINAL]"
+                    </p>
+                </div>
+
+                <div
+                    class="bg-slate-800/50 rounded-xl p-4 border border-slate-700 hover:border-slate-500 transition-colors group">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-sm font-bold text-green-400 uppercase tracking-wide">Gerar Variações
+                        </h3>
+                        <button class="text-slate-400 hover:text-white transition-colors" title="Copiar prompt">
+                            <span class="material-symbols-outlined text-lg">content_copy</span>
+                        </button>
+                    </div>
+                    <p class="text-sm text-slate-300 font-mono bg-slate-950/50 p-3 rounded-lg border border-slate-800">
+                        "Crie 3 versões diferentes desta atividade, mantendo o mesmo objetivo mas variando a
+                        abordagem: [ATIVIDADE]"
+                    </p>
+                </div>
+
+                <div
+                    class="bg-slate-800/50 rounded-xl p-4 border border-slate-700 hover:border-slate-500 transition-colors group">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-sm font-bold text-teal-400 uppercase tracking-wide">Melhorar Clareza
+                        </h3>
+                        <button class="text-slate-400 hover:text-white transition-colors" title="Copiar prompt">
+                            <span class="material-symbols-outlined text-lg">content_copy</span>
+                        </button>
+                    </div>
+                    <p class="text-sm text-slate-300 font-mono bg-slate-950/50 p-3 rounded-lg border border-slate-800">
+                        "Identifique partes confusas ou ambíguas no texto abaixo e sugira melhorias:
+                        [TEXTO]"
+                    </p>
+                </div>
+
+                <button
+                    class="w-full py-3 bg-white/10 hover:bg-white/20 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-lg">refresh</span>
+                    Gerar novos modelos
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Navigation -->
+<div class="flex justify-between pt-8 border-t border-slate-200 dark:border-slate-800 mt-8">
+    <a class="flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-base font-semibold"
+        href="#/apoio/estruturar" onclick="event.preventDefault(); window.location.hash='#/apoio/estruturar'">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span>Etapa Anterior: Estruturar</span>
+    </a>
+    <a class="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary-dark transition-colors shadow-lg shadow-emerald-500/30 text-base font-semibold"
+        href="#/apoio/referencias" onclick="event.preventDefault(); window.location.hash='#/apoio/referencias'">
+        <span>Próxima Etapa: Referências</span>
+        <span class="material-symbols-outlined">arrow_forward</span>
+    </a>
+</div>
