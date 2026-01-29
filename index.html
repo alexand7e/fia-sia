@@ -1,18 +1,54 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html class="light" lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Framework de Design Instrucional com IA</title>
+    <title>Apoio Professores - Framework de Design Instrucional com IA</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet">
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3b82f6",
+                        "primary-dark": "#1d4ed8",
+                        "secondary": "#1B9A59",
+                        "accent": "#F2C94C",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0f172a",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1e293b",
+                        "sidebar-light": "#ffffff",
+                        "sidebar-dark": "#1e293b",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.375rem",
+                        "lg": "0.5rem",
+                        "xl": "1rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
 
     <!-- Libraries -->
     <link rel="stylesheet"
@@ -22,65 +58,397 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
 </head>
 
-<body>
-    <div class="glow glow-1"></div>
-    <div class="glow glow-2"></div>
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white transition-colors duration-200 h-screen overflow-hidden flex">
 
-    <div class="container">
-        <nav class="top-nav" aria-label="Menu principal">
-            <div class="nav-brand">
-                <span class="brand-sia">SIA</span>
-                <span class="brand-separator">|</span>
-                <span class="brand-project">Framework IA</span>
+    <!-- Sidebar -->
+    <aside id="sidebar"
+        class="hidden md:flex w-72 flex-col bg-sidebar-light dark:bg-sidebar-dark border-r border-slate-200 dark:border-slate-800 h-full flex-shrink-0 z-20 shadow-sm">
+        <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+            <div class="flex items-center gap-3 text-primary">
+                <span class="material-symbols-outlined text-3xl">school</span>
+                <h1 class="font-bold text-lg tracking-tight text-slate-900 dark:text-white">APOIO PROFESSORES</h1>
             </div>
-            <div class="nav-actions">
-                <button class="nav-btn active" data-tab="methodology">Metodologia</button>
-                <button class="nav-btn" data-tab="prompts">Banco de Prompts</button>
-            </div>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-2">
+            <button
+                class="nav-btn active w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-primary/10 text-primary font-medium transition-colors"
+                data-tab="methodology">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span>Dashboard</span>
+            </button>
+            <a class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
+                href="#meus-projetos">
+                <span class="material-symbols-outlined">book</span>
+                <span>Meus Prompts</span>
+            </a>
+            <a class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
+                href="#recursos">
+                <span class="material-symbols-outlined">folder_open</span>
+                <span>Recursos</span>
+            </a>
+
+            <a class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
+                href="#configuracoes">
+                <span class="material-symbols-outlined">settings</span>
+                <span>Configurações</span>
+            </a>
         </nav>
 
-        <header>
-            <div class="brand">
-                <div class="brand-icon" aria-hidden="true">
-                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="piFlag" x1="0" y1="0" x2="1" y2="1">
-                                <stop offset="0" stop-color="var(--pi-green)" />
-                                <stop offset="0.5" stop-color="var(--pi-yellow)" />
-                                <stop offset="1" stop-color="var(--pi-blue)" />
-                            </linearGradient>
-                        </defs>
-                        <rect x="8" y="10" width="48" height="44" rx="12" fill="var(--surface-1)" stroke="var(--border-color)" />
-                        <path d="M16 22H48" stroke="url(#piFlag)" stroke-width="4" stroke-linecap="round" />
-                        <path d="M16 32H48" stroke="url(#piFlag)" stroke-width="4" stroke-linecap="round" />
-                        <path d="M16 42H48" stroke="url(#piFlag)" stroke-width="4" stroke-linecap="round" />
-                        <path d="M32 18l2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L32 18z" fill="var(--pi-blue)" opacity="0.9" />
-                    </svg>
+        <div class="p-4 border-t border-slate-100 dark:border-slate-800">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                href="#perfil">
+                <div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-lg">person</span>
                 </div>
-                <div class="brand-text">
-                    <h1 id="page-title">Carregando...</h1>
-                    <p id="page-subtitle" class="subtitle">Framework para Professores da Rede Estadual</p>
+                <div class="flex flex-col">
+                    <span class="text-sm font-medium text-slate-900 dark:text-white">Professor(a)</span>
+                    <span class="text-xs text-slate-500">Ver perfil</span>
                 </div>
-            </div>
+            </a>
+        </div>
+    </aside>
 
-            <div class="roadmap-container">
-                <div class="roadmap-label">Fluxo de Design Instrucional:</div>
-                <div id="roadmap" class="roadmap" aria-label="Roadmap do framework"></div>
+    <!-- Main Content -->
+    <main class="flex-1 h-full overflow-y-auto relative bg-background-light dark:bg-background-dark">
+        <!-- Header -->
+        <header
+            class="flex items-center justify-between px-8 py-5 bg-white dark:bg-surface-dark border-b border-slate-200 dark:border-slate-800 sticky top-0 z-10">
+            <div class="flex items-center gap-4">
+                <button id="mobile-menu-toggle"
+                    class="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-white">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-widest">Painel de Controle</h2>
             </div>
-
+            <div class="flex items-center gap-4">
+                <button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 relative">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span
+                        class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-surface-dark"></span>
+                </button>
+                <button id="theme-toggle"
+                    class="hidden md:block p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+                    <span class="material-symbols-outlined">dark_mode</span>
+                </button>
+                <button
+                    class=" hidden md:flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors shadow-sm shadow-blue-200 dark:shadow-none text-sm font-medium">
+                    <span class="material-symbols-outlined text-lg">auto_awesome</span>
+                    Banco de Prompts
+                </button>
+            </div>
         </header>
 
-        <!-- Dynamic Content Container -->
-        <div id="content"></div>
+        <div class="max-w-7xl mx-auto px-6 md:px-12 py-10 space-y-10">
+            <!-- Introduction Section -->
+            <section class="max-w-4xl">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 mb-4">
+                    <span class="relative flex h-2 w-2">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                    </span>
+                    <span class="text-xs font-semibold text-primary uppercase tracking-wide">Ferramenta v2.0
+                        Ativa</span>
+                </div>
 
-        <footer class="site-footer">
-            <span>FIA Piauí</span>
-            <span>•</span>
-            <span>SIA Piauí</span>
-        </footer>
-    </div>
+                <h1 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4 leading-tight">
+                    Framework de Design Instrucional com IA
+                </h1>
+                <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl">
+                    Esta ferramenta oferece uma linguagem acessível para descrever e aplicar o framework de Inteligência
+                    Artificial no ensino. O objetivo é auxiliar professores a integrar tecnologias de forma eficaz,
+                    estruturada e validada.
+                </p>
+            </section>
+
+            <!-- View Toggle -->
+            <section class="w-full">
+                <div class="bg-slate-100 dark:bg-slate-800 p-1.5 rounded-xl inline-flex w-full md:w-auto min-w-[400px]">
+                    <label class="flex-1 cursor-pointer">
+                        <input checked class="peer sr-only" name="main_view" type="radio" value="apoio"
+                            id="view-apoio" />
+                        <div
+                            class="px-6 py-2.5 rounded-lg text-center text-sm font-semibold transition-all text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 peer-checked:bg-white dark:peer-checked:bg-slate-700 peer-checked:text-primary dark:peer-checked:text-white peer-checked:shadow-sm">
+                            Apoio
+                        </div>
+                    </label>
+                    <label class="flex-1 cursor-pointer">
+                        <input class="peer sr-only" name="main_view" type="radio" value="especificar"
+                            id="view-especificar" />
+                        <div
+                            class="px-6 py-2.5 rounded-lg text-center text-sm font-semibold transition-all text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 peer-checked:bg-white dark:peer-checked:bg-slate-700 peer-checked:text-primary dark:peer-checked:text-white peer-checked:shadow-sm">
+                            Prompts
+                        </div>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Dynamic Content Area -->
+            <div id="content-area">
+                <!-- Etapas de Apoio (Default View) -->
+                <section id="apoio-view">
+                    <div class="flex items-end justify-between mb-6">
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Etapas de Apoio</h3>
+                            <p class="text-sm text-slate-500 mt-1">Selecione uma etapa para começar a trabalhar</p>
+                        </div>
+                        <span
+                            class="text-sm font-medium px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-400">4
+                            módulos disponíveis</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Card 1: Contextualizar -->
+                        <article
+                            class="step-card group relative bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 hover:border-primary/50 transition-all duration-300 cursor-pointer flex flex-col h-full"
+                            data-step="contextualizar">
+                            <div class="mb-6 flex justify-between items-start">
+                                <div
+                                    class="size-14 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                    <span class="material-symbols-outlined text-3xl">lightbulb</span>
+                                </div>
+                                <span
+                                    class="text-xs font-bold text-slate-400 uppercase tracking-wider bg-slate-50 dark:bg-slate-800 px-2 py-1 rounded">Etapa
+                                    01</span>
+                            </div>
+                            <h4
+                                class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-primary transition-colors">
+                                Contextualizar</h4>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
+                                Defina o cenário de aprendizado e identifique as necessidades específicas dos alunos
+                                para alinhar a tecnologia.
+                            </p>
+                            <div
+                                class="pt-4 mt-auto border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-primary font-medium text-sm">
+                                <span>Iniciar etapa</span>
+                                <span
+                                    class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            </div>
+                        </article>
+
+                        <!-- Card 2: Estruturar -->
+                        <article
+                            class="step-card group relative bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-purple-500/10 hover:border-purple-500/50 transition-all duration-300 cursor-pointer flex flex-col h-full"
+                            data-step="estruturar">
+                            <div class="mb-6 flex justify-between items-start">
+                                <div
+                                    class="size-14 rounded-2xl bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                    <span class="material-symbols-outlined text-3xl">schema</span>
+                                </div>
+                                <span
+                                    class="text-xs font-bold text-slate-400 uppercase tracking-wider bg-slate-50 dark:bg-slate-800 px-2 py-1 rounded">Etapa
+                                    02</span>
+                            </div>
+                            <h4
+                                class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-purple-600 transition-colors">
+                                Estruturar</h4>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
+                                Construa o esqueleto do plano de aula organizando os objetivos pedagógicos e recursos
+                                necessários.
+                            </p>
+                            <div
+                                class="pt-4 mt-auto border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-purple-600 font-medium text-sm">
+                                <span>Iniciar etapa</span>
+                                <span
+                                    class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            </div>
+                        </article>
+
+                        <!-- Card 3: Iterar -->
+                        <article
+                            class="step-card group relative bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-emerald-500/10 hover:border-emerald-500/50 transition-all duration-300 cursor-pointer flex flex-col h-full"
+                            data-step="iterar">
+                            <div class="mb-6 flex justify-between items-start">
+                                <div
+                                    class="size-14 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                    <span class="material-symbols-outlined text-3xl">autorenew</span>
+                                </div>
+                                <span
+                                    class="text-xs font-bold text-slate-400 uppercase tracking-wider bg-slate-50 dark:bg-slate-800 px-2 py-1 rounded">Etapa
+                                    03</span>
+                            </div>
+                            <h4
+                                class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-emerald-600 transition-colors">
+                                Iterar</h4>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
+                                Refine os prompts e saídas de IA para adaptar o conteúdo aos feedbacks e resultados
+                                preliminares.
+                            </p>
+                            <div
+                                class="pt-4 mt-auto border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-emerald-600 font-medium text-sm">
+                                <span>Iniciar etapa</span>
+                                <span
+                                    class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            </div>
+                        </article>
+
+                        <!-- Card 4: Referências -->
+                        <article
+                            class="step-card group relative bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-orange-500/10 hover:border-orange-500/50 transition-all duration-300 cursor-pointer flex flex-col h-full"
+                            data-step="referencias">
+                            <div class="mb-6 flex justify-between items-start">
+                                <div
+                                    class="size-14 rounded-2xl bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                    <span class="material-symbols-outlined text-3xl">library_books</span>
+                                </div>
+                                <span
+                                    class="text-xs font-bold text-slate-400 uppercase tracking-wider bg-slate-50 dark:bg-slate-800 px-2 py-1 rounded">Recursos</span>
+                            </div>
+                            <h4
+                                class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-orange-600 transition-colors">
+                                Referências</h4>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
+                                Acesse fontes acadêmicas, guias práticos, exemplos de prompts e documentação oficial da
+                                plataforma.
+                            </p>
+                            <div
+                                class="pt-4 mt-auto border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-orange-600 font-medium text-sm">
+                                <span>Acessar biblioteca</span>
+                                <span
+                                    class="material-symbols-outlined group-hover:translate-x-1 transition-transform">open_in_new</span>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- Prompts View (Hidden by default) -->
+                <section id="especificar-view" class="hidden">
+                    <!-- Cards Section -->
+                    <div id="prompts-cards-view">
+                        <div class="flex items-end justify-between mb-6">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Prompts</h3>
+                                <p class="text-sm text-slate-500 mt-1">Selecione uma opção para trabalhar com prompts
+                                </p>
+                            </div>
+                            <span
+                                class="text-sm font-medium px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-400">2
+                                opções disponíveis</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Card 1: Especificar -->
+                            <article
+                                class="prompt-card group relative bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-indigo-500/10 hover:border-indigo-500/50 transition-all duration-300 cursor-pointer flex flex-col h-full"
+                                data-prompt-type="especificar">
+                                <div class="mb-6 flex justify-between items-start">
+                                    <div
+                                        class="size-14 rounded-2xl bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                        <span class="material-symbols-outlined text-3xl">edit_note</span>
+                                    </div>
+                                    <span
+                                        class="text-xs font-bold text-slate-400 uppercase tracking-wider bg-slate-50 dark:bg-slate-800 px-2 py-1 rounded">Prompts</span>
+                                </div>
+                                <h4
+                                    class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-indigo-600 transition-colors">
+                                    Especificar</h4>
+                                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
+                                    Crie e personalize prompts para estruturar suas aulas e materiais didáticos de forma
+                                    eficiente com IA.
+                                </p>
+                                <div
+                                    class="pt-4 mt-auto border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-indigo-600 font-medium text-sm">
+                                    <span>Acessar prompts</span>
+                                    <span
+                                        class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                </div>
+                            </article>
+
+                            <!-- Card 2: Validar -->
+                            <article
+                                class="prompt-card group relative bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-teal-500/10 hover:border-teal-500/50 transition-all duration-300 cursor-pointer flex flex-col h-full"
+                                data-prompt-type="validar">
+                                <div class="mb-6 flex justify-between items-start">
+                                    <div
+                                        class="size-14 rounded-2xl bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                        <span class="material-symbols-outlined text-3xl">verified</span>
+                                    </div>
+                                    <span
+                                        class="text-xs font-bold text-slate-400 uppercase tracking-wider bg-slate-50 dark:bg-slate-800 px-2 py-1 rounded">Prompts</span>
+                                </div>
+                                <h4
+                                    class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-teal-600 transition-colors">
+                                    Validar</h4>
+                                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
+                                    Valide e refine os conteúdos gerados pela IA para garantir precisão e adequação
+                                    pedagógica.
+                                </p>
+                                <div
+                                    class="pt-4 mt-auto border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-teal-600 font-medium text-sm">
+                                    <span>Acessar validação</span>
+                                    <span
+                                        class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+
+                    <!-- Content Area (Hidden by default, shown when card is clicked) -->
+                    <div id="prompts-content-view" class="hidden">
+                        <div id="content"></div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Footer -->
+            <footer class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 text-center md:text-left">
+                <p class="text-sm text-slate-400 dark:text-slate-600">© 2024 Apoio Professores de IA. Todos os direitos
+                    reservados.</p>
+            </footer>
+        </div>
+    </main>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/50 z-30 md:hidden"></div>
+
+    <!-- Mobile Sidebar -->
+    <aside id="mobile-sidebar"
+        class="hidden fixed left-0 top-0 h-full w-72 bg-sidebar-light dark:bg-sidebar-dark z-40 transform -translate-x-full transition-transform duration-300 shadow-2xl md:hidden">
+        <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-3 text-primary">
+                <span class="material-symbols-outlined text-3xl">school</span>
+                <h1 class="font-bold text-lg tracking-tight text-slate-900 dark:text-white">APOIO PROFESSORES</h1>
+            </div>
+            <button id="mobile-menu-close" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <nav class="overflow-y-auto py-6 px-4 space-y-2 h-full">
+            <button
+                class="nav-btn-mobile active w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-primary/10 text-primary font-medium transition-colors"
+                data-tab="methodology">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span>Dashboard</span>
+            </button>
+            <a class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
+                href="#meus-projetos">
+                <span class="material-symbols-outlined">book</span>
+                <span>Meus Prompts</span>
+            </a>
+            <a class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
+                href="#recursos">
+                <span class="material-symbols-outlined">folder_open</span>
+                <span>Recursos</span>
+            </a>
+
+        </nav>
+    </aside>
 
     <!-- Application Logic -->
     <script src="js/app.js"></script>

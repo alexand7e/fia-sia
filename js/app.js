@@ -3,19 +3,26 @@
  */
 const contentDiv = document.getElementById('content');
 const navTabs = document.querySelectorAll('.nav-btn');
-const pageTitle = document.getElementById('page-title');
-const pageSubtitle = document.getElementById('page-subtitle');
-const roadmapDiv = document.getElementById('roadmap');
+const navTabsMobile = document.querySelectorAll('.nav-btn-mobile');
 let chatTimers = [];
 
 /**
  * Initialize Application
  */
 document.addEventListener('DOMContentLoaded', () => {
-    // Load methodology by default
-    loadMethodology();
-    
-    // Tab switching logic (Methodology vs Prompts)
+    // Initialize dark mode
+    initDarkMode();
+
+    // Initialize mobile menu
+    initMobileMenu();
+
+    // Initialize view toggle
+    initViewToggle();
+
+    // Initialize step cards
+    initStepCards();
+
+    // Tab switching logic (Dashboard) - Desktop
     navTabs.forEach(tab => {
         tab.addEventListener('click', (e) => {
             navTabs.forEach(t => t.classList.remove('active'));
@@ -23,20 +30,307 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const target = e.target.dataset.tab;
             if (target === 'methodology') {
-                loadMethodology();
-            } else if (target === 'prompts') {
-                loadPrompts();
+                showDashboard();
+            }
+        });
+    });
+
+    // Tab switching logic - Mobile
+    navTabsMobile.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            navTabsMobile.forEach(t => t.classList.remove('active'));
+            navTabs.forEach(t => t.classList.remove('active'));
+            e.target.classList.add('active');
+
+            // Sync with desktop nav
+            const target = e.target.dataset.tab;
+            const desktopTab = document.querySelector(`.nav-btn[data-tab="${target}"]`);
+            if (desktopTab) {
+                desktopTab.classList.add('active');
+            }
+
+            // Close mobile menu
+            closeMobileMenu();
+
+            if (target === 'methodology') {
+                showDashboard();
             }
         });
     });
 });
 
 /**
+ * View Toggle (Apoio vs Especificar e Validar)
+ */
+function initViewToggle() {
+    const viewApoio = document.getElementById('view-apoio');
+    const viewEspecificar = document.getElementById('view-especificar');
+    const apoioView = document.getElementById('apoio-view');
+    const especificarView = document.getElementById('especificar-view');
+
+    if (viewApoio) {
+        viewApoio.addEventListener('change', () => {
+            if (viewApoio.checked) {
+                apoioView?.classList.remove('hidden');
+                especificarView?.classList.add('hidden');
+            }
+        });
+    }
+
+    if (viewEspecificar) {
+        viewEspecificar.addEventListener('change', () => {
+            if (viewEspecificar.checked) {
+                apoioView?.classList.add('hidden');
+                especificarView?.classList.remove('hidden');
+                showPromptCards(); // Show prompt cards instead of loading prompts directly
+            }
+        });
+    }
+}
+
+/**
+ * Step Cards Interaction
+ */
+function initStepCards() {
+    const stepCards = document.querySelectorAll('.step-card');
+
+    stepCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const step = card.dataset.step;
+            loadStepContent(step);
+        });
+    });
+}
+
+/**
+ * Prompt Cards Interaction
+ */
+function initPromptCards() {
+    const promptCards = document.querySelectorAll('.prompt-card');
+
+    promptCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const promptType = card.dataset.promptType;
+            loadPromptContent(promptType);
+        });
+    });
+}
+
+/**
+ * Show Prompt Cards
+ */
+function showPromptCards() {
+    const promptCardsView = document.getElementById('prompts-cards-view');
+    const promptContentView = document.getElementById('prompts-content-view');
+
+    promptCardsView?.classList.remove('hidden');
+    promptContentView?.classList.add('hidden');
+
+    // Initialize prompt cards if not already done
+    if (!window.promptCardsInitialized) {
+        initPromptCards();
+        window.promptCardsInitialized = true;
+    }
+}
+
+
+/**
+ * Show Dashboard (Apoio View)
+ */
+function showDashboard() {
+    const apoioView = document.getElementById('apoio-view');
+    const especificarView = document.getElementById('especificar-view');
+    const viewApoio = document.getElementById('view-apoio');
+
+    // Reset to Apoio view
+    if (viewApoio) viewApoio.checked = true;
+    apoioView?.classList.remove('hidden');
+    especificarView?.classList.add('hidden');
+}
+
+/**
+ * Load Step Content
+ */
+async function loadStepContent(stepId) {
+    try {
+        clearChatTimers();
+
+        // Switch to Especificar view
+        const especificarView = document.getElementById('especificar-view');
+        const apoioView = document.getElementById('apoio-view');
+        const viewEspecificar = document.getElementById('view-especificar');
+
+        if (viewEspecificar) viewEspecificar.checked = true;
+        apoioView?.classList.add('hidden');
+        especificarView?.classList.remove('hidden');
+
+        contentDiv.innerHTML = '<div class="text-center text-slate-500">Carregando...</div>';
+
+        // Map step IDs to section IDs
+        const stepMapping = {
+            'contextualizar': 'visao-geral',
+            'estruturar': 'templates',
+            'iterar': 'exemplos',
+            'referencias': 'referencias'
+        };
+
+        const sectionId = stepMapping[stepId] || stepId;
+
+        const response = await fetch('data/methodology.json');
+        const data = await response.json();
+
+        const section = data.sections?.find(s => s.id === sectionId);
+
+        if (!section) {
+            contentDiv.innerHTML = '<div class="section"><p class="error">Conteúdo não encontrado.</p></div>';
+            return;
+        }
+
+        const markdown = section.markdown_path
+            ? await fetchText(section.markdown_path)
+            : (section.content || '');
+
+        const html = marked.parse(markdown);
+        const title = section.title ? `<h2>${escapeHtml(section.title)}</h2>` : '';
+
+        contentDiv.innerHTML = `<div class="section mb-8">${title}${html}</div>`;
+
+        // Apply syntax highlighting
+        document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightElement(block);
+        });
+
+        addCodeCopyButtons(contentDiv);
+        initExamplesSimulation();
+        initPromptCustomizers(contentDiv);
+
+    } catch (error) {
+        console.error('Error loading step content:', error);
+        contentDiv.innerHTML = '<p class="error">Erro ao carregar conteúdo.</p>';
+    }
+}
+
+/**
+ * Load Prompt Content
+ */
+async function loadPromptContent(promptType) {
+    try {
+        clearChatTimers();
+
+        // Hide cards, show content
+        const promptCardsView = document.getElementById('prompts-cards-view');
+        const promptContentView = document.getElementById('prompts-content-view');
+
+        promptCardsView?.classList.add('hidden');
+        promptContentView?.classList.remove('hidden');
+
+        // Load prompts based on type
+        if (promptType === 'especificar' || promptType === 'validar') {
+            loadPrompts();
+        }
+
+    } catch (error) {
+        console.error('Error loading prompt content:', error);
+        contentDiv.innerHTML = '<p class="error">Erro ao carregar prompts.</p>';
+    }
+}
+
+
+
+/**
+ * Dark Mode Toggle
+ */
+function initDarkMode() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const htmlElement = document.documentElement;
+
+    // Check for saved theme preference or default to 'light'
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    htmlElement.classList.remove('light', 'dark');
+    htmlElement.classList.add(currentTheme);
+    updateThemeIcon(currentTheme);
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const newTheme = htmlElement.classList.contains('dark') ? 'light' : 'dark';
+            htmlElement.classList.remove('light', 'dark');
+            htmlElement.classList.add(newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+    }
+}
+
+function updateThemeIcon(theme) {
+    const themeToggle = document.getElementById('theme-toggle');
+    if (!themeToggle) return;
+
+    const icon = themeToggle.querySelector('.material-symbols-outlined');
+    if (icon) {
+        icon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
+    }
+}
+
+/**
+ * Mobile Menu Toggle
+ */
+function initMobileMenu() {
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    const mobileSidebar = document.getElementById('mobile-sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+    if (mobileMenuToggle) {
+        mobileMenuToggle.addEventListener('click', openMobileMenu);
+    }
+
+    if (mobileMenuClose) {
+        mobileMenuClose.addEventListener('click', closeMobileMenu);
+    }
+
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeMobileMenu);
+    }
+}
+
+function openMobileMenu() {
+    const mobileSidebar = document.getElementById('mobile-sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+    if (mobileSidebar) {
+        mobileSidebar.classList.remove('hidden');
+        mobileSidebar.classList.add('open');
+    }
+
+    if (sidebarOverlay) {
+        sidebarOverlay.classList.remove('hidden');
+        sidebarOverlay.classList.add('show');
+    }
+}
+
+function closeMobileMenu() {
+    const mobileSidebar = document.getElementById('mobile-sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+    if (mobileSidebar) {
+        mobileSidebar.classList.remove('open');
+        setTimeout(() => {
+            mobileSidebar.classList.add('hidden');
+        }, 300);
+    }
+
+    if (sidebarOverlay) {
+        sidebarOverlay.classList.remove('show');
+        sidebarOverlay.classList.add('hidden');
+    }
+}
+
+/**
  * Marked.js Configuration
  * Customizes code block rendering with Highlight.js
  */
 marked.setOptions({
-    highlight: function(code, lang) {
+    highlight: function (code, lang) {
         const language = hljs.getLanguage(lang) ? lang : 'plaintext';
         return hljs.highlight(code, { language }).value;
     },
@@ -111,7 +405,7 @@ async function loadMethodology() {
         contentDiv.innerHTML = '<div class="text-center">Carregando...</div>';
         const response = await fetch('data/methodology.json');
         const data = await response.json();
-        
+
         // Update Header
         pageTitle.textContent = data.title;
         pageSubtitle.textContent = data.subtitle || 'Framework Educacional';
@@ -140,9 +434,9 @@ async function loadMethodology() {
                 const markdown = section.markdown_path
                     ? await fetchText(section.markdown_path)
                     : (section.content || '');
-                
+
                 // Load sub-sections if they exist
-                const subSections = section.sub_sections 
+                const subSections = section.sub_sections
                     ? await Promise.all(section.sub_sections.map(async (sub) => ({
                         ...sub,
                         body: marked.parse(await fetchText(sub.markdown_path))
@@ -183,7 +477,7 @@ async function loadMethodology() {
 
             const title = section.title ? `<h2>${escapeHtml(section.title)}</h2>` : '';
             let contentHtml = `<div class="section mb-8">${title}`;
-            
+
             // Add sub-navigation if sub-sections exist
             if (section.subSections) {
                 const subNav = `<div class="sub-nav">
@@ -194,11 +488,11 @@ async function loadMethodology() {
                         </button>
                     `).join('')}
                 </div>`;
-                
-                const activeSub = subStepId 
+
+                const activeSub = subStepId
                     ? section.subSections.find(s => s.id === subStepId)
                     : null;
-                
+
                 contentHtml += subNav;
                 if (activeSub) {
                     contentHtml += `<div class="sub-section-content fade-in">${activeSub.body}</div>`;
@@ -208,14 +502,14 @@ async function loadMethodology() {
             } else {
                 contentHtml += section.body;
             }
-            
+
             contentHtml += `</div>`;
             methodologyContent.innerHTML = contentHtml;
 
             document.querySelectorAll('pre code').forEach((block) => {
                 hljs.highlightElement(block);
             });
-            
+
             addCodeCopyButtons(methodologyContent);
             initExamplesSimulation();
             initPromptCustomizers(methodologyContent);
@@ -246,19 +540,19 @@ async function loadMethodology() {
  */
 function initPromptCustomizers(container) {
     if (!container) return;
-    
+
     const codeBlocks = container.querySelectorAll('pre');
     codeBlocks.forEach((pre, index) => {
         const text = pre.innerText;
         // Regex to find [PLACEHOLDER] - matches [ followed by uppercase/numbers/underscore and ]
         const placeholders = [...new Set(text.match(/\[[A-Z0-9_]+\]/g))];
-        
+
         if (placeholders.length > 0) {
             const customizerId = `customizer-${index}`;
             const customizer = document.createElement('div');
             customizer.className = 'prompt-customizer fade-in';
             customizer.id = customizerId;
-            
+
             let fieldsHtml = placeholders.map(p => {
                 const label = p.replace(/[\[\]]/g, '').toLowerCase().replace(/_/g, ' ');
                 const cleanId = safeId(p);
@@ -282,12 +576,12 @@ function initPromptCustomizers(container) {
                 </div>
                 <div class="placeholder-grid">${fieldsHtml}</div>
             `;
-            
+
             pre.parentNode.insertBefore(customizer, pre);
-            
+
             // Store the original template on the pre element
             pre.dataset.originalTemplate = text;
-            
+
             // Add listeners to all inputs in this customizer
             const inputs = customizer.querySelectorAll('input');
             inputs.forEach(input => {
@@ -301,7 +595,7 @@ function initPromptCustomizers(container) {
                             updatedText = updatedText.replace(regex, val);
                         }
                     });
-                    
+
                     // Update the code block display
                     const codeEl = pre.querySelector('code');
                     if (codeEl) {
@@ -375,7 +669,7 @@ function createChatBubble(message) {
     if (message.type === 'file') {
         const file = document.createElement('div');
         file.className = 'chat-file';
-        
+
         file.innerHTML = `
             <div class="chat-file-icon">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -451,14 +745,14 @@ async function loadPrompts() {
         contentDiv.innerHTML = '<div class="text-center">Carregando prompts...</div>';
         const response = await fetch('data/prompts.json');
         const prompts = await response.json();
-        
+
         pageTitle.textContent = 'Banco de Prompts';
         pageSubtitle.textContent = 'Modelos prontos para aplicação imediata';
         if (roadmapDiv) {
             roadmapDiv.innerHTML = '';
             roadmapDiv.style.display = 'none';
         }
-        
+
         const methods = Array.from(
             new Set((prompts || []).map(p => p && p.methodology).filter(Boolean))
         ).sort((a, b) => String(a).localeCompare(String(b), 'pt-BR'));
@@ -579,7 +873,7 @@ async function loadPrompts() {
                 });
             });
         }
-        
+
     } catch (error) {
         console.error('Error loading prompts:', error);
         contentDiv.innerHTML = '<p class="error">Erro ao carregar prompts.</p>';
@@ -587,7 +881,7 @@ async function loadPrompts() {
 }
 
 // Window scope for onclick handler
-window.copyToClipboard = function(btn, text) {
+window.copyToClipboard = function (btn, text) {
     let decoded = text;
     try {
         decoded = decodeURIComponent(text);
@@ -598,7 +892,7 @@ window.copyToClipboard = function(btn, text) {
         const originalText = btn.textContent;
         btn.textContent = 'Copiado!';
         btn.style.background = 'rgba(27, 154, 89, 0.92)';
-        
+
         setTimeout(() => {
             btn.textContent = originalText;
             btn.style.background = '';
@@ -606,7 +900,7 @@ window.copyToClipboard = function(btn, text) {
     });
 };
 
-window.pasteToWorkspace = function(text) {
+window.pasteToWorkspace = function (text) {
     const workspace = document.getElementById('prompt-workspace');
     if (!workspace) return;
     const decoded = decodeURIComponent(text);
