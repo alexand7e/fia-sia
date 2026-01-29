@@ -1,0 +1,109 @@
+{
+    "scenarios": [
+        {
+            "id": "linguagens",
+            "label": "Linguagens",
+            "messages": [
+                {
+                    "role": "user",
+                    "text": "Professor de Língua Portuguesa, 2º ano EM público do Piauí.\nPlano estudo de caso: \"Cultura popular e identidade local no Piauí\".\n\n1. Caso descrito (curto, <200 palavras).\n2. Perguntas análise (causas, impactos, soluções).\n3. Grupos discutem (20 min), compartilham.\n4. Síntese coletiva, BNCC: análise crítica de discursos e práticas culturais.\n5. Reflexão individual.\n\nAdapte inclusão. Valide."
+                },
+                { "role": "assistant", "type": "typing", "duration": 800 },
+                {
+                    "role": "assistant",
+                    "text": "Caso (180 palavras): relato sobre festas populares em cidade do interior, impactos na economia local, preservação cultural e tensões com turismo.\n\nPerguntas (7): 2 lembrar, 2 compreender, 2 analisar, 1 avaliar.\n\nRoteiro:\n- 10 min leitura do caso\n- 20 min debate em grupos (perguntas-guia)\n- 10 min síntese coletiva\n- 10 min reflexão individual\n\nValidação: linguagem acessível, exemplos do Piauí, viável sem internet."
+                },
+                {
+                    "role": "user",
+                    "text": "Inclua ticket de saída com 2 perguntas rápidas e ajuste para 50 minutos."
+                },
+                { "role": "assistant", "type": "typing", "duration": 700 },
+                {
+                    "role": "assistant",
+                    "text": "Ajuste 50 min:\n- 8 min leitura\n- 18 min grupos\n- 12 min síntese\n- 10 min reflexão\n- 2 min ticket de saída\n\nTicket de saída:\n1) Qual impacto cultural foi mais relevante?\n2) O que você faria para preservar essa prática?"
+                },
+                {
+                    "role": "user",
+                    "text": "Gere o arquivo final (caso + perguntas + roteiro + ticket)."
+                },
+                { "role": "assistant", "type": "typing", "duration": 900 },
+                {
+                    "role": "assistant",
+                    "type": "file",
+                    "fileName": "Estudo_Caso_Linguagens.pdf",
+                    "fileNote": "Caso + perguntas Bloom + roteiro 50 min + ticket de saída."
+                }
+            ]
+        },
+        {
+            "id": "ciencias",
+            "label": "Ciências",
+            "messages": [
+                {
+                    "role": "user",
+                    "text": "Você é professor de Ciências da Natureza do 1º ano do EM público do Piauí.\nCrie um plano de aula de 50 minutos sobre \"água potável\" usando Sala de Aula Invertida.\n\nEstrutura:\n1. Objetivo (competência: compreender processos de tratamento e uso sustentável da água).\n2. Material pré-aula (texto curto + 2 perguntas, viável por WhatsApp).\n3. Atividades em sala (grupos, resolução de dúvidas, aplicação prática).\n4. Avaliação formativa.\n5. Adaptações para baixa conectividade.\n\nLinguagem simples, exemplos do Piauí."
+                },
+                { "role": "assistant", "type": "typing", "duration": 800 },
+                {
+                    "role": "assistant",
+                    "text": "Plano (50 min):\n1) Objetivo: compreender etapas de tratamento e consumo consciente.\n2) Pré-aula: texto 200 palavras + 2 perguntas.\n3) Sala: grupos explicam etapas do tratamento e discutem consumo local (20 min).\n4) Prática: construir filtro simples com garrafa e areia (15 min).\n5) Avaliação: checklist de participação e compreensão.\n\nAdaptação: material impresso, sem internet."
+                },
+                {
+                    "role": "user",
+                    "text": "Inclua um quadro com tempos por etapa e um checklist de segurança."
+                },
+                { "role": "assistant", "type": "typing", "duration": 700 },
+                {
+                    "role": "assistant",
+                    "text": "Tempos:\n- 5 min abertura\n- 10 min revisão pré-aula\n- 20 min atividade em grupos\n- 10 min prática guiada\n- 5 min fechamento\n\nChecklist segurança:\n- Lavar mãos antes da prática\n- Não ingerir água do experimento\n- Descartar materiais ao final"
+                },
+                {
+                    "role": "user",
+                    "text": "Gere o arquivo final com plano + checklist."
+                },
+                { "role": "assistant", "type": "typing", "duration": 900 },
+                {
+                    "role": "assistant",
+                    "type": "file",
+                    "fileName": "Plano_Aula_Ciencias.pdf",
+                    "fileNote": "Plano completo + tempos + checklist de segurança."
+                }
+            ]
+        },
+        {
+            "id": "matematica",
+            "label": "Matemática",
+            "messages": [
+                {
+                    "role": "user",
+                    "text": "Atue como professor de Matemática do 2º ano EM da rede pública do Piauí.\nPlano de aula PBL 50 min: \"Porcentagem no comércio local (feiras e descontos)\".\n\n1. Apresentação problema (real).\n2. Hipóteses em duplas (10 min).\n3. Pesquisa rápida (dados simples de preços).\n4. Soluções/propostas (grupos).\n5. Apresentação e ligação com competências de resolução de problemas.\n\nRecursos: quadro/celular. Linguagem acessível."
+                },
+                { "role": "assistant", "type": "typing", "duration": 800 },
+                {
+                    "role": "assistant",
+                    "text": "Fluxo temporal:\n- 5 min problema: desconto em feira local\n- 10 min hipóteses em duplas\n- 10 min coleta de preços (folheto/relato)\n- 15 min solução em grupos\n- 10 min apresentação e síntese\n\nPerguntas-guia: como calcular 10%, 15%, 25%? qual o desconto real?"
+                },
+                {
+                    "role": "user",
+                    "text": "Adicione 6 exercícios (2 fáceis, 2 médios, 2 difíceis) e gabarito comentado curto."
+                },
+                { "role": "assistant", "type": "typing", "duration": 700 },
+                {
+                    "role": "assistant",
+                    "text": "Exercícios:\n1) 10% de R$ 30 (fácil)\n2) 15% de R$ 80 (fácil)\n3) Desconto de 20% em R$ 120 (médio)\n4) Aumento de 12% em R$ 250 (médio)\n5) Duplo desconto 10% e 5% em R$ 200 (difícil)\n6) Qual preço final após 25% de desconto em R$ 360 (difícil)\n\nGabarito comentado curto com cálculo passo a passo."
+                },
+                {
+                    "role": "user",
+                    "text": "Gere a versão final para impressão."
+                },
+                { "role": "assistant", "type": "typing", "duration": 900 },
+                {
+                    "role": "assistant",
+                    "type": "file",
+                    "fileName": "PBL_Porcentagem_Matematica.pdf",
+                    "fileNote": "Plano PBL + exercícios + gabarito curto."
+                }
+            ]
+        }
+    ]
+}
