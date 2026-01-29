@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      target: prod
+    env_file:
+      - .env
+    ports:
+      - "3003:3003"
+
+  app-dev:
+    build:
+      context: .
+      target: dev
+    env_file:
+      - .env
+    ports:
+      - "3003:3003"
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    profiles:
+      - dev

@@ -1,0 +1,27 @@
+{
+  "name": "fia-sia",
+  "version": "1.0.0",
+  "description": "Este projeto é uma ferramenta interativa projetada para auxiliar professores do Ensino Médio Público do Piauí na utilização de Inteligência Artificial (LLMs) para o design instrucional. Ele oferece uma metodologia estruturada, templates de prompts e exemplos práticos adaptados à realidade regional.",
+  "main": "server/src/index.js",
+  "scripts": {
+    "dev": "nodemon --watch server --watch public server/src/index.js",
+    "start": "node server/src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexand7e/fia-sia.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexand7e/fia-sia/issues"
+  },
+  "homepage": "https://github.com/alexand7e/fia-sia#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}

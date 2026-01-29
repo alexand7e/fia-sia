@@ -1,1 +1,15 @@
 .trae
+node_modules/
+.env
+.env.*
+npm-debug.log
+*.log
+dist/
+coverage/
+.DS_Store
+node_modules
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
