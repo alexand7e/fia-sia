@@ -6,7 +6,8 @@ export function initSidebarNavigation() {
     const toggleButtons = document.querySelectorAll('.nav-group-toggle');
 
     toggleButtons.forEach(button => {
-        button.addEventListener('click', () => {
+        button.addEventListener('click', (event) => {
+            event.stopPropagation();
             const groupName = button.dataset.group;
             const submenu = document.querySelector(`[data-submenu="${groupName}"]`);
 

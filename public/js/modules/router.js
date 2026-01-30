@@ -38,7 +38,7 @@ class Router {
      */
     getCurrentRoute() {
         const hash = window.location.hash.slice(1); // Remove #
-        return hash || '/dashboard'; // Default to dashboard
+        return hash || '/'; // Default to root (which maps to dashboard)
     }
 
     /**

@@ -2,14 +2,39 @@ import { escapeHtml } from '../utils/text.js';
 import { copyPlainText } from '../utils/clipboard.js';
 
 const MY_PROMPTS_STORAGE_KEY = 'sia:my-prompts:v1';
+const LEGACY_PROMPTS_STORAGE_KEY = 'myPrompts';
 let myPromptsInitialized = false;
 let myPromptsUI = null;
+
+function migrateLegacyPrompts(currentItems) {
+    try {
+        const rawLegacy = localStorage.getItem(LEGACY_PROMPTS_STORAGE_KEY);
+        const legacyParsed = rawLegacy ? JSON.parse(rawLegacy) : [];
+        if (!Array.isArray(legacyParsed) || legacyParsed.length === 0) {
+            return currentItems;
+        }
+
+        const merged = [...currentItems];
+        legacyParsed.forEach(item => {
+            const normalized = normalizePromptEntry(item, { source: item.source || 'legacy' });
+            if (!findDuplicatePrompt(merged, normalized)) {
+                merged.push(normalized);
+            }
+        });
+        writeMyPrompts(merged);
+        return merged;
+    } catch (error) {
+        console.error('Failed to migrate legacy prompts:', error);
+        return currentItems;
+    }
+}
 
 export function readMyPrompts() {
     try {
         const raw = localStorage.getItem(MY_PROMPTS_STORAGE_KEY);
         const parsed = raw ? JSON.parse(raw) : [];
-        return Array.isArray(parsed) ? parsed : [];
+        const items = Array.isArray(parsed) ? parsed : [];
+        return migrateLegacyPrompts(items);
     } catch (error) {
         console.error('Failed to parse saved prompts:', error);
         return [];

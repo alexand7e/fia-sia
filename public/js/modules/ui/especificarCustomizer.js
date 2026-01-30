@@ -1,5 +1,6 @@
 // Especificar Page Customizer Module
 // Manages the full-page prompt customization interface with tabs
+import { addMyPrompt } from './myPrompts.js';
 
 class EspecificarCustomizer {
     constructor() {
@@ -16,6 +17,8 @@ class EspecificarCustomizer {
     }
 
     async loadPromptTemplates() {
+        console.log('📥 Loading prompt templates...');
+        const baseUrl = new URL('../../../content/', import.meta.url);
         const templates = [
             { key: 'tradicional', file: 'como-usar-tradicional' },
             { key: 'invertida', file: 'como-usar-invertida' },
@@ -27,19 +30,32 @@ class EspecificarCustomizer {
 
         for (const template of templates) {
             try {
-                const response = await fetch(`/content/${template.file}.md`);
+                const fileUrl = new URL(`${template.file}.md`, baseUrl);
+                const response = await fetch(fileUrl);
+                if (!response.ok) {
+                    console.error(`❌ Failed to load ${template.file}: ${response.status}`);
+                    continue;
+                }
                 const text = await response.text();
                 this.promptTemplates[template.key] = this.extractPromptFromMarkdown(text);
+                console.log(`✅ Loaded template: ${template.key}`);
             } catch (error) {
-                console.error(`Error loading template ${template.key}:`, error);
+                console.error(`❌ Error loading template ${template.key}:`, error);
             }
         }
+        console.log('📦 All templates loaded:', Object.keys(this.promptTemplates));
     }
 
     extractPromptFromMarkdown(markdown) {
         // Extract the prompt content between ```markdown and ```
-        const match = markdown.match(/```markdown\n([\s\S]*?)\n```/);
-        return match ? match[1].trim() : '';
+        const match = markdown.match(/```markdown\r?\n([\s\S]*?)\r?\n```/);
+        if (match) return match[1].trim();
+
+        // Fallback for any fenced code block
+        const fallback = markdown.match(/```[a-zA-Z]*\r?\n([\s\S]*?)\r?\n```/);
+        if (fallback) return fallback[1].trim();
+
+        return markdown.trim();
     }
 
     setupTabs() {
@@ -115,12 +131,16 @@ class EspecificarCustomizer {
 
     updatePreview(tab) {
         const preview = document.getElementById(`preview-${tab}`);
-        if (!preview) return;
+        if (!preview) {
+            console.warn(`⚠️ Preview element not found for tab: ${tab}`);
+            return;
+        }
 
         const prompt = this.generatePromptText(tab);
         const code = preview.querySelector('code');
         if (code) {
             code.textContent = prompt || 'Preencha os campos ao lado para gerar seu prompt personalizado...';
+            console.log(`🔄 Preview updated for tab: ${tab}`);
         }
     }
 
@@ -252,10 +272,11 @@ class EspecificarCustomizer {
             updatedAt: new Date().toISOString()
         };
 
-        // Save to localStorage
-        const savedPrompts = JSON.parse(localStorage.getItem('myPrompts') || '[]');
-        savedPrompts.push(promptData);
-        localStorage.setItem('myPrompts', JSON.stringify(savedPrompts));
+        const result = addMyPrompt(promptData);
+        if (!result.added) {
+            this.showNotification('Este prompt já está salvo em "Meus Prompts".', 'warning');
+            return;
+        }
 
         this.showNotification('Prompt salvo em "Meus Prompts"!', 'success');
 

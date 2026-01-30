@@ -135,153 +135,115 @@
 
                 <!-- My Prompts View -->
                 <section id="my-prompts-view" class="hidden">
-                    <div class="flex items-end justify-between mb-8">
+                    <div class="flex items-end justify-between mb-6">
                         <div>
                             <h3 class="text-2xl font-bold text-slate-900 dark:text-white">Meus Prompts</h3>
                             <p class="text-sm text-slate-500 mt-1">Gerencie seus prompts salvos</p>
                         </div>
-                        <button id="add-prompt-btn"
-                            class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium flex items-center gap-2">
-                            <span class="material-symbols-outlined">add</span>
-                            Novo Prompt
-                        </button>
+                        <span id="my-prompts-count"
+                            class="text-sm font-medium px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-400">0
+                            salvos</span>
                     </div>
 
-                    <!-- Prompts Grid -->
-                    <div id="my-prompts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Prompts will be rendered here -->
-                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 space-y-6">
+                            <div class="prompts-toolbar">
+                                <input id="my-prompts-search" class="search-input" type="search"
+                                    placeholder="Buscar (título, descrição, tags)" aria-label="Buscar meus prompts" />
+                                <input id="my-prompts-method" class="select-input" list="my-prompts-methods"
+                                    placeholder="Filtrar por metodologia" aria-label="Filtrar por metodologia" />
+                                <datalist id="my-prompts-methods"></datalist>
+                                <select id="my-prompts-sort" class="select-input" aria-label="Ordenar meus prompts">
+                                    <option value="updated-desc">Mais recentes</option>
+                                    <option value="updated-asc">Mais antigos</option>
+                                    <option value="title-asc">Título A-Z</option>
+                                    <option value="title-desc">Título Z-A</option>
+                                </select>
+                            </div>
 
-                    <!-- Add Prompt Modal -->
-                    <div id="add-prompt-modal"
-                        class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-                        <div
-                            class="bg-white dark:bg-surface-dark rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                            <div
-                                class="sticky top-0 bg-white dark:bg-surface-dark border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between">
-                                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Adicionar Novo Prompt</h3>
-                                <button id="close-modal-btn"
-                                    class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
-                                    <span
-                                        class="material-symbols-outlined text-slate-600 dark:text-slate-400">close</span>
-                                </button>
-                            </div>
-                            <div class="p-6 space-y-4">
-                                <div>
-                                    <label
-                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Nome
-                                        do Prompt</label>
-                                    <input id="my-prompt-name"
-                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
-                                        placeholder="Ex: Aula PBL sobre Água" type="text" required />
-                                </div>
-                                <div>
-                                    <label
-                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Metodologia</label>
-                                    <input id="my-prompt-method-input"
-                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
-                                        placeholder="Ex: PBL, Sala Invertida" type="text" />
-                                </div>
-                                <div>
-                                    <label
-                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Tags
-                                        (separadas por vírgula)</label>
-                                    <input id="my-prompt-tags"
-                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
-                                        placeholder="Ex: 50min, BNCC, WhatsApp" type="text" />
-                                </div>
-                                <div>
-                                    <label
-                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Descrição</label>
-                                    <textarea id="my-prompt-description"
-                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-20 resize-none"
-                                        placeholder="Breve descrição do prompt"></textarea>
-                                </div>
-                                <div>
-                                    <label
-                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Template
-                                        do prompt</label>
-                                    <textarea id="my-prompt-template"
-                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-28 resize-none"
-                                        placeholder="Cole o prompt aqui" required></textarea>
-                                </div>
-                                <div class="flex gap-3 pt-4">
-                                    <button id="save-prompt-btn"
-                                        class="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium">
-                                        Salvar Prompt
-                                    </button>
-                                    <button id="cancel-modal-btn"
-                                        class="px-6 py-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors font-medium">
-                                        Cancelar
-                                    </button>
+                            <div class="prompt-workspace">
+                                <label for="my-prompts-workspace">Área de trabalho</label>
+                                <textarea id="my-prompts-workspace"
+                                    placeholder="Cole e ajuste os prompts aqui antes de usar."></textarea>
+                                <div class="workspace-actions">
+                                    <button class="workspace-btn" id="my-workspace-clear" type="button">Limpar</button>
+                                    <button class="workspace-btn" id="my-workspace-copy" type="button">Copiar tudo</button>
                                 </div>
                             </div>
+
+                            <div id="my-prompts-empty"
+                                class="hidden bg-slate-50 dark:bg-slate-800 rounded-2xl p-6 text-center text-slate-600 dark:text-slate-400">
+                                Nenhum prompt salvo ainda. Crie o primeiro ao lado ou salve um prompt do banco.
+                            </div>
+
+                            <div class="prompts-list" id="my-prompts-list"></div>
                         </div>
-                    </div>
 
-                    <!-- Edit Prompt Modal -->
-                    <div id="edit-prompt-modal"
-                        class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-                        <div
-                            class="bg-white dark:bg-surface-dark rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                        <div class="space-y-4">
                             <div
-                                class="sticky top-0 bg-white dark:bg-surface-dark border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between">
-                                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Editar Prompt</h3>
-                                <button id="close-edit-modal-btn"
-                                    class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
-                                    <span
-                                        class="material-symbols-outlined text-slate-600 dark:text-slate-400">close</span>
-                                </button>
-                            </div>
-                            <div class="p-6 space-y-4">
-                                <input type="hidden" id="edit-prompt-id" />
+                                class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6 space-y-4">
                                 <div>
-                                    <label
-                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Nome
-                                        do Prompt</label>
-                                    <input id="edit-prompt-name"
-                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
-                                        type="text" required />
+                                    <h4 class="text-lg font-bold text-slate-900 dark:text-white">Adicionar/Editar Prompt</h4>
+                                    <p class="text-sm text-slate-500">Preencha os campos obrigatórios (*)</p>
                                 </div>
-                                <div>
-                                    <label
-                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Metodologia</label>
-                                    <input id="edit-prompt-method"
-                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
-                                        type="text" />
-                                </div>
-                                <div>
-                                    <label
-                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Tags
-                                        (separadas por vírgula)</label>
-                                    <input id="edit-prompt-tags"
-                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
-                                        type="text" />
-                                </div>
-                                <div>
-                                    <label
-                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Descrição</label>
-                                    <textarea id="edit-prompt-description"
-                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-20 resize-none"></textarea>
-                                </div>
-                                <div>
-                                    <label
-                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Template
-                                        do prompt</label>
-                                    <textarea id="edit-prompt-template"
-                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-28 resize-none"
-                                        required></textarea>
-                                </div>
-                                <div class="flex gap-3 pt-4">
-                                    <button id="update-prompt-btn"
-                                        class="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium">
-                                        Atualizar Prompt
-                                    </button>
-                                    <button id="cancel-edit-modal-btn"
-                                        class="px-6 py-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors font-medium">
-                                        Cancelar
-                                    </button>
-                                </div>
+
+                                <p id="my-prompts-form-error"
+                                    class="hidden text-sm text-red-500 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/40 rounded-lg p-3"></p>
+
+                                <form id="my-prompts-form" class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Título *</label>
+                                        <input id="my-prompt-title"
+                                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
+                                            placeholder="Ex: Aula PBL sobre Água" type="text" required />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Metodologia</label>
+                                        <input id="my-prompt-method-input"
+                                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
+                                            placeholder="Ex: PBL, Sala Invertida" type="text" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Tags (separadas por vírgula)</label>
+                                        <input id="my-prompt-tags"
+                                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
+                                            placeholder="Ex: 50min, BNCC, WhatsApp" type="text" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Descrição</label>
+                                        <textarea id="my-prompt-description"
+                                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-20 resize-none"
+                                            placeholder="Breve descrição do prompt"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Template do prompt *</label>
+                                        <textarea id="my-prompt-template"
+                                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-28 resize-none"
+                                            placeholder="Cole o prompt aqui" required></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Dica de uso</label>
+                                        <textarea id="my-prompt-tips"
+                                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-20 resize-none"
+                                            placeholder="Observações úteis ao usar este prompt"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Output esperado</label>
+                                        <textarea id="my-prompt-expected"
+                                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-20 resize-none"
+                                            placeholder="Descreva o que você espera receber"></textarea>
+                                    </div>
+                                    <div class="flex gap-3 pt-2">
+                                        <button id="my-prompts-save" type="submit"
+                                            class="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium">
+                                            Salvar
+                                        </button>
+                                        <button id="my-prompts-clear" type="button"
+                                            class="px-6 py-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors font-medium">
+                                            Limpar
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

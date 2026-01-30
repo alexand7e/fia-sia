@@ -50,11 +50,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Setup router
     setupRouter();
 
-    // Setup navigation click handlers
-    setupNavigation();
-
     // Initialize sidebar navigation (expandable groups)
     initSidebarNavigation();
+
+    // Setup navigation click handlers
+    setupNavigation();
 
 });
 
@@ -139,25 +139,48 @@ function showPromptCards() {
 }
 
 function setActiveNav(route) {
+    // Normalize route - treat both / and /dashboard as the same
+    const normalizedRoute = (route === '/' || route === '/dashboard') ? '/dashboard' : route;
+
     // Map routes to tab names
     const routeToTab = {
-        '/dashboard': 'methodology',
-        '/': 'methodology',
+        '/dashboard': 'dashboard',
         '/prompts': 'prompts',
         '/meus-prompts': 'my-prompts',
         '/recursos': 'recursos',
         '/config': 'config'
     };
 
-    const tabName = routeToTab[route] || 'methodology';
+    const tabName = routeToTab[normalizedRoute];
 
     navTabs.forEach(tab => {
-        const isActive = tab.dataset.tab === tabName || tab.dataset.route === route;
+        // Check if this tab matches the current route
+        const tabRoute = tab.dataset.route;
+        const tabName = tab.dataset.tab;
+
+        // For dashboard, match both /dashboard route and dashboard tab
+        const isDashboard = (normalizedRoute === '/dashboard') &&
+            (tabRoute === '/dashboard' || tabName === 'dashboard');
+
+        // For other routes, match by route or tab name
+        const isOtherRoute = tabRoute === normalizedRoute ||
+            tabName === routeToTab[normalizedRoute];
+
+        const isActive = isDashboard || isOtherRoute;
         tab.classList.toggle('active', isActive);
     });
 
     navTabsMobile.forEach(tab => {
-        const isActive = tab.dataset.tab === tabName || tab.dataset.route === route;
+        const tabRoute = tab.dataset.route;
+        const tabName = tab.dataset.tab;
+
+        const isDashboard = (normalizedRoute === '/dashboard') &&
+            (tabRoute === '/dashboard' || tabName === 'dashboard');
+
+        const isOtherRoute = tabRoute === normalizedRoute ||
+            tabName === routeToTab[normalizedRoute];
+
+        const isActive = isDashboard || isOtherRoute;
         tab.classList.toggle('active', isActive);
     });
 }
@@ -531,57 +554,6 @@ async function loadApoioPage(pageName) {
     }
 }
 
-// Load Prompts pages (placeholders for now)
-async function loadPromptsPage(pageName) {
-    const contentArea = document.getElementById('content-area');
-    if (!contentArea) return;
-
-    // Hide all other views
-    showView('content');
-
-    const titles = {
-        'especificar': 'Especificar Prompts',
-        'validar': 'Validar Prompts'
-    };
-
-    const descriptions = {
-        'especificar': 'Crie e especifique prompts personalizados para suas necessidades pedagógicas.',
-        'validar': 'Valide e teste seus prompts para garantir a qualidade das respostas.'
-    };
-
-    contentArea.innerHTML = `
-        <div class="p-8">
-            <div class="mb-8">
-                <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">
-                    ${titles[pageName] || 'Prompts'}
-                </h2>
-                <p class="text-lg text-slate-600 dark:text-slate-400">
-                    ${descriptions[pageName] || 'Página em construção...'}
-                </p>
-            </div>
-            
-            <div class="bg-slate-50 dark:bg-slate-800 rounded-2xl p-8 text-center">
-                <span class="material-symbols-outlined text-6xl text-primary mb-4 block animate-pulse">
-                    construction
-                </span>
-                <p class="text-slate-600 dark:text-slate-400 mb-6">
-                    Esta funcionalidade está em desenvolvimento e estará disponível em breve.
-                </p>
-                <div class="flex gap-4 justify-center">
-                    <a href="#/dashboard" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium">
-                        Voltar ao Dashboard
-                    </a>
-                    <a href="#/recursos" class="px-6 py-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors font-medium">
-                        Ver Recursos
-                    </a>
-                </div>
-            </div>
-        </div>
-    `;
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
 // Load construindo page
 async function loadConstruindoPage() {
     const contentArea = document.getElementById('content-area');
@@ -625,8 +597,14 @@ async function loadPromptsPage(pageType) {
     const contentArea = document.getElementById('content-area');
     if (!contentArea) return;
 
-    // Hide all other views
-    showView('content');
+    // Hide all other views directly
+    const dashboardView = document.getElementById('dashboard-view');
+    const myPromptsView = document.getElementById('my-prompts-view');
+    const recursosView = document.getElementById('recursos-view');
+
+    if (dashboardView) dashboardView.classList.add('hidden');
+    if (myPromptsView) myPromptsView.classList.add('hidden');
+    if (recursosView) recursosView.classList.add('hidden');
 
     try {
         const response = await fetch(`pages/prompts/${pageType}.html`);
@@ -634,6 +612,7 @@ async function loadPromptsPage(pageType) {
 
         const html = await response.text();
         contentArea.innerHTML = html;
+        contentArea.style.display = 'block';
 
         // Initialize the customizer for especificar page
         if (pageType === 'especificar') {
@@ -663,6 +642,7 @@ async function loadPromptsPage(pageType) {
                 </a>
             </div>
         `;
+        contentArea.style.display = 'block';
     }
 }
 
@@ -676,7 +656,7 @@ function setupRouter() {
 
     router.defineRoute('/', () => {
         showView('dashboard');
-        setActiveNav('/dashboard');
+        setActiveNav('/dashboard'); // Use /dashboard for consistency
     });
 
     router.defineRoute('/prompts', () => {
@@ -749,11 +729,16 @@ function setupRouter() {
 function setupNavigation() {
     // Handle navigation clicks
     document.addEventListener('click', (e) => {
+        // Ignore clicks on group toggles
+        if (e.target.closest('.nav-group-toggle')) return;
+
         const navLink = e.target.closest('[data-route]');
         if (navLink) {
+            if (navLink.tagName === 'BUTTON') return;
             e.preventDefault();
+            e.stopPropagation();
             const route = navLink.dataset.route;
-            router.navigateTo(route);
+            if (route) router.navigateTo(route);
         }
     });
 }

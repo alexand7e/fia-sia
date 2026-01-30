@@ -1,0 +1,117 @@
+<!-- Página Validar - Metaprompts e estratégias de validação -->
+<div class="especificar-container">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center gap-2 mb-4">
+            <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400">fact_check</span>
+            <h1 class="text-3xl font-bold text-slate-900 dark:text-white">Validar Prompts</h1>
+        </div>
+        <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl">
+            Metaprompts e estratégias para avaliar a validade e a aplicabilidade do conteúdo gerado por IA.
+            Use este checklist para revisar precisão, adequação pedagógica e inclusão antes de aplicar em sala.
+        </p>
+    </div>
+
+    <!-- Rubrica -->
+    <div class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6 mb-8">
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Rubrica de Qualidade (0–10)</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-sm">
+                <thead>
+                    <tr class="text-left text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
+                        <th class="py-3 pr-4 font-semibold">Critério</th>
+                        <th class="py-3 pr-4 font-semibold">Perguntas de checagem</th>
+                        <th class="py-3 font-semibold text-right">Nota mínima</th>
+                    </tr>
+                </thead>
+                <tbody class="text-slate-700 dark:text-slate-300">
+                    <tr class="border-b border-slate-100 dark:border-slate-800">
+                        <td class="py-3 pr-4 font-medium">Precisão factual</td>
+                        <td class="py-3 pr-4">Há conceitos errados? Há exageros? Precisa de fonte?</td>
+                        <td class="py-3 text-right">8</td>
+                    </tr>
+                    <tr class="border-b border-slate-100 dark:border-slate-800">
+                        <td class="py-3 pr-4 font-medium">Adequação linguística</td>
+                        <td class="py-3 pr-4">Vocabulário e frases são apropriadas à turma?</td>
+                        <td class="py-3 text-right">8</td>
+                    </tr>
+                    <tr class="border-b border-slate-100 dark:border-slate-800">
+                        <td class="py-3 pr-4 font-medium">Coerência pedagógica</td>
+                        <td class="py-3 pr-4">Objetivo, atividade e avaliação conversam entre si?</td>
+                        <td class="py-3 text-right">8</td>
+                    </tr>
+                    <tr class="border-b border-slate-100 dark:border-slate-800">
+                        <td class="py-3 pr-4 font-medium">Viabilidade</td>
+                        <td class="py-3 pr-4">Dá para executar com os recursos reais (tempo, internet, materiais)?</td>
+                        <td class="py-3 text-right">8</td>
+                    </tr>
+                    <tr class="border-b border-slate-100 dark:border-slate-800">
+                        <td class="py-3 pr-4 font-medium">Alinhamento BNCC</td>
+                        <td class="py-3 pr-4">A habilidade aparece no objetivo, nas tarefas e no fechamento?</td>
+                        <td class="py-3 text-right">8</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 pr-4 font-medium">Relevância cultural</td>
+                        <td class="py-3 pr-4">Exemplos são significativos e não estereotipam?</td>
+                        <td class="py-3 text-right">8</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Prompt de validação -->
+    <div class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6 mb-8">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Prompt de Validação (copiar e colar)</h2>
+        </div>
+        <div class="prompt-preview">
+            <pre class="text-sm"><code>&lt;validacao_pedagogica&gt;
+Avalie o material gerado e atribua nota (0–10) para cada critério:
+1) precisão factual  2) adequação linguística  3) coerência pedagógica
+4) viabilidade  5) alinhamento BNCC  6) relevância cultural
+
+Se algum critério ficar abaixo de 8, sugira revisões objetivas:
+- cite o trecho problemático
+- explique por quê
+- proponha uma alternativa melhor
+&lt;/validacao_pedagogica&gt;</code></pre>
+        </div>
+    </div>
+
+    <!-- Técnicas anti-alucinação -->
+    <div class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6 mb-8">
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Técnicas Anti-Alucinação (práticas)</h2>
+        <ol class="list-decimal pl-5 text-slate-700 dark:text-slate-300 space-y-3">
+            <li>
+                <strong>Ancoragem em fontes</strong>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    Peça para indicar “o que precisaria ser verificado” e quais fontes seriam adequadas
+                    (ex.: IBGE, INEP, livros didáticos, artigos).
+                </div>
+            </li>
+            <li>
+                <strong>Qualificadores de incerteza</strong>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    Para temas debatidos, use “estudos sugerem”, “há evidências”, “há controvérsias”.
+                </div>
+            </li>
+            <li>
+                <strong>Verificação cruzada</strong>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    Gere uma lista de afirmações factuais e peça revisão crítica antes de usar em sala.
+                </div>
+            </li>
+        </ol>
+    </div>
+
+    <!-- Inclusão e acessibilidade -->
+    <div class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Inclusão e Acessibilidade</h2>
+        <ul class="list-disc pl-5 text-slate-700 dark:text-slate-300 space-y-2">
+            <li>Ofereça alternativa sem vídeo/áudio</li>
+            <li>Use instruções curtas e exemplos concretos</li>
+            <li>Preveja apoio para alunos com dificuldade de leitura (leitura compartilhada, pares)</li>
+        </ul>
+    </div>
+</div>
