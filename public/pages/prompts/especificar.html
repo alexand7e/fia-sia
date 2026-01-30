@@ -1,0 +1,913 @@
+<!-- Página Especificar - Customizador de Prompts -->
+<div class="especificar-container">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center gap-2 mb-4">
+            <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400">edit_note</span>
+            <h1 class="text-3xl font-bold text-slate-900 dark:text-white">Especificar Prompts</h1>
+        </div>
+        <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl">
+            Escolha um tipo de prompt, preencha os campos e gere materiais pedagógicos personalizados para sua
+            realidade.
+        </p>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="mb-8 border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <nav class="flex gap-2 min-w-max" role="tablist">
+            <button class="prompt-tab active" data-tab="tradicional" role="tab" aria-selected="true">
+                <span class="material-symbols-outlined">school</span>
+                <span>Tradicional</span>
+            </button>
+            <button class="prompt-tab" data-tab="invertida" role="tab" aria-selected="false">
+                <span class="material-symbols-outlined">flip</span>
+                <span>Sala Invertida</span>
+            </button>
+            <button class="prompt-tab" data-tab="pbl" role="tab" aria-selected="false">
+                <span class="material-symbols-outlined">psychology</span>
+                <span>PBL</span>
+            </button>
+            <button class="prompt-tab" data-tab="adaptacao" role="tab" aria-selected="false">
+                <span class="material-symbols-outlined">tune</span>
+                <span>Adaptação</span>
+            </button>
+            <button class="prompt-tab" data-tab="sequencia" role="tab" aria-selected="false">
+                <span class="material-symbols-outlined">view_timeline</span>
+                <span>Sequência</span>
+            </button>
+            <button class="prompt-tab" data-tab="avaliacao" role="tab" aria-selected="false">
+                <span class="material-symbols-outlined">fact_check</span>
+                <span>Avaliação</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Tab Contents -->
+    <div class="tab-contents">
+        <!-- Tradicional Tab -->
+        <div class="tab-content active" id="tab-tradicional" role="tabpanel">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Customizer -->
+                <div class="space-y-6">
+                    <div
+                        class="bg-blue-50 dark:bg-blue-900/10 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">info</span>
+                            Sobre este prompt
+                        </h3>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-2">
+                            <strong>📋 Quando usar:</strong> Aulas expositivas com organização clara e progressão linear
+                        </p>
+                        <p class="text-sm text-slate-700 dark:text-slate-300">
+                            <strong>📎 Anexos:</strong> Nenhum (opcional: ementa da disciplina)
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6 space-y-4">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Preencha os dados</h3>
+
+                        <div class="field-group">
+                            <label class="field-label required">Disciplina</label>
+                            <input type="text" class="field-input" data-placeholder="DISCIPLINA"
+                                placeholder="Ex: História" required>
+                            <span class="field-help">Nome da disciplina que você leciona</span>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Ano/Série</label>
+                            <select class="field-input" data-placeholder="ANO" required>
+                                <option value="">Selecione...</option>
+                                <option value="1º">1º ano</option>
+                                <option value="2º">2º ano</option>
+                                <option value="3º">3º ano</option>
+                            </select>
+                            <span class="field-help">Ano do ensino médio</span>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Tema da Aula</label>
+                            <input type="text" class="field-input" data-placeholder="TEMA"
+                                placeholder="Ex: Revolução Industrial" required>
+                            <span class="field-help">Assunto principal que será abordado</span>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Duração</label>
+                            <input type="text" class="field-input" data-placeholder="DURACAO"
+                                placeholder="Ex: 50 minutos" required>
+                            <span class="field-help">Tempo disponível para a aula</span>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Perfil da Turma</label>
+                            <textarea class="field-input" data-placeholder="TURMA" rows="3"
+                                placeholder="Ex: Turma agitada, 35 alunos, alguns com dificuldade de leitura"></textarea>
+                            <span class="field-help">Características importantes da turma (opcional)</span>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Recursos Disponíveis</label>
+                            <input type="text" class="field-input" data-placeholder="RECURSOS"
+                                placeholder="Ex: Quadro, projetor, livro didático">
+                            <span class="field-help">Materiais e equipamentos que você tem acesso (opcional)</span>
+                        </div>
+
+                        <div class="flex gap-3 pt-4">
+                            <button class="btn-primary flex-1" id="generate-tradicional">
+                                <span class="material-symbols-outlined">auto_awesome</span>
+                                Gerar Prompt
+                            </button>
+                            <button class="btn-secondary" id="clear-tradicional">
+                                <span class="material-symbols-outlined">refresh</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="space-y-4">
+                    <div
+                        class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Preview do Prompt</h3>
+                            <div class="flex gap-2">
+                                <button class="btn-icon" id="copy-tradicional" title="Copiar">
+                                    <span class="material-symbols-outlined">content_copy</span>
+                                </button>
+                                <button class="btn-icon" id="save-tradicional" title="Salvar nos Meus Prompts">
+                                    <span class="material-symbols-outlined">bookmark</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="prompt-preview" id="preview-tradicional">
+                            <pre
+                                class="text-sm"><code>Preencha os campos ao lado para gerar seu prompt personalizado...</code></pre>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-yellow-50 dark:bg-yellow-900/10 rounded-xl p-4 border border-yellow-200 dark:border-yellow-800">
+                        <div class="flex gap-3">
+                            <span
+                                class="material-symbols-outlined text-yellow-600 dark:text-yellow-500">lightbulb</span>
+                            <div class="text-sm text-yellow-800 dark:text-yellow-200">
+                                <strong>Dica:</strong> Campos marcados com asterisco (*) são obrigatórios. Preencha o
+                                máximo de informações possível para obter um prompt mais preciso e útil.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sala Invertida Tab -->
+        <div class="tab-content" id="tab-invertida" role="tabpanel" hidden>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Customizer -->
+                <div class="space-y-6">
+                    <div
+                        class="bg-purple-50 dark:bg-purple-900/10 rounded-xl p-4 border border-purple-200 dark:border-purple-800">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-purple-600 dark:text-purple-400">info</span>
+                            Sobre este prompt
+                        </h3>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-2">
+                            <strong>📋 Quando usar:</strong> Quando alunos podem acessar material prévio (vídeo, texto,
+                            podcast)
+                        </p>
+                        <p class="text-sm text-slate-700 dark:text-slate-300">
+                            <strong>📎 Anexos:</strong> Conteúdo que será disponibilizado previamente (recomendado)
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6 space-y-4">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Preencha os dados</h3>
+
+                        <div class="field-group">
+                            <label class="field-label required">Disciplina</label>
+                            <input type="text" class="field-input" data-placeholder="DISCIPLINA"
+                                placeholder="Ex: Biologia" required>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Ano/Série</label>
+                            <select class="field-input" data-placeholder="ANO" required>
+                                <option value="">Selecione...</option>
+                                <option value="1º">1º ano</option>
+                                <option value="2º">2º ano</option>
+                                <option value="3º">3º ano</option>
+                            </select>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Tema</label>
+                            <input type="text" class="field-input" data-placeholder="TEMA"
+                                placeholder="Ex: Fotossíntese" required>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Tempo Presencial</label>
+                            <input type="text" class="field-input" data-placeholder="TEMPO" placeholder="Ex: 50 minutos"
+                                required>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Perfil da Turma</label>
+                            <textarea class="field-input" data-placeholder="PERFIL" rows="2"
+                                placeholder="Ex: Turma participativa, 30 alunos"></textarea>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Acesso Tecnológico</label>
+                            <select class="field-input" data-placeholder="ACESSO_TECH" required>
+                                <option value="">Selecione...</option>
+                                <option value="Todos têm smartphone com internet">Todos têm smartphone com internet
+                                </option>
+                                <option value="Maioria tem smartphone, internet limitada">Maioria tem smartphone,
+                                    internet limitada</option>
+                                <option value="Acesso limitado, material impresso necessário">Acesso limitado, material
+                                    impresso necessário</option>
+                            </select>
+                            <span class="field-help">Nível de acesso dos alunos a recursos digitais</span>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Formato do Material Prévio</label>
+                            <select class="field-input" data-placeholder="FORMATO" required>
+                                <option value="">Selecione...</option>
+                                <option value="Vídeo curto (5-10 min)">Vídeo curto (5-10 min)</option>
+                                <option value="Texto/PDF">Texto/PDF</option>
+                                <option value="Podcast/Áudio">Podcast/Áudio</option>
+                                <option value="Infográfico">Infográfico</option>
+                                <option value="Material impresso">Material impresso</option>
+                            </select>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Duração do Material</label>
+                            <input type="text" class="field-input" data-placeholder="DURACAO_MATERIAL"
+                                placeholder="Ex: 10 minutos ou 2 páginas">
+                        </div>
+
+                        <div class="flex gap-3 pt-4">
+                            <button class="btn-primary flex-1" id="generate-invertida">
+                                <span class="material-symbols-outlined">auto_awesome</span>
+                                Gerar Prompt
+                            </button>
+                            <button class="btn-secondary" id="clear-invertida">
+                                <span class="material-symbols-outlined">refresh</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="space-y-4">
+                    <div
+                        class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Preview do Prompt</h3>
+                            <div class="flex gap-2">
+                                <button class="btn-icon" id="copy-invertida" title="Copiar">
+                                    <span class="material-symbols-outlined">content_copy</span>
+                                </button>
+                                <button class="btn-icon" id="save-invertida" title="Salvar">
+                                    <span class="material-symbols-outlined">bookmark</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="prompt-preview" id="preview-invertida">
+                            <pre
+                                class="text-sm"><code>Preencha os campos ao lado para gerar seu prompt personalizado...</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PBL Tab -->
+        <div class="tab-content" id="tab-pbl" role="tabpanel" hidden>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Customizer -->
+                <div class="space-y-6">
+                    <div
+                        class="bg-emerald-50 dark:bg-emerald-900/10 rounded-xl p-4 border border-emerald-200 dark:border-emerald-800">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400">info</span>
+                            Sobre este prompt
+                        </h3>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-2">
+                            <strong>📋 Quando usar:</strong> Desenvolver pensamento crítico e trabalho em equipe
+                        </p>
+                        <p class="text-sm text-slate-700 dark:text-slate-300">
+                            <strong>📎 Anexos:</strong> Dados, textos, gráficos relacionados ao problema (opcional)
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6 space-y-4">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Preencha os dados</h3>
+
+                        <div class="field-group">
+                            <label class="field-label required">Disciplina</label>
+                            <input type="text" class="field-input" data-placeholder="DISCIPLINA"
+                                placeholder="Ex: Geografia" required>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Ano/Série</label>
+                            <select class="field-input" data-placeholder="ANO" required>
+                                <option value="">Selecione...</option>
+                                <option value="1º">1º ano</option>
+                                <option value="2º">2º ano</option>
+                                <option value="3º">3º ano</option>
+                            </select>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Tema Central</label>
+                            <input type="text" class="field-input" data-placeholder="TEMA"
+                                placeholder="Ex: Sustentabilidade Urbana" required>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Duração Total</label>
+                            <input type="text" class="field-input" data-placeholder="DURACAO"
+                                placeholder="Ex: 4 aulas de 50 minutos" required>
+                            <span class="field-help">PBL geralmente requer múltiplas aulas</span>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Produtos Esperados</label>
+                            <input type="text" class="field-input" data-placeholder="PRODUTOS"
+                                placeholder="Ex: Apresentação, maquete, relatório" required>
+                            <span class="field-help">O que os alunos vão produzir ao final</span>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Interdisciplinaridade</label>
+                            <input type="text" class="field-input" data-placeholder="INTERDISCIPLINAR"
+                                placeholder="Ex: Conexão com Biologia e Matemática">
+                            <span class="field-help">Outras disciplinas envolvidas (opcional)</span>
+                        </div>
+
+                        <div class="flex gap-3 pt-4">
+                            <button class="btn-primary flex-1" id="generate-pbl">
+                                <span class="material-symbols-outlined">auto_awesome</span>
+                                Gerar Prompt
+                            </button>
+                            <button class="btn-secondary" id="clear-pbl">
+                                <span class="material-symbols-outlined">refresh</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="space-y-4">
+                    <div
+                        class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Preview do Prompt</h3>
+                            <div class="flex gap-2">
+                                <button class="btn-icon" id="copy-pbl" title="Copiar">
+                                    <span class="material-symbols-outlined">content_copy</span>
+                                </button>
+                                <button class="btn-icon" id="save-pbl" title="Salvar">
+                                    <span class="material-symbols-outlined">bookmark</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="prompt-preview" id="preview-pbl">
+                            <pre
+                                class="text-sm"><code>Preencha os campos ao lado para gerar seu prompt personalizado...</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Adaptação Tab -->
+        <div class="tab-content" id="tab-adaptacao" role="tabpanel" hidden>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Customizer -->
+                <div class="space-y-6">
+                    <div
+                        class="bg-orange-50 dark:bg-orange-900/10 rounded-xl p-4 border border-orange-200 dark:border-orange-800">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-orange-600 dark:text-orange-400">info</span>
+                            Sobre este prompt
+                        </h3>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-2">
+                            <strong>📋 Quando usar:</strong> Você tem um plano/material que precisa adaptar
+                        </p>
+                        <p class="text-sm text-slate-700 dark:text-slate-300">
+                            <strong>📎 Anexos:</strong> Material original a ser adaptado (OBRIGATÓRIO)
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6 space-y-4">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Preencha os dados</h3>
+
+                        <div class="field-group">
+                            <label class="field-label required">Material Original</label>
+                            <textarea class="field-input" data-placeholder="MATERIAL_ORIGINAL" rows="6"
+                                placeholder="Cole aqui o material que você deseja adaptar..." required></textarea>
+                            <span class="field-help">Cole o plano de aula ou material completo</span>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Público Original</label>
+                            <input type="text" class="field-input" data-placeholder="PUBLICO_ORIGINAL"
+                                placeholder="Ex: Escolas particulares de São Paulo" required>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Novo Público</label>
+                            <input type="text" class="field-input" data-placeholder="NOVO_PUBLICO"
+                                placeholder="Ex: Ensino médio público do Piauí" required>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Principais Diferenças</label>
+                            <textarea class="field-input" data-placeholder="DIFERENCAS" rows="4"
+                                placeholder="Liste as principais diferenças entre os públicos (uma por linha):&#10;- Acesso limitado a tecnologia&#10;- Turmas maiores (35-40 alunos)&#10;- Tempo reduzido"
+                                required></textarea>
+                            <span class="field-help">Descreva as diferenças de contexto, recursos, perfil dos alunos,
+                                etc.</span>
+                        </div>
+
+                        <div class="flex gap-3 pt-4">
+                            <button class="btn-primary flex-1" id="generate-adaptacao">
+                                <span class="material-symbols-outlined">auto_awesome</span>
+                                Gerar Prompt
+                            </button>
+                            <button class="btn-secondary" id="clear-adaptacao">
+                                <span class="material-symbols-outlined">refresh</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="space-y-4">
+                    <div
+                        class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Preview do Prompt</h3>
+                            <div class="flex gap-2">
+                                <button class="btn-icon" id="copy-adaptacao" title="Copiar">
+                                    <span class="material-symbols-outlined">content_copy</span>
+                                </button>
+                                <button class="btn-icon" id="save-adaptacao" title="Salvar">
+                                    <span class="material-symbols-outlined">bookmark</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="prompt-preview" id="preview-adaptacao">
+                            <pre
+                                class="text-sm"><code>Preencha os campos ao lado para gerar seu prompt personalizado...</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sequência Tab -->
+        <div class="tab-content" id="tab-sequencia" role="tabpanel" hidden>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Customizer -->
+                <div class="space-y-6">
+                    <div
+                        class="bg-indigo-50 dark:bg-indigo-900/10 rounded-xl p-4 border border-indigo-200 dark:border-indigo-800">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400">info</span>
+                            Sobre este prompt
+                        </h3>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-2">
+                            <strong>📋 Quando usar:</strong> Planejar unidade/módulo inteiro
+                        </p>
+                        <p class="text-sm text-slate-700 dark:text-slate-300">
+                            <strong>📎 Anexos:</strong> Currículo, ementa, ou documento da BNCC (recomendado)
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6 space-y-4">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Preencha os dados</h3>
+
+                        <div class="field-group">
+                            <label class="field-label required">Tema/Unidade</label>
+                            <input type="text" class="field-input" data-placeholder="TEMA_UNIDADE"
+                                placeholder="Ex: Revolução Industrial e suas consequências" required>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Ano/Série</label>
+                            <select class="field-input" data-placeholder="ANO" required>
+                                <option value="">Selecione...</option>
+                                <option value="1º">1º ano</option>
+                                <option value="2º">2º ano</option>
+                                <option value="3º">3º ano</option>
+                            </select>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Duração Total</label>
+                            <input type="text" class="field-input" data-placeholder="DURACAO_TOTAL"
+                                placeholder="Ex: 8 aulas de 50 minutos" required>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Carga Horária Semanal</label>
+                            <input type="text" class="field-input" data-placeholder="CARGA_HORARIA"
+                                placeholder="Ex: 2 aulas por semana">
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Pré-requisitos</label>
+                            <textarea class="field-input" data-placeholder="PRE_REQUISITOS" rows="2"
+                                placeholder="Ex: Conhecimentos básicos sobre feudalismo"></textarea>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Habilidades BNCC</label>
+                            <textarea class="field-input" data-placeholder="HABILIDADES_BNCC" rows="3"
+                                placeholder="Ex: EM13CHS101, EM13CHS102"></textarea>
+                            <span class="field-help">Códigos das habilidades da BNCC trabalhadas</span>
+                        </div>
+
+                        <div class="flex gap-3 pt-4">
+                            <button class="btn-primary flex-1" id="generate-sequencia">
+                                <span class="material-symbols-outlined">auto_awesome</span>
+                                Gerar Prompt
+                            </button>
+                            <button class="btn-secondary" id="clear-sequencia">
+                                <span class="material-symbols-outlined">refresh</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="space-y-4">
+                    <div
+                        class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Preview do Prompt</h3>
+                            <div class="flex gap-2">
+                                <button class="btn-icon" id="copy-sequencia" title="Copiar">
+                                    <span class="material-symbols-outlined">content_copy</span>
+                                </button>
+                                <button class="btn-icon" id="save-sequencia" title="Salvar">
+                                    <span class="material-symbols-outlined">bookmark</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="prompt-preview" id="preview-sequencia">
+                            <pre
+                                class="text-sm"><code>Preencha os campos ao lado para gerar seu prompt personalizado...</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Avaliação Tab -->
+        <div class="tab-content" id="tab-avaliacao" role="tabpanel" hidden>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Customizer -->
+                <div class="space-y-6">
+                    <div
+                        class="bg-teal-50 dark:bg-teal-900/10 rounded-xl p-4 border border-teal-200 dark:border-teal-800">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-teal-600 dark:text-teal-400">info</span>
+                            Sobre este prompt
+                        </h3>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-2">
+                            <strong>📋 Quando usar:</strong> Criar prova, trabalho ou atividade avaliativa
+                        </p>
+                        <p class="text-sm text-slate-700 dark:text-slate-300">
+                            <strong>📎 Anexos:</strong> Plano de aula ou conteúdo já trabalhado (opcional)
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6 space-y-4">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Preencha os dados</h3>
+
+                        <div class="field-group">
+                            <label class="field-label required">Disciplina</label>
+                            <input type="text" class="field-input" data-placeholder="DISCIPLINA"
+                                placeholder="Ex: Química" required>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Ano/Série</label>
+                            <select class="field-input" data-placeholder="ANO" required>
+                                <option value="">Selecione...</option>
+                                <option value="1º">1º ano</option>
+                                <option value="2º">2º ano</option>
+                                <option value="3º">3º ano</option>
+                            </select>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Conteúdos a Avaliar</label>
+                            <textarea class="field-input" data-placeholder="CONTEUDOS" rows="3"
+                                placeholder="Ex: Tabela periódica, ligações químicas, propriedades dos elementos"
+                                required></textarea>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Objetivos de Aprendizagem</label>
+                            <textarea class="field-input" data-placeholder="OBJETIVOS" rows="3"
+                                placeholder="Ex: Identificar elementos na tabela periódica, explicar tipos de ligações químicas"
+                                required></textarea>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Formato</label>
+                            <select class="field-input" data-placeholder="FORMATO" required>
+                                <option value="">Selecione...</option>
+                                <option value="Prova escrita">Prova escrita</option>
+                                <option value="Trabalho em grupo">Trabalho em grupo</option>
+                                <option value="Apresentação">Apresentação</option>
+                                <option value="Projeto">Projeto</option>
+                                <option value="Misto (objetiva + dissertativa)">Misto (objetiva + dissertativa)</option>
+                            </select>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label required">Duração</label>
+                            <input type="text" class="field-input" data-placeholder="DURACAO"
+                                placeholder="Ex: 50 minutos" required>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Valor/Pontuação</label>
+                            <input type="text" class="field-input" data-placeholder="VALOR" placeholder="Ex: 10 pontos">
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Pode Consultar Material?</label>
+                            <select class="field-input" data-placeholder="CONSULTA">
+                                <option value="">Selecione...</option>
+                                <option value="Não">Não</option>
+                                <option value="Sim, caderno">Sim, caderno</option>
+                                <option value="Sim, livro">Sim, livro</option>
+                                <option value="Sim, qualquer material">Sim, qualquer material</option>
+                            </select>
+                        </div>
+
+                        <div class="flex gap-3 pt-4">
+                            <button class="btn-primary flex-1" id="generate-avaliacao">
+                                <span class="material-symbols-outlined">auto_awesome</span>
+                                Gerar Prompt
+                            </button>
+                            <button class="btn-secondary" id="clear-avaliacao">
+                                <span class="material-symbols-outlined">refresh</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="space-y-4">
+                    <div
+                        class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Preview do Prompt</h3>
+                            <div class="flex gap-2">
+                                <button class="btn-icon" id="copy-avaliacao" title="Copiar">
+                                    <span class="material-symbols-outlined">content_copy</span>
+                                </button>
+                                <button class="btn-icon" id="save-avaliacao" title="Salvar">
+                                    <span class="material-symbols-outlined">bookmark</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="prompt-preview" id="preview-avaliacao">
+                            <pre
+                                class="text-sm"><code>Preencha os campos ao lado para gerar seu prompt personalizado...</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Tabs Navigation */
+    .prompt-tab {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-bottom: 2px solid transparent;
+        color: rgb(100 116 139);
+        font-weight: 500;
+        transition: all 0.2s;
+        white-space: nowrap;
+        background: none;
+        border-radius: 0;
+    }
+
+    .prompt-tab:hover {
+        color: rgb(51 65 85);
+        background-color: rgb(248 250 252);
+    }
+
+    .dark .prompt-tab:hover {
+        color: rgb(226 232 240);
+        background-color: rgb(30 41 59);
+    }
+
+    .prompt-tab.active {
+        color: rgb(99 102 241);
+        border-bottom-color: rgb(99 102 241);
+    }
+
+    .dark .prompt-tab.active {
+        color: rgb(129 140 248);
+        border-bottom-color: rgb(129 140 248);
+    }
+
+    .prompt-tab .material-symbols-outlined {
+        font-size: 1.25rem;
+    }
+
+    /* Tab Contents */
+    .tab-content {
+        animation: fadeIn 0.3s ease-in;
+    }
+
+    .tab-content[hidden] {
+        display: none;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Form Fields */
+    .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .field-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: rgb(51 65 85);
+    }
+
+    .dark .field-label {
+        color: rgb(226 232 240);
+    }
+
+    .field-label.required::after {
+        content: ' *';
+        color: rgb(239 68 68);
+    }
+
+    .field-input {
+        width: 100%;
+        padding: 0.625rem 0.875rem;
+        border: 1px solid rgb(203 213 225);
+        border-radius: 0.5rem;
+        background-color: rgb(248 250 252);
+        color: rgb(15 23 42);
+        font-size: 0.875rem;
+        transition: all 0.2s;
+    }
+
+    .dark .field-input {
+        border-color: rgb(71 85 105);
+        background-color: rgba(30 41 59 / 0.5);
+        color: rgb(248 250 252);
+    }
+
+    .field-input:focus {
+        outline: none;
+        border-color: rgb(99 102 241);
+        ring: 2px;
+        ring-color: rgb(99 102 241 / 0.2);
+    }
+
+    .field-help {
+        font-size: 0.75rem;
+        color: rgb(100 116 139);
+    }
+
+    .dark .field-help {
+        color: rgb(148 163 184);
+    }
+
+    /* Prompt Preview */
+    .prompt-preview {
+        max-height: 600px;
+        overflow-y: auto;
+        background-color: rgb(248 250 252);
+        border-radius: 0.5rem;
+        padding: 1rem;
+    }
+
+    .dark .prompt-preview {
+        background-color: rgb(15 23 42);
+    }
+
+    .prompt-preview pre {
+        margin: 0;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-family: 'Courier New', monospace;
+        color: rgb(51 65 85);
+    }
+
+    .dark .prompt-preview pre {
+        color: rgb(203 213 225);
+    }
+
+    /* Buttons */
+    .btn-primary {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background-color: rgb(99 102 241);
+        color: white;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: rgb(79 70 229);
+    }
+
+    .btn-secondary {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem;
+        background-color: rgb(226 232 240);
+        color: rgb(51 65 85);
+        border-radius: 0.5rem;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+    }
+
+    .dark .btn-secondary {
+        background-color: rgb(51 65 85);
+        color: rgb(226 232 240);
+    }
+
+    .btn-secondary:hover {
+        background-color: rgb(203 213 225);
+    }
+
+    .dark .btn-secondary:hover {
+        background-color: rgb(71 85 105);
+    }
+
+    .btn-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        background-color: transparent;
+        color: rgb(100 116 139);
+        border-radius: 0.5rem;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-icon:hover {
+        background-color: rgb(248 250 252);
+        color: rgb(51 65 85);
+    }
+
+    .dark .btn-icon:hover {
+        background-color: rgb(30 41 59);
+        color: rgb(226 232 240);
+    }
+</style>

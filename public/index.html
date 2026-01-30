@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apoio Professores - Framework de Design Instrucional com IA</title>
+    <title>Apoio Professores de IA</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
     <!-- Fonts -->
@@ -71,16 +71,16 @@
 </head>
 
 <body
-    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white transition-colors duration-200 h-screen overflow-hidden flex">
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white transition-colors duration-200 overflow-hidden flex">
 
     <!-- Sidebar (mounted by JS component) -->
     <aside id="sidebar"></aside>
 
     <!-- Main Content -->
-    <main class="flex-1 h-full overflow-y-auto relative bg-background-light dark:bg-background-dark">
+    <main class="flex-1 h-full overflow-y-auto relative bg-background-light dark:bg-background-dark flex flex-col">
         <!-- Header -->
         <header
-            class="flex items-center justify-between px-8 py-5 bg-white dark:bg-surface-dark border-b border-slate-200 dark:border-slate-800 sticky top-0 z-10">
+            class="flex items-center justify-between px-8 py-5 bg-white dark:bg-surface-dark border-b border-slate-200 dark:border-slate-800 sticky top-0 z-10 flex-shrink-0">
             <div class="flex items-center gap-4">
                 <button id="mobile-menu-toggle"
                     class="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-white">
@@ -101,401 +101,203 @@
             </div>
         </header>
 
-        <div class="max-w-7xl mx-auto px-6 md:px-12 py-10 space-y-10">
-            <!-- Introduction Section -->
-            <section id="page-header" class="mb-8">
-                <div class="flex items-center gap-2 mb-4">
-                    <span class="relative flex h-2 w-2">
-                        <span
-                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                    </span>
-                    <span class="text-xs font-semibold text-primary uppercase tracking-wide">Ferramenta v2.0
-                        Ativa</span>
-                </div>
+        <div class="max-w-7xl w-full mx-auto px-6 md:px-12 py-10 flex-1 flex flex-col min-h-full">
+            <!-- Content Wrapper with flex-1 to push footer down -->
+            <div class="flex-1 space-y-10">
+                <!-- Dynamic Content Area -->
+                <div id="content-area" style="display: none;"></div>
 
-                <h1 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4 leading-tight">
-                    Framework de Design Instrucional com IA
-                </h1>
-                <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl">
-                    Esta ferramenta oferece uma linguagem acessível para descrever e aplicar o framework de Inteligência
-                    Artificial no ensino. O objetivo é auxiliar professores a integrar tecnologias de forma eficaz,
-                    estruturada e validada.
-                </p>
-            </section>
 
-            <!-- Dashboard View (Unified) -->
-            <section id="dashboard-view">
-                <div class="flex items-end justify-between mb-8">
-                    <div>
-                        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">Visão Geral</h3>
-                        <p class="text-sm text-slate-500 mt-1">Acesso rápido a todos os módulos do framework</p>
+                <!-- Prompts View (Hidden by default) -->
+
+
+                <!-- Prompts View (Hidden by default) -->
+                <section id="especificar-view" class="hidden">
+                    <!-- Cards Section -->
+                    <div id="prompts-cards-view">
+                        <div class="flex items-end justify-between mb-6">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Prompts</h3>
+                                <p class="text-sm text-slate-500 mt-1">Selecione uma opção para trabalhar com prompts
+                                </p>
+                            </div>
+                            <span
+                                class="text-sm font-medium px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-400">2
+                                opções disponíveis</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    <!-- Card 1: Contextualizar -->
-                    <a href="#/apoio/contextualizar"
-                        class="step-card group relative bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-500/50 transition-all duration-300 flex flex-col h-full no-underline">
-                        <div class="mb-6 flex justify-between items-start">
-                            <div
-                                class="size-14 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <span class="material-symbols-outlined text-3xl">lightbulb</span>
-                            </div>
-                            <span
-                                class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded">Apoio</span>
-                        </div>
-                        <h4
-                            class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 transition-colors">
-                            Contextualizar</h4>
-                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
-                            Defina o cenário de aprendizado e identifique as necessidades específicas dos alunos.
-                        </p>
-                        <div
-                            class="pt-4 mt-auto border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-blue-600 font-medium text-sm">
-                            <span>Acessar Etapa 01</span>
-                            <span
-                                class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                        </div>
-                    </a>
+                    <!-- Content Area (Hidden by default, shown when card is clicked) -->
+                    <div id="prompts-content-view" class="hidden">
+                        <div id="content"></div>
+                    </div>
+                </section>
 
-                    <!-- Card 2: Estruturar -->
-                    <a href="#/apoio/estruturar"
-                        class="step-card group relative bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-purple-500/10 hover:border-purple-500/50 transition-all duration-300 flex flex-col h-full no-underline">
-                        <div class="mb-6 flex justify-between items-start">
-                            <div
-                                class="size-14 rounded-2xl bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <span class="material-symbols-outlined text-3xl">schema</span>
-                            </div>
-                            <span
-                                class="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider bg-purple-50 dark:bg-purple-900/20 px-2 py-1 rounded">Apoio</span>
-                        </div>
-                        <h4
-                            class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-purple-600 transition-colors">
-                            Estruturar</h4>
-                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
-                            Construa o esqueleto do plano de aula organizando os objetivos pedagógicos.
-                        </p>
-                        <div
-                            class="pt-4 mt-auto border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-purple-600 font-medium text-sm">
-                            <span>Acessar Etapa 02</span>
-                            <span
-                                class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                        </div>
-                    </a>
-
-                    <!-- Card 3: Iterar -->
-                    <a href="#/apoio/iterar"
-                        class="step-card group relative bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-emerald-500/10 hover:border-emerald-500/50 transition-all duration-300 flex flex-col h-full no-underline">
-                        <div class="mb-6 flex justify-between items-start">
-                            <div
-                                class="size-14 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <span class="material-symbols-outlined text-3xl">autorenew</span>
-                            </div>
-                            <span
-                                class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 rounded">Apoio</span>
-                        </div>
-                        <h4
-                            class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-emerald-600 transition-colors">
-                            Iterar</h4>
-                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
-                            Refine os prompts e saídas de IA para adaptar o conteúdo aos feedbacks.
-                        </p>
-                        <div
-                            class="pt-4 mt-auto border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-emerald-600 font-medium text-sm">
-                            <span>Acessar Etapa 03</span>
-                            <span
-                                class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                        </div>
-                    </a>
-
-                    <!-- Card 4: Referências -->
-                    <a href="#/apoio/referencias"
-                        class="step-card group relative bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-orange-500/10 hover:border-orange-500/50 transition-all duration-300 flex flex-col h-full no-underline">
-                        <div class="mb-6 flex justify-between items-start">
-                            <div
-                                class="size-14 rounded-2xl bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <span class="material-symbols-outlined text-3xl">library_books</span>
-                            </div>
-                            <span
-                                class="text-xs font-bold text-orange-600 dark:text-orange-400 uppercase tracking-wider bg-orange-50 dark:bg-orange-900/20 px-2 py-1 rounded">Apoio</span>
-                        </div>
-                        <h4
-                            class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-orange-600 transition-colors">
-                            Referências</h4>
-                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
-                            Acesse fontes acadêmicas, guias e documentação do framework.
-                        </p>
-                        <div
-                            class="pt-4 mt-auto border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-orange-600 font-medium text-sm">
-                            <span>Acessar Recursos</span>
-                            <span
-                                class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                        </div>
-                    </a>
-
-                    <!-- Card 5: Especificar (Prompts) -->
-                    <a href="#/prompts/especificar"
-                        class="step-card group relative bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-indigo-500/10 hover:border-indigo-500/50 transition-all duration-300 flex flex-col h-full no-underline">
-                        <div class="mb-6 flex justify-between items-start">
-                            <div
-                                class="size-14 rounded-2xl bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <span class="material-symbols-outlined text-3xl">edit_note</span>
-                            </div>
-                            <span
-                                class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider bg-indigo-50 dark:bg-indigo-900/20 px-2 py-1 rounded">Prompt</span>
-                        </div>
-                        <h4
-                            class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-indigo-600 transition-colors">
-                            Especificar</h4>
-                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
-                            Crie e personalize prompts para estruturar suas aulas e materiais didáticos.
-                        </p>
-                        <div
-                            class="pt-4 mt-auto border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-indigo-600 font-medium text-sm">
-                            <span>Criar Prompt</span>
-                            <span
-                                class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                        </div>
-                    </a>
-
-                    <!-- Card 6: Validar (Prompts) -->
-                    <a href="#/prompts/validar"
-                        class="step-card group relative bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-teal-500/10 hover:border-teal-500/50 transition-all duration-300 flex flex-col h-full no-underline">
-                        <div class="mb-6 flex justify-between items-start">
-                            <div
-                                class="size-14 rounded-2xl bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <span class="material-symbols-outlined text-3xl">verified</span>
-                            </div>
-                            <span
-                                class="text-xs font-bold text-teal-600 dark:text-teal-400 uppercase tracking-wider bg-teal-50 dark:bg-teal-900/20 px-2 py-1 rounded">Prompt</span>
-                        </div>
-                        <h4
-                            class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-teal-600 transition-colors">
-                            Validar</h4>
-                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
-                            Valide e refine os conteúdos gerados pela IA para garantir adequação.
-                        </p>
-                        <div
-                            class="pt-4 mt-auto border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-teal-600 font-medium text-sm">
-                            <span>Validar Prompt</span>
-                            <span
-                                class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                        </div>
-                    </a>
-                </div>
-            </section>
-
-            <!-- Dynamic Content Area -->
-            <div id="content-area" style="display: none;"></div>
-
-
-            <!-- Prompts View (Hidden by default) -->
-            <section id="especificar-view" class="hidden">
-                <!-- Cards Section -->
-                <div id="prompts-cards-view">
-                    <div class="flex items-end justify-between mb-6">
+                <!-- My Prompts View -->
+                <section id="my-prompts-view" class="hidden">
+                    <div class="flex items-end justify-between mb-8">
                         <div>
-                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Prompts</h3>
-                            <p class="text-sm text-slate-500 mt-1">Selecione uma opção para trabalhar com prompts
-                            </p>
+                            <h3 class="text-2xl font-bold text-slate-900 dark:text-white">Meus Prompts</h3>
+                            <p class="text-sm text-slate-500 mt-1">Gerencie seus prompts salvos</p>
                         </div>
-                        <span
-                            class="text-sm font-medium px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-400">2
-                            opções disponíveis</span>
+                        <button id="add-prompt-btn"
+                            class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium flex items-center gap-2">
+                            <span class="material-symbols-outlined">add</span>
+                            Novo Prompt
+                        </button>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Card 1: Especificar -->
-                        <article
-                            class="prompt-card group relative bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-indigo-500/10 hover:border-indigo-500/50 transition-all duration-300 cursor-pointer flex flex-col h-full"
-                            data-prompt-type="especificar">
-                            <div class="mb-6 flex justify-between items-start">
-                                <div
-                                    class="size-14 rounded-2xl bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                    <span class="material-symbols-outlined text-3xl">edit_note</span>
-                                </div>
-                                <span
-                                    class="text-xs font-bold text-slate-400 uppercase tracking-wider bg-slate-50 dark:bg-slate-800 px-2 py-1 rounded">Prompts</span>
-                            </div>
-                            <h4
-                                class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-indigo-600 transition-colors">
-                                Especificar</h4>
-                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
-                                Crie e personalize prompts para estruturar suas aulas e materiais didáticos de forma
-                                eficiente com IA.
-                            </p>
+                    <!-- Prompts Grid -->
+                    <div id="my-prompts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Prompts will be rendered here -->
+                    </div>
+
+                    <!-- Add Prompt Modal -->
+                    <div id="add-prompt-modal"
+                        class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                        <div
+                            class="bg-white dark:bg-surface-dark rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                             <div
-                                class="pt-4 mt-auto border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-indigo-600 font-medium text-sm">
-                                <span>Acessar prompts</span>
-                                <span
-                                    class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                class="sticky top-0 bg-white dark:bg-surface-dark border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between">
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Adicionar Novo Prompt</h3>
+                                <button id="close-modal-btn"
+                                    class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+                                    <span
+                                        class="material-symbols-outlined text-slate-600 dark:text-slate-400">close</span>
+                                </button>
                             </div>
-                        </article>
-
-                        <!-- Card 2: Validar -->
-                        <article
-                            class="prompt-card group relative bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-teal-500/10 hover:border-teal-500/50 transition-all duration-300 cursor-pointer flex flex-col h-full"
-                            data-prompt-type="validar">
-                            <div class="mb-6 flex justify-between items-start">
-                                <div
-                                    class="size-14 rounded-2xl bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                    <span class="material-symbols-outlined text-3xl">verified</span>
+                            <div class="p-6 space-y-4">
+                                <div>
+                                    <label
+                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Nome
+                                        do Prompt</label>
+                                    <input id="my-prompt-name"
+                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
+                                        placeholder="Ex: Aula PBL sobre Água" type="text" required />
                                 </div>
-                                <span
-                                    class="text-xs font-bold text-slate-400 uppercase tracking-wider bg-slate-50 dark:bg-slate-800 px-2 py-1 rounded">Prompts</span>
+                                <div>
+                                    <label
+                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Metodologia</label>
+                                    <input id="my-prompt-method-input"
+                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
+                                        placeholder="Ex: PBL, Sala Invertida" type="text" />
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Tags
+                                        (separadas por vírgula)</label>
+                                    <input id="my-prompt-tags"
+                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
+                                        placeholder="Ex: 50min, BNCC, WhatsApp" type="text" />
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Descrição</label>
+                                    <textarea id="my-prompt-description"
+                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-20 resize-none"
+                                        placeholder="Breve descrição do prompt"></textarea>
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Template
+                                        do prompt</label>
+                                    <textarea id="my-prompt-template"
+                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-28 resize-none"
+                                        placeholder="Cole o prompt aqui" required></textarea>
+                                </div>
+                                <div class="flex gap-3 pt-4">
+                                    <button id="save-prompt-btn"
+                                        class="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium">
+                                        Salvar Prompt
+                                    </button>
+                                    <button id="cancel-modal-btn"
+                                        class="px-6 py-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors font-medium">
+                                        Cancelar
+                                    </button>
+                                </div>
                             </div>
-                            <h4
-                                class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-teal-600 transition-colors">
-                                Validar</h4>
-                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
-                                Valide e refine os conteúdos gerados pela IA para garantir precisão e adequação
-                                pedagógica.
-                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Edit Prompt Modal -->
+                    <div id="edit-prompt-modal"
+                        class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                        <div
+                            class="bg-white dark:bg-surface-dark rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                             <div
-                                class="pt-4 mt-auto border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-teal-600 font-medium text-sm">
-                                <span>Acessar validação</span>
-                                <span
-                                    class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                class="sticky top-0 bg-white dark:bg-surface-dark border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between">
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Editar Prompt</h3>
+                                <button id="close-edit-modal-btn"
+                                    class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+                                    <span
+                                        class="material-symbols-outlined text-slate-600 dark:text-slate-400">close</span>
+                                </button>
                             </div>
-                        </article>
-                    </div>
-                </div>
-
-                <!-- Content Area (Hidden by default, shown when card is clicked) -->
-                <div id="prompts-content-view" class="hidden">
-                    <div id="content"></div>
-                </div>
-            </section>
-
-            <!-- Meus Prompts View -->
-            <section id="my-prompts-view" class="hidden">
-                <div class="flex items-end justify-between mb-6">
-                    <div>
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Meus Prompts</h3>
-                        <p class="text-sm text-slate-500 mt-1">Salvos no seu navegador com local storage</p>
-                    </div>
-                    <span id="my-prompts-count"
-                        class="text-sm font-medium px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-400">0
-                        salvos</span>
-                </div>
-
-                <div class="prompts-toolbar fade-in mb-6">
-                    <input id="my-prompts-search" class="search-input" type="search"
-                        placeholder="Buscar (título, descrição, tags)" aria-label="Buscar prompts salvos" />
-                    <input id="my-prompts-method" class="search-input" type="text" list="my-prompts-methods"
-                        placeholder="Metodologia (opcional)" aria-label="Filtrar por metodologia" />
-                    <datalist id="my-prompts-methods"></datalist>
-                    <select id="my-prompts-sort" class="select-input" aria-label="Ordenar prompts">
-                        <option value="updated-desc">Mais recentes</option>
-                        <option value="updated-asc">Mais antigos</option>
-                        <option value="title-asc">Título (A–Z)</option>
-                        <option value="title-desc">Título (Z–A)</option>
-                    </select>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div
-                        class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
-                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Salvar prompt</h4>
-                        <form id="my-prompts-form" class="space-y-4">
-                            <div>
-                                <label
-                                    class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Título</label>
-                                <input id="my-prompt-title"
-                                    class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
-                                    placeholder="Ex: Aula PBL sobre Água" type="text" required />
-                            </div>
-                            <div>
-                                <label
-                                    class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Metodologia</label>
-                                <input id="my-prompt-method-input"
-                                    class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
-                                    placeholder="Ex: PBL, Sala Invertida" type="text" />
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Tags
-                                    (separadas por vírgula)</label>
-                                <input id="my-prompt-tags"
-                                    class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
-                                    placeholder="Ex: 50min, BNCC, WhatsApp" type="text" />
-                            </div>
-                            <div>
-                                <label
-                                    class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Descrição</label>
-                                <textarea id="my-prompt-description"
-                                    class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-20 resize-none"
-                                    placeholder="Breve descrição do prompt"></textarea>
-                            </div>
-                            <div>
-                                <label
-                                    class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Template
-                                    do prompt</label>
-                                <textarea id="my-prompt-template"
-                                    class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-28 resize-none"
-                                    placeholder="Cole o prompt aqui" required></textarea>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Dicas
-                                    de uso</label>
-                                <textarea id="my-prompt-tips"
-                                    class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-20 resize-none"
-                                    placeholder="Ex: use quando..."></textarea>
-                            </div>
-                            <div>
-                                <label
-                                    class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Output
-                                    esperado</label>
-                                <textarea id="my-prompt-expected"
-                                    class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-20 resize-none"
-                                    placeholder="Ex: plano numerado com tempos"></textarea>
-                            </div>
-                            <p id="my-prompts-form-error" class="text-sm text-red-600 dark:text-red-400 hidden"></p>
-                            <div class="flex gap-3">
-                                <button type="submit" id="my-prompts-save"
-                                    class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors text-sm font-semibold">Salvar</button>
-                                <button type="button" id="my-prompts-clear"
-                                    class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-sm font-semibold">Limpar</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="lg:col-span-2 space-y-6">
-                        <div class="prompt-workspace fade-in">
-                            <label for="my-prompts-workspace">Área de trabalho</label>
-                            <textarea id="my-prompts-workspace"
-                                placeholder="Cole e ajuste seus prompts aqui antes de usar."></textarea>
-                            <div class="workspace-actions">
-                                <button class="workspace-btn" id="my-workspace-clear" type="button">Limpar</button>
-                                <button class="workspace-btn" id="my-workspace-copy" type="button">Copiar
-                                    tudo</button>
+                            <div class="p-6 space-y-4">
+                                <input type="hidden" id="edit-prompt-id" />
+                                <div>
+                                    <label
+                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Nome
+                                        do Prompt</label>
+                                    <input id="edit-prompt-name"
+                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
+                                        type="text" required />
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Metodologia</label>
+                                    <input id="edit-prompt-method"
+                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
+                                        type="text" />
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Tags
+                                        (separadas por vírgula)</label>
+                                    <input id="edit-prompt-tags"
+                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
+                                        type="text" />
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Descrição</label>
+                                    <textarea id="edit-prompt-description"
+                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-20 resize-none"></textarea>
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Template
+                                        do prompt</label>
+                                    <textarea id="edit-prompt-template"
+                                        class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-28 resize-none"
+                                        required></textarea>
+                                </div>
+                                <div class="flex gap-3 pt-4">
+                                    <button id="update-prompt-btn"
+                                        class="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium">
+                                        Atualizar Prompt
+                                    </button>
+                                    <button id="cancel-edit-modal-btn"
+                                        class="px-6 py-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors font-medium">
+                                        Cancelar
+                                    </button>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="prompts-list" id="my-prompts-list"></div>
-                        <div id="my-prompts-empty"
-                            class="hidden text-sm text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/40 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-6 text-center">
-                            Nenhum prompt salvo ainda. Use o formulário ao lado ou salve a partir do Banco de
-                            Prompts.
-                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <!-- Content Area - For dynamically loaded pages (Apoio, Prompts, etc) -->
-            <div id="content-area" style="display: none;"></div>
+                <!-- Recursos View -->
+                <section id="recursos-view" class="hidden">
+                    <!-- Content will be loaded dynamically -->
+                </section>
+            </div>
 
-            <!-- Recursos View -->
-            <section id="recursos-view" class="hidden">
-                <!-- Content will be loaded dynamically -->
-            </section>
-        </div>
-
-        <!-- Footer -->
-        <footer class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 text-center md:text-left">
-            <p class="text-sm text-slate-400 dark:text-slate-600">© 2026 Apoio Professores de IA. Todos os direitos
-                reservados.</p>
-        </footer>
+            <!-- Footer -->
+            <footer class="mt-auto pt-8 border-t border-slate-200 dark:border-slate-800 text-center md:text-left">
+                <p class="text-sm text-slate-400 dark:text-slate-600">© 2026 Apoio Professores de IA. Todos os direitos
+                    reservados.</p>
+            </footer>
         </div>
     </main>
 

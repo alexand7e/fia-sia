@@ -3,12 +3,14 @@ import { initMobileMenu, closeMobileMenu } from './modules/ui/mobileMenu.js';
 import { mountSidebar } from './modules/ui/sidebar.js';
 import { initSidebarNavigation, autoExpandGroup } from './modules/ui/sidebar-navigation.js';
 import { initPromptCustomizers } from './modules/ui/promptCustomizer.js';
+import { initEspecificarCustomizer } from './modules/ui/especificarCustomizer.js';
 import { initExamplesSimulation } from './modules/ui/examples.js';
 import { loadPrompts } from './modules/ui/promptsLibrary.js';
 import { initMyPrompts, renderMyPrompts, addMyPrompt, promptIdentity, readMyPrompts } from './modules/ui/myPrompts.js';
 import { loadStepContent } from './modules/ui/methodology.js';
 import { copyWithFeedback } from './modules/utils/clipboard.js';
 import router from './modules/router.js';
+
 
 const contentDiv = document.getElementById('content');
 const pageTitle = document.getElementById('page-title');
@@ -18,6 +20,7 @@ let navTabs = [];
 let navTabsMobile = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
+
     try {
         await mountSidebar();
     } catch (error) {
@@ -52,6 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initialize sidebar navigation (expandable groups)
     initSidebarNavigation();
+
 });
 
 function configureMarkdown() {
@@ -158,22 +162,59 @@ function setActiveNav(route) {
     });
 }
 
+async function loadHomePage() {
+    const contentArea = document.getElementById('content-area');
+    if (!contentArea) return;
+
+    // Check if already loaded
+    if (contentArea.dataset.currentView === 'home') {
+        contentArea.style.display = 'block';
+        return;
+    }
+
+    try {
+        const response = await fetch('pages/home.html');
+        if (!response.ok) throw new Error('Falha ao carregar home.');
+
+        const html = await response.text();
+        contentArea.innerHTML = html;
+        contentArea.style.display = 'block';
+        contentArea.dataset.currentView = 'home';
+
+        // Re-initialize any dynamic components if needed (e.g. icons, event listeners)
+        // For now, HTML structure handles existing interactions (details/summary)
+    } catch (error) {
+        console.error('Erro ao carregar Dashboard:', error);
+        contentArea.innerHTML = '<p class="text-red-500 text-center p-8">Erro ao carregar o painel inicial.</p>';
+        contentArea.style.display = 'block';
+    }
+}
+
 function showView(viewName) {
-    const dashboardView = document.getElementById('dashboard-view');
+    const dashboardView = document.getElementById('dashboard-view'); // Kept for legacy reference or fallback
     const myPromptsView = document.getElementById('my-prompts-view');
     const recursosView = document.getElementById('recursos-view');
     const contentArea = document.getElementById('content-area');
 
-    // Hide all views first
-    dashboardView?.classList.add('hidden');
+    // Hide all legacy views
+    if (dashboardView) dashboardView.classList.add('hidden');
     myPromptsView?.classList.add('hidden');
     recursosView?.classList.add('hidden');
+
+    // Default hiding content area unless it's a dynamic page
     if (contentArea) contentArea.style.display = 'none';
 
     // Show the requested view
     switch (viewName) {
         case 'dashboard':
-            dashboardView?.classList.remove('hidden');
+            loadHomePage();
+            break;
+        case 'prompts':
+            // Prompts feature is under construction
+            if (contentArea) {
+                contentArea.style.display = 'block';
+                loadConstruindoPage();
+            }
             break;
         case 'my-prompts':
             myPromptsView?.classList.remove('hidden');
@@ -569,6 +610,52 @@ async function loadConstruindoPage() {
                 </h2>
                 <p class="text-lg text-slate-600 dark:text-slate-400 mb-8 text-center max-w-md">
                     Esta funcionalidade estará disponível em breve!
+                </p>
+                <a href="#/dashboard" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium flex items-center gap-2">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    Voltar ao Dashboard
+                </a>
+            </div>
+        `;
+    }
+}
+
+// Load Prompts Pages (Especificar, Validar)
+async function loadPromptsPage(pageType) {
+    const contentArea = document.getElementById('content-area');
+    if (!contentArea) return;
+
+    // Hide all other views
+    showView('content');
+
+    try {
+        const response = await fetch(`pages/prompts/${pageType}.html`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const html = await response.text();
+        contentArea.innerHTML = html;
+
+        // Initialize the customizer for especificar page
+        if (pageType === 'especificar') {
+            // Wait for DOM to be ready
+            setTimeout(() => {
+                initEspecificarCustomizer();
+            }, 100);
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+        console.error(`Erro ao carregar página ${pageType}:`, error);
+        contentArea.innerHTML = `
+            <div class="flex flex-col items-center justify-center min-h-[60vh] p-8">
+                <span class="material-symbols-outlined text-8xl text-red-500 mb-8">
+                    error
+                </span>
+                <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 text-center">
+                    Erro ao Carregar Página
+                </h2>
+                <p class="text-lg text-slate-600 dark:text-slate-400 mb-8 text-center max-w-md">
+                    Não foi possível carregar a página "${pageType}". Tente novamente mais tarde.
                 </p>
                 <a href="#/dashboard" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium flex items-center gap-2">
                     <span class="material-symbols-outlined">arrow_back</span>
