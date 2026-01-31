@@ -10,6 +10,8 @@ import { initMyPrompts, renderMyPrompts, addMyPrompt, promptIdentity, readMyProm
 import { loadStepContent } from './modules/ui/methodology.js';
 import { copyWithFeedback } from './modules/utils/clipboard.js';
 import router from './modules/router.js';
+import llmClient from './modules/services/llm-client.js';
+import teacherProfileHome from './modules/ui/teacherProfileHome.js';
 
 
 const contentDiv = document.getElementById('content');
@@ -47,7 +49,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     initViewToggle();
     initStepCards();
 
-    // Setup router
+    // Initialize LLM Client with reCAPTCHA
+    // reCAPTCHA site key from .env (RECAPTCHA_HTML)
+    llmClient.initRecaptcha('6Le5O1wsAAAAAMj95MFuCxBsSwiKAav1h6A3G0AZ');
+
+    //Setup router
     setupRouter();
 
     // Initialize sidebar navigation (expandable groups)
@@ -142,47 +148,51 @@ function setActiveNav(route) {
     // Normalize route - treat both / and /dashboard as the same
     const normalizedRoute = (route === '/' || route === '/dashboard') ? '/dashboard' : route;
 
-    // Map routes to tab names
+    // Map routes to tab names (optional helpers, but stricter logic relies on data-route mostly)
     const routeToTab = {
         '/dashboard': 'dashboard',
         '/prompts': 'prompts',
         '/meus-prompts': 'my-prompts',
         '/recursos': 'recursos',
-        '/config': 'config'
+        '/config': 'config',
+        '/privacidade': 'privacidade',
+        '/contato': 'contato',
+        '/apoio/estruturar': 'apoio', // Example of grouping if needed
+        '/apoio/iterar': 'apoio',
+        '/apoio/referencias': 'apoio',
+        '/prompts/especificar': 'prompts',
+        '/prompts/validar': 'prompts'
     };
 
-    const tabName = routeToTab[normalizedRoute];
+    const targetTab = routeToTab[normalizedRoute];
 
-    navTabs.forEach(tab => {
-        // Check if this tab matches the current route
+    const updateTab = (tab) => {
         const tabRoute = tab.dataset.route;
         const tabName = tab.dataset.tab;
 
-        // For dashboard, match both /dashboard route and dashboard tab
-        const isDashboard = (normalizedRoute === '/dashboard') &&
-            (tabRoute === '/dashboard' || tabName === 'dashboard');
+        let isActive = false;
 
-        // For other routes, match by route or tab name
-        const isOtherRoute = tabRoute === normalizedRoute ||
-            tabName === routeToTab[normalizedRoute];
+        // 1. Exact route match (Highest priority)
+        if (tabRoute && tabRoute === normalizedRoute) {
+            isActive = true;
+        }
+        // 2. Tab name match (if route maps to a tab)
+        else if (targetTab && tabName && tabName === targetTab) {
+            isActive = true;
+        }
+        // 3. Special case: Dashboard
+        else if (normalizedRoute === '/dashboard' && (tabRoute === '/dashboard' || tabName === 'dashboard')) {
+            isActive = true;
+        }
 
-        const isActive = isDashboard || isOtherRoute;
         tab.classList.toggle('active', isActive);
-    });
 
-    navTabsMobile.forEach(tab => {
-        const tabRoute = tab.dataset.route;
-        const tabName = tab.dataset.tab;
+        // Debug
+        // if (isActive) console.log('Active tab:', tabRoute || tabName);
+    };
 
-        const isDashboard = (normalizedRoute === '/dashboard') &&
-            (tabRoute === '/dashboard' || tabName === 'dashboard');
-
-        const isOtherRoute = tabRoute === normalizedRoute ||
-            tabName === routeToTab[normalizedRoute];
-
-        const isActive = isDashboard || isOtherRoute;
-        tab.classList.toggle('active', isActive);
-    });
+    navTabs.forEach(updateTab);
+    navTabsMobile.forEach(updateTab);
 }
 
 async function loadHomePage() {
@@ -319,204 +329,69 @@ function updatePageHeader(route) {
 }
 
 // Load recursos page
+// Load Recursos Page
 async function loadRecursosPage() {
-    const recursosView = document.getElementById('recursos-view');
-    if (!recursosView) return;
+    const contentArea = document.getElementById('content-area');
+    if (!contentArea) return;
 
-    // Check if already loaded
-    if (recursosView.dataset.loaded === 'true') return;
+    if (typeof showView === 'function') {
+        showView('content');
+    }
 
-    const recursosHTML = `
-        <div class="mb-8">
-            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">
-                Recursos de IA
-            </h3>
-            <p class="text-slate-600 dark:text-slate-400">
-                Escolha a ferramenta de IA que melhor se adequa às suas necessidades
-            </p>
-        </div>
+    try {
+        const response = await fetch('pages/recursos.html');
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Google Gemini -->
-            <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer"
-                class="recurso-card group bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 no-underline">
-                <div class="flex items-start gap-4 mb-4">
-                    <div class="recurso-logo bg-blue-50 dark:bg-blue-900/20" style="background-color: rgba(66, 133, 244, 0.1);">
-                        <span class="text-2xl">✨</span>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                            Google Gemini
-                        </h4>
-                        <div class="flex gap-2 flex-wrap">
-                            <span class="recurso-tag free">Gratuito</span>
-                            <span class="recurso-tag api">API</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Modelo de IA multimodal do Google com capacidades avançadas de texto, imagem e código
-                </p>
-            </a>
+        const html = await response.text();
+        contentArea.innerHTML = html;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+        console.error('Erro ao carregar Recursos:', error);
+        contentArea.innerHTML = `
+            <div class="p-8 text-center">
+                <span class="material-symbols-outlined text-4xl text-red-500 mb-4 block">error</span>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Erro ao carregar Recursos</h3>
+                <p class="text-slate-600 dark:text-slate-400">Não foi possível carregar a lista de recursos.</p>
+            </div>
+        `;
+    }
+}
 
-            <!-- DeepSeek -->
-            <a href="https://www.deepseek.com" target="_blank" rel="noopener noreferrer"
-                class="recurso-card group bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 hover:border-purple-500 dark:hover:border-purple-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 no-underline">
-                <div class="flex items-start gap-4 mb-4">
-                    <div class="recurso-logo bg-purple-50 dark:bg-purple-900/20">
-                        <span class="text-2xl">🧠</span>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
-                            DeepSeek
-                        </h4>
-                        <div class="flex gap-2 flex-wrap">
-                            <span class="recurso-tag free">Gratuito</span>
-                            <span class="recurso-tag" style="background: #f3e8ff; color: #6b21a8;">Open Source</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                    IA de código aberto com foco em raciocínio avançado e programação
-                </p>
-            </a>
+// Load Privacidade Page
+async function loadPrivacidadePage() {
+    const contentArea = document.getElementById('content-area');
+    if (!contentArea) return;
 
-            <!-- ChatGPT -->
-            <a href="https://chat.openai.com" target="_blank" rel="noopener noreferrer"
-                class="recurso-card group bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 hover:border-green-500 dark:hover:border-green-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 no-underline">
-                <div class="flex items-start gap-4 mb-4">
-                    <div class="recurso-logo bg-green-50 dark:bg-green-900/20">
-                        <span class="text-2xl">💬</span>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
-                            ChatGPT
-                        </h4>
-                        <div class="flex gap-2 flex-wrap">
-                            <span class="recurso-tag paid">Freemium</span>
-                            <span class="recurso-tag api">API</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Assistente de IA conversacional da OpenAI, líder em processamento de linguagem natural
-                </p>
-            </a>
+    if (typeof showView === 'function') {
+        showView('content');
+    }
 
-            <!-- Google AI Studio -->
-            <a href="https://aistudio.google.com" target="_blank" rel="noopener noreferrer"
-                class="recurso-card group bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 hover:border-red-500 dark:hover:border-red-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 no-underline">
-                <div class="flex items-start gap-4 mb-4">
-                    <div class="recurso-logo bg-red-50 dark:bg-red-900/20">
-                        <span class="text-2xl">🔬</span>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
-                            Google AI Studio
-                        </h4>
-                        <div class="flex gap-2 flex-wrap">
-                            <span class="recurso-tag free">Gratuito</span>
-                            <span class="recurso-tag" style="background: #dbeafe; color: #1e40af;">Dev</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Plataforma para desenvolver e experimentar com modelos Gemini
-                </p>
-            </a>
+    try {
+        const response = await fetch('pages/privacidade.html');
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-            <!-- Claude -->
-            <a href="https://claude.ai" target="_blank" rel="noopener noreferrer"
-                class="recurso-card group bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 hover:border-amber-500 dark:hover:border-amber-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 no-underline">
-                <div class="flex items-start gap-4 mb-4">
-                    <div class="recurso-logo bg-amber-50 dark:bg-amber-900/20">
-                        <span class="text-2xl">🤖</span>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
-                            Claude
-                        </h4>
-                        <div class="flex gap-2 flex-wrap">
-                            <span class="recurso-tag paid">Freemium</span>
-                            <span class="recurso-tag api">API</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                    IA da Anthropic focada em segurança, precisão e conversas longas
-                </p>
-            </a>
+        const html = await response.text();
+        contentArea.innerHTML = html;
 
-            <!-- Microsoft Copilot -->
-            <a href="https://copilot.microsoft.com" target="_blank" rel="noopener noreferrer"
-                class="recurso-card group bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 hover:border-sky-500 dark:hover:border-sky-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 no-underline">
-                <div class="flex items-start gap-4 mb-4">
-                    <div class="recurso-logo bg-sky-50 dark:bg-sky-900/20">
-                        <span class="text-2xl">🚀</span>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
-                            Microsoft Copilot
-                        </h4>
-                        <div class="flex gap-2 flex-wrap">
-                            <span class="recurso-tag paid">Freemium</span>
-                            <span class="recurso-tag" style="background: #e0e7ff; color: #3730a3;">Integrado</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Assistente de IA integrado ao ecossistema Microsoft (Office, Windows, Edge)
-                </p>
-            </a>
+        // Execute scripts inside the loaded HTML (e.g. for clearAllData)
+        const scripts = contentArea.querySelectorAll('script');
+        scripts.forEach(script => {
+            const newScript = document.createElement('script');
+            newScript.textContent = script.textContent;
+            document.body.appendChild(newScript);
+        });
 
-            <!-- Perplexity -->
-            <a href="https://www.perplexity.ai" target="_blank" rel="noopener noreferrer"
-                class="recurso-card group bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 hover:border-cyan-500 dark:hover:border-cyan-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 no-underline">
-                <div class="flex items-start gap-4 mb-4">
-                    <div class="recurso-logo bg-cyan-50 dark:bg-cyan-900/20">
-                        <span class="text-2xl">🔍</span>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
-                            Perplexity
-                        </h4>
-                        <div class="flex gap-2 flex-wrap">
-                            <span class="recurso-tag paid">Freemium</span>
-                            <span class="recurso-tag" style="background: #cffafe; color: #155e75;">Busca</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Motor de busca com IA que fornece respostas precisas com fontes citadas
-                </p>
-            </a>
-
-            <!-- Meta AI -->
-            <a href="https://www.meta.ai" target="_blank" rel="noopener noreferrer"
-                class="recurso-card group bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 no-underline">
-                <div class="flex items-start gap-4 mb-4">
-                    <div class="recurso-logo bg-indigo-50 dark:bg-indigo-900/20">
-                        <span class="text-2xl">🌐</span>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                            Meta AI
-                        </h4>
-                        <div class="flex gap-2 flex-wrap">
-                            <span class="recurso-tag free">Gratuito</span>
-                            <span class="recurso-tag" style="background: #e0e7ff; color: #4338ca;">Social</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Assistente de IA da Meta com integração nas redes sociais Facebook, Instagram e WhatsApp
-                </p>
-            </a>
-        </div>
-    `;
-
-    recursosView.innerHTML = recursosHTML;
-    recursosView.dataset.loaded = 'true';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+        console.error('Erro ao carregar Privacidade:', error);
+        contentArea.innerHTML = `
+             <div class="p-8 text-center">
+                <span class="material-symbols-outlined text-4xl text-red-500 mb-4 block">error</span>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Erro ao carregar Política de Privacidade</h3>
+                <p class="text-slate-600 dark:text-slate-400">Não foi possível carregar o conteúdo.</p>
+            </div>
+        `;
+    }
 }
 
 // Load Apoio pages dynamically
@@ -592,6 +467,45 @@ async function loadConstruindoPage() {
     }
 }
 
+
+// Load Dashboard/Home Page
+async function loadDashboardPage() {
+    const contentArea = document.getElementById('content-area');
+    if (!contentArea) return;
+
+    // Use common view logic to show content area and hide others
+    // Assuming showView('content') or similar handles visibility of content-area vs others
+    // If showView handles specific IDs, we might need to be careful.
+    // Based on loadConstruindoPage, showView('content') is used.
+    if (typeof showView === 'function') {
+        showView('content');
+    }
+
+    try {
+        const response = await fetch('pages/home.html');
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const html = await response.text();
+        contentArea.innerHTML = html;
+
+        // Initialize teacher profile form
+        setTimeout(() => {
+            teacherProfileHome.init();
+        }, 100);
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+        console.error('Erro ao carregar Dashboard:', error);
+        contentArea.innerHTML = `
+            <div class="p-8 text-center">
+                <span class="material-symbols-outlined text-4xl text-red-500 mb-4 block">error</span>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Erro ao carregar Dashboard</h3>
+                <p class="text-slate-600 dark:text-slate-400">Não foi possível carregar o conteúdo inicial.</p>
+            </div>
+        `;
+    }
+}
+
 // Load Prompts Pages (Especificar, Validar)
 async function loadPromptsPage(pageType) {
     const contentArea = document.getElementById('content-area');
@@ -646,73 +560,146 @@ async function loadPromptsPage(pageType) {
     }
 }
 
+/**
+ * Hide teacher profile container (shown only on dashboard)
+ */
+function hideTeacherProfile() {
+    const profileContainer = document.getElementById('teacher-profile-container');
+    if (profileContainer) {
+        profileContainer.classList.add('hidden');
+    }
+}
+
+// Load Contato Page
+async function loadContatoPage() {
+    const contentArea = document.getElementById('content-area');
+    if (!contentArea) return;
+
+    if (typeof showView === 'function') {
+        showView('content');
+    }
+
+    try {
+        const response = await fetch('pages/contato.html');
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const html = await response.text();
+        contentArea.innerHTML = html;
+
+        // Execute scripts inside the loaded HTML
+        const scripts = contentArea.querySelectorAll('script');
+        scripts.forEach(script => {
+            const newScript = document.createElement('script');
+            newScript.textContent = script.textContent;
+            document.body.appendChild(newScript);
+        });
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+        console.error('Erro ao carregar Contato:', error);
+        contentArea.innerHTML = `
+             <div class="p-8 text-center">
+                <span class="material-symbols-outlined text-4xl text-red-500 mb-4 block">error</span>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Erro ao carregar Página de Contato</h3>
+                <p class="text-slate-600 dark:text-slate-400">Não foi possível carregar o formulário.</p>
+            </div>
+        `;
+    }
+}
+
 // Router setup
 function setupRouter() {
     // Define routes
     router.defineRoute('/dashboard', () => {
-        showView('dashboard');
+        loadDashboardPage();
         setActiveNav('/dashboard');
     });
 
     router.defineRoute('/', () => {
-        showView('dashboard');
+        loadDashboardPage();
         setActiveNav('/dashboard'); // Use /dashboard for consistency
     });
 
     router.defineRoute('/prompts', () => {
+        hideTeacherProfile();
         showView('prompts');
         setActiveNav('/prompts');
     });
 
     router.defineRoute('/meus-prompts', () => {
+        hideTeacherProfile();
         showView('my-prompts');
         setActiveNav('/meus-prompts');
     });
 
     router.defineRoute('/recursos', () => {
-        showView('recursos');
+        // hideTeacherProfile is handled by loadRecursosPage switching view
+        loadRecursosPage();
         setActiveNav('/recursos');
     });
 
+    router.defineRoute('/privacidade', () => {
+        loadPrivacidadePage();
+        setActiveNav('/privacidade');
+    });
+
+    router.defineRoute('/contato', () => {
+        loadContatoPage();
+        setActiveNav('/contato');
+    });
+
     router.defineRoute('/config', () => {
+        loadPrivacidadePage();
+        setActiveNav('/privacidade'); // Optional: if sidebar checks this
+    });
+
+    router.defineRoute('/config', () => {
+        hideTeacherProfile();
         showView('config');
         setActiveNav('/config');
     });
 
     // Apoio routes
     router.defineRoute('/apoio/contextualizar', () => {
+        hideTeacherProfile();
         loadApoioPage('contextualizar');
         setActiveNav('/apoio/contextualizar');
     });
 
     router.defineRoute('/apoio/estruturar', () => {
+        hideTeacherProfile();
         loadApoioPage('estruturar');
         setActiveNav('/apoio/estruturar');
     });
 
     router.defineRoute('/apoio/iterar', () => {
+        hideTeacherProfile();
         loadApoioPage('iterar');
         setActiveNav('/apoio/iterar');
     });
 
     router.defineRoute('/apoio/referencias', () => {
+        hideTeacherProfile();
         loadApoioPage('referencias');
         setActiveNav('/apoio/referencias');
     });
 
     // Prompts routes
     router.defineRoute('/prompts/especificar', () => {
+        hideTeacherProfile();
         loadPromptsPage('especificar');
         setActiveNav('/prompts/especificar');
     });
 
     router.defineRoute('/prompts/validar', () => {
+        hideTeacherProfile();
         loadPromptsPage('validar');
         setActiveNav('/prompts/validar');
     });
 
     // Construindo route
     router.defineRoute('/construindo', () => {
+        hideTeacherProfile();
         loadConstruindoPage();
         setActiveNav('/construindo');
     });
@@ -722,6 +709,8 @@ function setupRouter() {
         closeMobileMenu();
         updatePageHeader(route);
         autoExpandGroup(route);
+        // Scroll to top on every route change
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 }
 
