@@ -18,31 +18,42 @@ class LLMClient {
      */
     initRecaptcha(siteKey) {
         this.recaptchaSiteKey = siteKey;
+        this.loadScriptWithRetry(siteKey, 3);
+    }
 
-        // Load reCAPTCHA script if not already loaded
-        if (!window.grecaptcha && !document.getElementById('recaptcha-script')) {
-            this.scriptStatus = 'loading';
-            const script = document.createElement('script');
-            script.id = 'recaptcha-script';
-            script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
-            script.async = true;
-            script.defer = true;
-
-            script.onload = () => {
-                console.log('reCAPTCHA script loaded successfully');
-                this.scriptStatus = 'loaded';
-            };
-
-            script.onerror = (e) => {
-                console.error('Failed to load reCAPTCHA script:', e);
-                this.scriptStatus = 'failed';
-            };
-
-            document.head.appendChild(script);
-            console.log('reCAPTCHA script injected with key:', siteKey);
-        } else if (window.grecaptcha) {
-            this.scriptStatus = 'loaded';
+    loadScriptWithRetry(siteKey, retriesLeft) {
+        if (window.grecaptcha || document.getElementById('recaptcha-script')) {
+            if (window.grecaptcha) this.scriptStatus = 'loaded';
+            return;
         }
+
+        this.scriptStatus = 'loading';
+        const script = document.createElement('script');
+        script.id = 'recaptcha-script';
+        script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+        script.async = true;
+        script.defer = true;
+
+        script.onload = () => {
+            console.log('reCAPTCHA script loaded successfully');
+            this.scriptStatus = 'loaded';
+        };
+
+        script.onerror = (e) => {
+            console.error(`Failed to load reCAPTCHA script (${retriesLeft} retries left):`, e);
+            document.head.removeChild(script); // Clean up failed script
+
+            if (retriesLeft > 0) {
+                setTimeout(() => {
+                    this.loadScriptWithRetry(siteKey, retriesLeft - 1);
+                }, 1000); // Wait 1s before retry
+            } else {
+                this.scriptStatus = 'failed';
+            }
+        };
+
+        document.head.appendChild(script);
+        console.log('reCAPTCHA script injected with key:', siteKey);
     }
 
     /**
