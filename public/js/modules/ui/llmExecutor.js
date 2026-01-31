@@ -43,6 +43,12 @@ class LLMExecutor {
                             <span id="llm-rate-info">Verificando limite...</span>
                         </div>
                         <div class="llm-modal-actions">
+                            <button id="llm-save-response" class="llm-btn llm-btn-secondary" title="Salvar Localmente">
+                                <span class="material-symbols-outlined">bookmark</span>
+                            </button>
+                            <button id="llm-download-response" class="llm-btn llm-btn-secondary" title="Baixar .txt">
+                                <span class="material-symbols-outlined">download</span>
+                            </button>
                             <button id="llm-copy-response" class="llm-btn llm-btn-secondary" disabled>
                                 <span class="material-symbols-outlined">content_copy</span>
                                 Copiar
@@ -76,6 +82,14 @@ class LLMExecutor {
         // Copy button
         const copyBtn = document.getElementById('llm-copy-response');
         copyBtn.addEventListener('click', () => this.copyResponse());
+
+        // Save button
+        const saveBtn = document.getElementById('llm-save-response');
+        if (saveBtn) saveBtn.addEventListener('click', () => this.saveResult());
+
+        // Download button
+        const downloadBtn = document.getElementById('llm-download-response');
+        if (downloadBtn) downloadBtn.addEventListener('click', () => this.downloadResponse('txt'));
 
         // Overlay click
         const overlay = this.modal.querySelector('.llm-modal-overlay');
@@ -117,7 +131,10 @@ class LLMExecutor {
         document.getElementById('llm-loading').classList.remove('hidden');
         document.getElementById('llm-response').classList.add('hidden');
         document.getElementById('llm-error').classList.add('hidden');
+        document.getElementById('llm-error').classList.add('hidden');
         document.getElementById('llm-copy-response').disabled = true;
+        if (document.getElementById('llm-save-response')) document.getElementById('llm-save-response').disabled = true;
+        if (document.getElementById('llm-download-response')) document.getElementById('llm-download-response').disabled = true;
     }
 
     hideLoading() {
@@ -143,6 +160,8 @@ class LLMExecutor {
 
         responseDiv.classList.remove('hidden');
         document.getElementById('llm-copy-response').disabled = false;
+        document.getElementById('llm-save-response').disabled = false;
+        document.getElementById('llm-download-response').disabled = false;
     }
 
     showError(message) {
@@ -181,21 +200,72 @@ class LLMExecutor {
 
             // Visual feedback
             const copyBtn = document.getElementById('llm-copy-response');
-            const icon = copyBtn.querySelector('.material-symbols-outlined');
-            const originalIcon = icon.textContent;
-
-            icon.textContent = 'check';
-            copyBtn.classList.add('success');
-
-            setTimeout(() => {
-                icon.textContent = originalIcon;
-                copyBtn.classList.remove('success');
-            }, 2000);
+            this.showButtonFeedback(copyBtn, 'check', 'Copiado!');
 
         } catch (error) {
             console.error('Error copying response:', error);
             alert('Erro ao copiar. Tente selecionar e copiar manualmente.');
         }
+    }
+
+    downloadResponse(format) {
+        if (!this.currentResponse) return;
+
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const filename = `resultado-sia-${timestamp}.${format}`;
+        const mimeType = format === 'md' ? 'text/markdown' : 'text/plain';
+        const content = this.currentResponse;
+
+        const blob = new Blob([content], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    saveResult() {
+        if (!this.currentResponse) return;
+
+        try {
+            const saved = JSON.parse(localStorage.getItem('sia:saved-results') || '[]');
+            const newResult = {
+                id: Date.now().toString(36),
+                content: this.currentResponse,
+                date: new Date().toISOString(),
+                prompt: 'Resultado salvo da execução' // Ideal would be to pass prompt here too
+            };
+
+            saved.unshift(newResult);
+            localStorage.setItem('sia:saved-results', JSON.stringify(saved));
+
+            const saveBtn = document.getElementById('llm-save-response');
+            this.showButtonFeedback(saveBtn, 'bookmark_added', 'Salvo!');
+        } catch (error) {
+            console.error('Error saving result:', error);
+            alert('Erro ao salvar resultado.');
+        }
+    }
+
+    showButtonFeedback(btn, iconName, text) {
+        const icon = btn.querySelector('.material-symbols-outlined');
+        const span = btn.querySelector('span:not(.material-symbols-outlined)'); // Assuming text is in a span or direct text node
+
+        const originalIcon = icon.textContent;
+        // Check if there is a span for text, otherwise get textContent
+        // In createModal, structure is <button> <icon> Text </button> or similar. 
+        // Let's assume text node.
+
+        icon.textContent = iconName;
+        btn.classList.add('success');
+
+        setTimeout(() => {
+            icon.textContent = originalIcon;
+            btn.classList.remove('success');
+        }, 2000);
     }
 
     open() {

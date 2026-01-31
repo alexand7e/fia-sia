@@ -16,10 +16,10 @@ async function verifyRecaptcha(req, res, next) {
         });
     }
 
-    const secretKey = process.env.RECAPTCHA_SECRETE;
+    const secretKey = process.env.RECAPTCHA_SECRET;
 
     if (!secretKey) {
-        console.error('RECAPTCHA_SECRETE não configurado nas variáveis de ambiente');
+        console.error('RECAPTCHA_SECRET não configurado nas variáveis de ambiente');
         return res.status(500).json({
             success: false,
             error: {

@@ -25,7 +25,17 @@ class LLMClient {
             script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
             script.async = true;
             script.defer = true;
+
+            script.onload = () => {
+                console.log('reCAPTCHA script loaded successfully');
+            };
+
+            script.onerror = (e) => {
+                console.error('Failed to load reCAPTCHA script:', e);
+            };
+
             document.head.appendChild(script);
+            console.log('reCAPTCHA script injected with key:', siteKey);
         }
     }
 
@@ -52,11 +62,12 @@ class LLMClient {
                 }
             }, 100);
 
-            // Timeout after 10 seconds
+            // Timeout after 30 seconds
             setTimeout(() => {
                 clearInterval(checkReady);
+                console.error('reCAPTCHA timeout after 30s waiting for grecaptcha.ready');
                 reject(new Error('reCAPTCHA timeout'));
-            }, 10000);
+            }, 30000);
         });
     }
 
