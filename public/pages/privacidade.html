@@ -1,0 +1,96 @@
+<div class="max-w-4xl mx-auto space-y-8 animate-fade-in">
+    <!-- Header -->
+    <div class="border-b border-slate-200 dark:border-slate-700 pb-8">
+        <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Política de Privacidade</h1>
+        <p class="text-lg text-slate-600 dark:text-slate-400">
+            Compromisso com a transparência e proteção dos seus dados, em conformidade com a LGPD (Lei Geral de Proteção
+            de Dados).
+        </p>
+    </div>
+
+    <!-- Section 1: Armazenamento Local -->
+    <section
+        class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
+        <div class="flex items-start gap-4">
+            <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-blue-600 dark:text-blue-400">
+                <span class="material-symbols-outlined text-2xl">sd_storage</span>
+            </div>
+            <div>
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">1. Armazenamento de Dados</h2>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                    Priorizamos a sua privacidade. <strong>Não mantemos um banco de dados centralizado com seus dados
+                        pessoais.</strong>
+                </p>
+                <ul class="space-y-2 text-slate-600 dark:text-slate-400 list-disc ml-5">
+                    <li>Seu <strong>Perfil de Professor</strong> (nome, escola, disciplinas) é salvo exclusivamente no
+                        <strong>Armazenamento Local (LocalStorage)</strong> do seu próprio navegador.</li>
+                    <li>O histórico de prompts gerados também é mantido localmente no seu dispositivo.</li>
+                    <li>Nós não temos acesso, visualização ou controle sobre esses dados persistentes.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Processamento com IA -->
+    <section
+        class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
+        <div class="flex items-start gap-4">
+            <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl text-purple-600 dark:text-purple-400">
+                <span class="material-symbols-outlined text-2xl">smart_toy</span>
+            </div>
+            <div>
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">2. Processamento de IA</h2>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                    Para gerar os planos de aula e materiais, o sistema envia o texto do seu prompt para provedores de
+                    Inteligência Artificial (OpenAI ou Soberania/Modelos Locais).
+                </p>
+                <ul class="space-y-2 text-slate-600 dark:text-slate-400 list-disc ml-5">
+                    <li>Os dados são enviados de forma criptografada (HTTPS).</li>
+                    <li>O conteúdo é utilizado estritamente para gerar a resposta solicitada.</li>
+                    <li>Recomendamos <strong>não inserir dados sensíveis de alunos</strong> (nomes completos,
+                        documentos) nos prompts. Use sempre dados anonimizados (ex: "Aluno A", "Turma X").</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Controle do Usuário -->
+    <section
+        class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
+        <div class="flex items-start gap-4">
+            <div class="p-3 bg-red-50 dark:bg-red-900/20 rounded-xl text-red-600 dark:text-red-400">
+                <span class="material-symbols-outlined text-2xl">delete_forever</span>
+            </div>
+            <div class="flex-1">
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">3. Seus Direitos e Controle</h2>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Você tem total controle sobre seus dados. A qualquer momento, você pode limpar todas as informações
+                    armazenadas neste dispositivo.
+                    Esta ação é irreversível e removerá seu perfil e histórico de prompts deste navegador.
+                </p>
+
+                <button onclick="window.clearAllData()"
+                    class="px-5 py-2.5 bg-white border border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 rounded-lg transition-all text-sm font-semibold flex items-center gap-2 group">
+                    <span class="material-symbols-outlined group-hover:scale-110 transition-transform">delete</span>
+                    Apagar todos os meus dados locais
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Note -->
+    <p class="text-sm text-slate-500 dark:text-slate-500 text-center italic mt-8">
+        Última atualização: Janeiro de 2026. Em caso de dúvidas, contate o suporte da SIA Piauí.
+    </p>
+
+    <!-- Script for Clear Data -->
+    <script>
+        window.clearAllData = function () {
+            if (confirm('Tem certeza? Isso apagará seu perfil e histórico deste dispositivo de forma permanente.')) {
+                localStorage.clear();
+                alert('Dados apagados com sucesso.');
+                window.location.reload();
+            }
+        };
+    </script>
+</div>
