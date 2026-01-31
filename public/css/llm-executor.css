@@ -1,0 +1,390 @@
+/* LLM Executor Modal Styles */
+
+.llm-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.llm-modal.hidden {
+    display: none;
+}
+
+.llm-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.llm-modal-content {
+    position: relative;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    max-width: 48rem;
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.3s ease-out;
+}
+
+.dark .llm-modal-content {
+    background-color: rgb(30 41 59);
+}
+
+.llm-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    border-bottom: 1px solid rgb(226 232 240);
+}
+
+.dark .llm-modal-header {
+    border-bottom-color: rgb(51 65 85);
+}
+
+.llm-modal-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: rgb(15 23 42);
+    margin: 0;
+}
+
+.dark .llm-modal-title {
+    color: white;
+}
+
+.llm-modal-close {
+    background: none;
+    border: none;
+    color: rgb(100 116 139);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+}
+
+.llm-modal-close:hover {
+    background-color: rgb(248 250 252);
+    color: rgb(15 23 42);
+}
+
+.dark .llm-modal-close:hover {
+    background-color: rgb(51 65 85);
+    color: white;
+}
+
+.llm-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+}
+
+/* Loading State */
+.llm-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    gap: 1rem;
+}
+
+.llm-loading.hidden {
+    display: none;
+}
+
+.llm-spinner {
+    width: 3rem;
+    height: 3rem;
+    border: 4px solid rgb(226 232 240);
+    border-top-color: rgb(59 130 246);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.dark .llm-spinner {
+    border-color: rgb(51 65 85);
+    border-top-color: rgb(96 165 250);
+}
+
+.llm-loading p {
+    color: rgb(100 116 139);
+    font-size: 0.875rem;
+}
+
+.dark .llm-loading p {
+    color: rgb(148 163 184);
+}
+
+/* Response Display */
+.llm-response {
+    color: rgb(15 23 42);
+    line-height: 1.75;
+}
+
+.dark .llm-response {
+    color: rgb(226 232 240);
+}
+
+.llm-response.hidden {
+    display: none;
+}
+
+.llm-response h1,
+.llm-response h2,
+.llm-response h3,
+.llm-response h4 {
+    font-weight: 700;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.llm-response h1 {
+    font-size: 1.875rem;
+}
+
+.llm-response h2 {
+    font-size: 1.5rem;
+}
+
+.llm-response h3 {
+    font-size: 1.25rem;
+}
+
+.llm-response p {
+    margin-bottom: 1rem;
+}
+
+.llm-response ul,
+.llm-response ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.llm-response li {
+    margin-bottom: 0.5rem;
+}
+
+.llm-response code {
+    background-color: rgb(241 245 249);
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.dark .llm-response code {
+    background-color: rgb(51 65 85);
+}
+
+.llm-response pre {
+    background-color: rgb(30 41 59);
+    color: rgb(226 232 240);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+}
+
+.llm-response pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+}
+
+/* Error Display */
+.llm-error {
+    background-color: rgb(254 242 242);
+    border: 1px solid rgb(254 226 226);
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.dark .llm-error {
+    background-color: rgb(127 29 29) / 0.2;
+    border-color: rgb(153 27 27);
+}
+
+.llm-error.hidden {
+    display: none;
+}
+
+.llm-error-content {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.llm-error-content .material-symbols-outlined {
+    color: rgb(239 68 68);
+    font-size: 1.5rem;
+}
+
+.llm-error-content strong {
+    display: block;
+    color: rgb(127 29 29);
+    margin-bottom: 0.25rem;
+}
+
+.dark .llm-error-content strong {
+    color: rgb(252 165 165);
+}
+
+.llm-error-content p {
+    color: rgb(153 27 27);
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+.dark .llm-error-content p {
+    color: rgb(254 202 202);
+}
+
+/* Footer */
+.llm-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    border-top: 1px solid rgb(226 232 240);
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.dark .llm-modal-footer {
+    border-top-color: rgb(51 65 85);
+}
+
+.llm-rate-limit-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgb(100 116 139);
+    font-size: 0.875rem;
+}
+
+.dark .llm-rate-limit-info {
+    color: rgb(148 163 184);
+}
+
+.llm-rate-limit-info .material-symbols-outlined {
+    font-size: 1.25rem;
+}
+
+.llm-modal-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.llm-btn {
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.llm-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.llm-btn-primary {
+    background-color: rgb(59 130 246);
+    color: white;
+}
+
+.llm-btn-primary:hover:not(:disabled) {
+    background-color: rgb(37 99 235);
+}
+
+.llm-btn-secondary {
+    background-color: rgb(226 232 240);
+    color: rgb(15 23 42);
+}
+
+.dark .llm-btn-secondary {
+    background-color: rgb(51 65 85);
+    color: white;
+}
+
+.llm-btn-secondary:hover:not(:disabled) {
+    background-color: rgb(203 213 225);
+}
+
+.dark .llm-btn-secondary:hover:not(:disabled) {
+    background-color: rgb(71 85 105);
+}
+
+.llm-btn.success {
+    background-color: rgb(34 197 94);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(2rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .llm-modal-content {
+        max-width: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+    }
+
+    .llm-modal-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .llm-modal-actions {
+        width: 100%;
+    }
+
+    .llm-modal-actions .llm-btn {
+        flex: 1;
+    }
+}
