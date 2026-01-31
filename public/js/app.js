@@ -712,6 +712,9 @@ function setupRouter() {
         // Scroll to top on every route change
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+
+    // Force handle initial route
+    router.handleRouteChange();
 }
 
 // Navigation setup

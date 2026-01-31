@@ -9,6 +9,7 @@ class LLMClient {
         this.baseURL = window.location.origin;
         this.apiPath = '/api';
         this.recaptchaSiteKey = null;
+        this.scriptStatus = 'idle'; // idle, loading, loaded, failed
     }
 
     /**
@@ -20,6 +21,7 @@ class LLMClient {
 
         // Load reCAPTCHA script if not already loaded
         if (!window.grecaptcha && !document.getElementById('recaptcha-script')) {
+            this.scriptStatus = 'loading';
             const script = document.createElement('script');
             script.id = 'recaptcha-script';
             script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
@@ -28,14 +30,18 @@ class LLMClient {
 
             script.onload = () => {
                 console.log('reCAPTCHA script loaded successfully');
+                this.scriptStatus = 'loaded';
             };
 
             script.onerror = (e) => {
                 console.error('Failed to load reCAPTCHA script:', e);
+                this.scriptStatus = 'failed';
             };
 
             document.head.appendChild(script);
             console.log('reCAPTCHA script injected with key:', siteKey);
+        } else if (window.grecaptcha) {
+            this.scriptStatus = 'loaded';
         }
     }
 
@@ -48,11 +54,16 @@ class LLMClient {
             throw new Error('reCAPTCHA not initialized');
         }
 
+        if (this.scriptStatus === 'failed') {
+            throw new Error('O script do reCAPTCHA falhou ao carregar. Verifique bloqueadores de anúncios.');
+        }
+
         return new Promise((resolve, reject) => {
             // Wait for grecaptcha to be ready
             const checkReady = setInterval(() => {
                 if (window.grecaptcha && window.grecaptcha.ready) {
                     clearInterval(checkReady);
+                    this.scriptStatus = 'loaded'; // Ensure status is correct
 
                     window.grecaptcha.ready(() => {
                         window.grecaptcha.execute(this.recaptchaSiteKey, { action: 'execute_prompt' })
@@ -65,8 +76,13 @@ class LLMClient {
             // Timeout after 30 seconds
             setTimeout(() => {
                 clearInterval(checkReady);
-                console.error('reCAPTCHA timeout after 30s waiting for grecaptcha.ready');
-                reject(new Error('reCAPTCHA timeout'));
+                if (this.scriptStatus === 'failed') {
+                    reject(new Error('reCAPTCHA bloqueado ou falhou ao carregar (verifique o console).'));
+                } else if (this.scriptStatus === 'loading' || this.scriptStatus === 'idle') {
+                    reject(new Error('Tempo excedido carregando reCAPTCHA. Verifique sua conexão.'));
+                } else {
+                    reject(new Error('reCAPTCHA timeout (Google não respondeu).'));
+                }
             }, 30000);
         });
     }
@@ -108,7 +124,7 @@ class LLMClient {
                 body.recaptchaToken = await this.getRecaptchaToken();
             } catch (error) {
                 console.error('reCAPTCHA error:', error);
-                throw new Error('Falha na verificação de segurança. Recarregue a página e tente novamente.');
+                throw new Error(`Falha de Segurança: ${error.message}`);
             }
         }
 
