@@ -153,11 +153,16 @@ class RateLimitTracker {
     syncWithServer(serverStatus) {
         if (!serverStatus) return;
 
+        const localData = this.getData();
+
+        // Use the greater of local or server count to handle stateless server restarts
+        const currentCount = Math.max(localData.count, serverStatus.used || 0);
+
         const data = {
-            count: serverStatus.used || 0,
+            count: currentCount,
             limit: serverStatus.limit || this.dailyLimit,
-            resetAt: serverStatus.resetAt || this.getData().resetAt,
-            firstRequestAt: this.getData().firstRequestAt
+            resetAt: localData.resetAt || serverStatus.resetAt, // Prefer local midnight reset
+            firstRequestAt: localData.firstRequestAt
         };
 
         this.saveData(data);
