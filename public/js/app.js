@@ -49,9 +49,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     initViewToggle();
     initStepCards();
 
-    // Initialize LLM Client with reCAPTCHA
-    // reCAPTCHA site key from .env (RECAPTCHA_HTML)
-    llmClient.initRecaptcha('6Le5O1wsAAAAAMj95MFuCxBsSwiKAav1h6A3G0AZ');
+    // Initialize LLM Client with reCAPTCHA configuration from server
+    fetch('/api/config')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.data.recaptchaSiteKey) {
+                llmClient.initRecaptcha(data.data.recaptchaSiteKey);
+            } else {
+                console.error('Failed to load reCAPTCHA configuration');
+            }
+        })
+        .catch(error => console.error('Error loading config:', error));
 
     //Setup router
     setupRouter();

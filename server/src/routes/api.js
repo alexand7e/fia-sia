@@ -123,4 +123,17 @@ router.get('/models', (req, res) => {
     }
 });
 
+/**
+ * GET /api/config
+ * Get public configuration
+ */
+router.get('/config', (req, res) => {
+    return res.status(200).json({
+        success: true,
+        data: {
+            recaptchaSiteKey: process.env.RECAPTCHA_HTML
+        }
+    });
+});
+
 module.exports = router;
