@@ -58,6 +58,8 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/llm-executor.css">
+    <link rel="stylesheet" href="css/teacher-profile.css">
 
     <style>
         body {
@@ -102,6 +104,9 @@
         </header>
 
         <div class="max-w-7xl w-full mx-auto px-6 md:px-12 py-10 flex-1 flex flex-col min-h-full">
+            <!-- Teacher Profile (Dashboard/Home) -->
+            <div id="teacher-profile-container" class="hidden"></div>
+
             <!-- Content Wrapper with flex-1 to push footer down -->
             <div class="flex-1 space-y-10">
                 <!-- Dynamic Content Area -->
@@ -167,7 +172,8 @@
                                     placeholder="Cole e ajuste os prompts aqui antes de usar."></textarea>
                                 <div class="workspace-actions">
                                     <button class="workspace-btn" id="my-workspace-clear" type="button">Limpar</button>
-                                    <button class="workspace-btn" id="my-workspace-copy" type="button">Copiar tudo</button>
+                                    <button class="workspace-btn" id="my-workspace-copy" type="button">Copiar
+                                        tudo</button>
                                 </div>
                             </div>
 
@@ -183,52 +189,66 @@
                             <div
                                 class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6 space-y-4">
                                 <div>
-                                    <h4 class="text-lg font-bold text-slate-900 dark:text-white">Adicionar/Editar Prompt</h4>
+                                    <h4 class="text-lg font-bold text-slate-900 dark:text-white">Adicionar/Editar Prompt
+                                    </h4>
                                     <p class="text-sm text-slate-500">Preencha os campos obrigatórios (*)</p>
                                 </div>
 
                                 <p id="my-prompts-form-error"
-                                    class="hidden text-sm text-red-500 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/40 rounded-lg p-3"></p>
+                                    class="hidden text-sm text-red-500 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/40 rounded-lg p-3">
+                                </p>
 
                                 <form id="my-prompts-form" class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Título *</label>
+                                        <label
+                                            class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Título
+                                            *</label>
                                         <input id="my-prompt-title"
                                             class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
                                             placeholder="Ex: Aula PBL sobre Água" type="text" required />
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Metodologia</label>
+                                        <label
+                                            class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Metodologia</label>
                                         <input id="my-prompt-method-input"
                                             class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
                                             placeholder="Ex: PBL, Sala Invertida" type="text" />
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Tags (separadas por vírgula)</label>
+                                        <label
+                                            class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Tags
+                                            (separadas por vírgula)</label>
                                         <input id="my-prompt-tags"
                                             class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
                                             placeholder="Ex: 50min, BNCC, WhatsApp" type="text" />
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Descrição</label>
+                                        <label
+                                            class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Descrição</label>
                                         <textarea id="my-prompt-description"
                                             class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-20 resize-none"
                                             placeholder="Breve descrição do prompt"></textarea>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Template do prompt *</label>
+                                        <label
+                                            class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Template
+                                            do prompt *</label>
                                         <textarea id="my-prompt-template"
                                             class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-28 resize-none"
                                             placeholder="Cole o prompt aqui" required></textarea>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Dica de uso</label>
+                                        <label
+                                            class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Dica
+                                            de uso</label>
                                         <textarea id="my-prompt-tips"
                                             class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-20 resize-none"
                                             placeholder="Observações úteis ao usar este prompt"></textarea>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Output esperado</label>
+                                        <label
+                                            class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Output
+                                            esperado</label>
                                         <textarea id="my-prompt-expected"
                                             class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-20 resize-none"
                                             placeholder="Descreva o que você espera receber"></textarea>

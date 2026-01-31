@@ -1,6 +1,9 @@
 // Especificar Page Customizer Module
 // Manages the full-page prompt customization interface with tabs
 import { addMyPrompt } from './myPrompts.js';
+import llmExecutor from './llmExecutor.js';
+import llmClient from '../services/llm-client.js';
+import { getContextualData, isProfileComplete } from '../utils/teacherProfile.js';
 
 class EspecificarCustomizer {
     constructor() {
@@ -14,6 +17,7 @@ class EspecificarCustomizer {
         this.setupTabs();
         this.setupFormListeners();
         this.setupActionButtons();
+        this.autoFillFromProfile(); // Auto-fill with teacher profile data
     }
 
     async loadPromptTemplates() {
@@ -126,6 +130,12 @@ class EspecificarCustomizer {
             if (saveBtn) {
                 saveBtn.addEventListener('click', () => this.savePrompt(tab));
             }
+
+            // Execute button
+            const executeBtn = document.getElementById(`execute-${tab}`);
+            if (executeBtn) {
+                executeBtn.addEventListener('click', () => this.executePrompt(tab));
+            }
         });
     }
 
@@ -166,6 +176,49 @@ class EspecificarCustomizer {
 
         this.updatePreview(tab);
         this.showNotification('Prompt gerado com sucesso!', 'success');
+    }
+
+    /**
+     * Auto-fill form fields with teacher profile data
+     */
+    autoFillFromProfile() {
+        if (!isProfileComplete()) {
+            console.log('Teacher profile incomplete, skipping auto-fill');
+            return;
+        }
+
+        const contextData = getContextualData();
+        console.log('Auto-filling forms with teacher profile:', contextData);
+
+        // Auto-fill discipline fields
+        const disciplineFields = document.querySelectorAll('.field-input[data-placeholder="DISCIPLINA"]');
+        disciplineFields.forEach(field => {
+            if (!field.value && contextData.disciplina) {
+                field.value = contextData.disciplina;
+                field.style.backgroundColor = 'rgb(254 249 195)'; // Subtle yellow highlight
+                field.title = 'Auto-preenchido do seu perfil';
+            }
+        });
+
+        // Auto-fill year/class fields
+        const yearFields = document.querySelectorAll('.field-input[data-placeholder="ANO"], .field-input[data-placeholder="ANO_SERIE"]');
+        yearFields.forEach(field => {
+            if (!field.value && contextData.ano) {
+                field.value = contextData.ano;
+                field.style.backgroundColor = 'rgb(254 249 195)';
+                field.title = 'Auto-preenchido do seu perfil';
+            }
+        });
+
+        // Trigger preview update for all tabs
+        ['tradicional', 'invertida', 'pbl', 'adaptacao', 'sequencia', 'avaliacao'].forEach(tab => {
+            this.updatePreview(tab);
+        });
+
+        // Show notification
+        setTimeout(() => {
+            this.showNotification('Campos preenchidos automaticamente com dados do seu perfil', 'info');
+        }, 500);
     }
 
     generatePromptText(tab) {
@@ -260,16 +313,14 @@ class EspecificarCustomizer {
 
         const title = firstInput ? `Prompt ${this.getMethodName(tab)} - ${firstInput.value}` : `Prompt ${this.getMethodName(tab)}`;
 
-        // Create prompt object
+        // Create prompt object with proper ID generation
         const promptData = {
-            id: Date.now(),
             title: title,
-            method: this.getMethodName(tab),
+            methodology: this.getMethodName(tab),
             tags: [tab, 'customizado'],
             description: `Prompt ${this.getMethodName(tab)} gerado pelo customizador`,
             template: prompt,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
+            source: 'customizer'
         };
 
         const result = addMyPrompt(promptData);
@@ -287,6 +338,42 @@ class EspecificarCustomizer {
         setTimeout(() => {
             icon.textContent = 'bookmark';
         }, 2000);
+    }
+
+    async executePrompt(tab) {
+        // Validate required fields
+        const tabContent = document.getElementById(`tab-${tab}`);
+        const requiredFields = tabContent.querySelectorAll('.field-input[required]');
+        let isValid = true;
+
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                field.style.borderColor = 'rgb(239 68 68)';
+                isValid = false;
+            } else {
+                field.style.borderColor = '';
+            }
+        });
+
+        if (!isValid) {
+            this.showNotification('Por favor, preencha todos os campos obrigatórios (*) antes de executar', 'error');
+            return;
+        }
+
+        const prompt = this.generatePromptText(tab);
+
+        if (!prompt || prompt.includes('[')) {
+            this.showNotification('Preencha todos os campos antes de executar', 'warning');
+            return;
+        }
+
+        try {
+            // Execute with LLM
+            await llmExecutor.execute(prompt, { model: 'base' });
+        } catch (error) {
+            console.error('Error executing prompt:', error);
+            this.showNotification(error.message || 'Erro ao executar prompt', 'error');
+        }
     }
 
     getMethodName(tab) {

@@ -115,66 +115,129 @@
                         class="material-symbols-outlined transition-transform duration-300 group-open:-rotate-180 text-indigo-600 dark:text-indigo-400">expand_more</span>
                 </summary>
 
-                <div class="p-6 space-y-6 animate-fade-in">
-                    <div class="space-y-2">
-                        <label class="flex items-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                <div id="teacher-profile-checklist" class="p-6 space-y-4 animate-fade-in">
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                        Complete suas informações para auto-preencher prompts automaticamente
+                    </p>
+
+                    <form id="teacher-profile-form-home" class="space-y-3">
+                        <!-- Name -->
+                        <div class="space-y-2">
+                            <label
+                                class="flex items-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                <span
+                                    class="flex items-center justify-center size-6 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-xs">1</span>
+                                Nome
+                            </label>
+                            <input id="teacher-name-home" name="name" type="text" placeholder="Seu nome completo"
+                                class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
+                                required />
+                        </div>
+
+                        <!-- School and Level -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="space-y-2">
+                                <label
+                                    class="flex items-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                    <span
+                                        class="flex items-center justify-center size-6 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-xs">2</span>
+                                    Escola
+                                </label>
+                                <input id="teacher-school-home" name="school" type="text" placeholder="Nome da escola"
+                                    class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm" />
+                            </div>
+                            <div class="space-y-2">
+                                <label
+                                    class="flex items-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                    <span
+                                        class="flex items-center justify-center size-6 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-xs">3</span>
+                                    Nível
+                                </label>
+                                <select id="teacher-level-home" name="teachingLevel"
+                                    class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm">
+                                    <option value="Fundamental I">Fundamental I</option>
+                                    <option value="Fundamental II">Fundamental II</option>
+                                    <option value="Ensino Médio" selected>Ensino Médio</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Disciplines -->
+                        <div class="space-y-2">
+                            <label
+                                class="flex items-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                <span
+                                    class="flex items-center justify-center size-6 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-xs">4</span>
+                                Disciplinas que leciona
+                            </label>
+                            <div
+                                class="w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 p-3 space-y-2">
+                                <div id="subjects-tags-home" class="flex flex-wrap gap-2 min-h-[1.5rem]">
+                                    <span class="text-sm text-slate-400 italic">Nenhuma adicionada</span>
+                                </div>
+                                <input id="teacher-subjects-input-home" type="text"
+                                    placeholder="Digite e pressione Enter"
+                                    class="w-full border-none outline-none bg-transparent text-slate-900 dark:text-white text-sm"
+                                    list="subjects-suggestions-home" />
+                                <datalist id="subjects-suggestions-home">
+                                    <option value="Matemática">
+                                    <option value="Português">
+                                    <option value="Biologia">
+                                    <option value="Química">
+                                    <option value="Física">
+                                    <option value="História">
+                                    <option value="Geografia">
+                                    <option value="Inglês">
+                                    <option value="Filosofia">
+                                    <option value="Sociologia">
+                                </datalist>
+                            </div>
+                        </div>
+
+                        <!-- Classes -->
+                        <div class="space-y-2">
+                            <label
+                                class="flex items-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                <span
+                                    class="flex items-center justify-center size-6 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-xs">5</span>
+                                Turmas/Anos
+                            </label>
+                            <div
+                                class="w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 p-3 space-y-2">
+                                <div id="classes-tags-home" class="flex flex-wrap gap-2 min-h-[1.5rem]">
+                                    <span class="text-sm text-slate-400 italic">Nenhuma adicionada</span>
+                                </div>
+                                <input id="teacher-classes-input-home" type="text"
+                                    placeholder="Digite e pressione Enter"
+                                    class="w-full border-none outline-none bg-transparent text-slate-900 dark:text-white text-sm"
+                                    list="classes-suggestions-home" />
+                                <datalist id="classes-suggestions-home">
+                                    <option value="1º Ano">
+                                    <option value="2º Ano">
+                                    <option value="3º Ano">
+                                    <option value="6º Ano">
+                                    <option value="7º Ano">
+                                    <option value="8º Ano">
+                                    <option value="9º Ano">
+                                </datalist>
+                            </div>
+                        </div>
+
+                        <!-- Save Status -->
+                        <div id="profile-save-status-home"
+                            class="hidden mt-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800 flex items-center gap-2">
                             <span
-                                class="flex items-center justify-center size-6 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs">1</span>
-                            Turma: ano/série, perfil e limitações
-                        </label>
-                        <input
-                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
-                            placeholder="Ex: 2º ano, turma agitada, tempo 50min, conectividade limitada..."
-                            type="text" />
-                    </div>
-                    <div class="space-y-2">
-                        <label class="flex items-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
-                            <span
-                                class="flex items-center justify-center size-6 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs">2</span>
-                            BNCC: competência/habilidade alvo
-                        </label>
-                        <input
-                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
-                            placeholder="Ex: EM13CHS101 - Identificar, analisar e comparar diferentes fontes..."
-                            type="text" />
-                    </div>
-                    <div class="space-y-2">
-                        <label class="flex items-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
-                            <span
-                                class="flex items-center justify-center size-6 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs">3</span>
-                            Objetivo de aprendizagem (verbo + conteúdo + condição)
-                        </label>
-                        <textarea
-                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-24 resize-none"
-                            placeholder="Ex: Os alunos deverão identificar as principais causas da Revolução Industrial através da análise de textos históricos..."></textarea>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="flex items-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
-                            <span
-                                class="flex items-center justify-center size-6 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs">4</span>
-                            Produto/resultado esperado
-                        </label>
-                        <input
-                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm"
-                            placeholder="Ex: cartaz, debate, resolução de exercícios, síntese escrita..." type="text" />
-                    </div>
-                    <div class="space-y-2">
-                        <label class="flex items-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
-                            <span
-                                class="flex items-center justify-center size-6 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs">5</span>
-                            Restrições e observações
-                        </label>
-                        <textarea
-                            class="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:border-primary focus:ring-primary shadow-sm h-24 resize-none"
-                            placeholder="Linguagem, extensão, exemplos locais, inclusão e acessibilidade..."></textarea>
-                    </div>
+                                class="material-symbols-outlined text-green-600 dark:text-green-400 text-base">check_circle</span>
+                            <span class="text-sm text-green-700 dark:text-green-300">Salvo automaticamente</span>
+                        </div>
+                    </form>
 
                     <div
-                        class="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/10 rounded-xl border border-yellow-100 dark:border-yellow-800/30 flex gap-3">
-                        <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-500">lightbulb</span>
-                        <p class="text-sm text-yellow-800 dark:text-yellow-200">
-                            <strong>Dica:</strong> Quanto mais específico você for neste checklist, mais
-                            precisos e úteis serão os materiais gerados pela IA.
+                        class="mt-4 p-4 bg-indigo-50 dark:bg-indigo-900/10 rounded-xl border border-indigo-100 dark:border-indigo-800/30 flex gap-3">
+                        <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-500">info</span>
+                        <p class="text-sm text-indigo-800 dark:text-indigo-200">
+                            <strong>Importante:</strong> Essas informações serão usadas para preencher automaticamente
+                            os campos ao criar prompts.
                         </p>
                     </div>
                 </div>
