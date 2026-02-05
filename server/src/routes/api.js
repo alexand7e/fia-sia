@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const llmService = require('../services/llm.service');
+const questaoService = require('../services/questao.service');
 const verifyRecaptcha = require('../middleware/recaptcha');
 const { rateLimiter, rateLimitStore } = require('../middleware/rateLimiter');
 
@@ -74,9 +75,78 @@ router.post('/execute', rateLimiter, verifyRecaptcha, async (req, res) => {
 });
 
 /**
+ * POST /api/gerar-questao
+ * Generate a structured question (enunciado, suporte, comando, alternativas, gabarito, avaliacaoAlternativas)
+ *
+ * Body:
+ * - materia: string (required)
+ * - descritor: string (required)
+ * - turma: string (required)
+ * - infoAdicional: string (optional)
+ * - recaptchaToken: string (required for first request)
+ */
+router.post('/gerar-questao', rateLimiter, verifyRecaptcha, async (req, res) => {
+    try {
+        const { materia, descritor, turma, infoAdicional } = req.body;
+
+        if (!materia || typeof materia !== 'string' || !materia.trim()) {
+            return res.status(400).json({
+                success: false,
+                error: {
+                    message: 'O campo "materia" é obrigatório',
+                    code: 'INVALID_PAYLOAD'
+                }
+            });
+        }
+        if (!descritor || typeof descritor !== 'string' || !descritor.trim()) {
+            return res.status(400).json({
+                success: false,
+                error: {
+                    message: 'O campo "descritor" é obrigatório',
+                    code: 'INVALID_PAYLOAD'
+                }
+            });
+        }
+        if (!turma || typeof turma !== 'string' || !turma.trim()) {
+            return res.status(400).json({
+                success: false,
+                error: {
+                    message: 'O campo "turma" é obrigatório',
+                    code: 'INVALID_PAYLOAD'
+                }
+            });
+        }
+
+        const payload = {
+            materia: materia.trim(),
+            descritor: descritor.trim(),
+            turma: turma.trim(),
+            infoAdicional: typeof infoAdicional === 'string' ? infoAdicional.trim() : undefined
+        };
+
+        const data = await questaoService.gerarQuestao(payload);
+
+        return res.status(200).json({
+            success: true,
+            data,
+            rateLimit: req.rateLimit
+        });
+    } catch (error) {
+        console.error('Error in /api/gerar-questao:', error);
+        return res.status(500).json({
+            success: false,
+            error: {
+                message: error.message || 'Erro ao gerar questão',
+                code: 'QUESTAO_ERROR'
+            }
+        });
+    }
+});
+
+/**
  * GET /api/rate-limit-status
  * Get current rate limit status for the device/IP
- * 
+ *
  * Headers:
  * - x-device-fingerprint: string (optional)
  */

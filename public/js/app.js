@@ -4,6 +4,7 @@ import { mountSidebar } from './modules/ui/sidebar.js';
 import { initSidebarNavigation, autoExpandGroup } from './modules/ui/sidebar-navigation.js';
 import { initPromptCustomizers } from './modules/ui/promptCustomizer.js';
 import { initEspecificarCustomizer } from './modules/ui/especificarCustomizer.js';
+import { initCriarQuestoes } from './modules/ui/criarQuestoes.js';
 import { initExamplesSimulation } from './modules/ui/examples.js';
 import { loadPrompts } from './modules/ui/promptsLibrary.js';
 import { initMyPrompts, renderMyPrompts, addMyPrompt, promptIdentity, readMyPrompts } from './modules/ui/myPrompts.js';
@@ -169,7 +170,8 @@ function setActiveNav(route) {
         '/apoio/iterar': 'apoio',
         '/apoio/referencias': 'apoio',
         '/prompts/especificar': 'prompts',
-        '/prompts/validar': 'prompts'
+        '/prompts/validar': 'prompts',
+        '/prompts/criar-questoes': 'prompts'
     };
 
     const targetTab = routeToTab[normalizedRoute];
@@ -538,9 +540,14 @@ async function loadPromptsPage(pageType) {
 
         // Initialize the customizer for especificar page
         if (pageType === 'especificar') {
-            // Wait for DOM to be ready
             setTimeout(() => {
                 initEspecificarCustomizer();
+            }, 100);
+        }
+        // Initialize Criar Questões page
+        if (pageType === 'criar-questoes') {
+            setTimeout(() => {
+                initCriarQuestoes();
             }, 100);
         }
 
@@ -703,6 +710,12 @@ function setupRouter() {
         hideTeacherProfile();
         loadPromptsPage('validar');
         setActiveNav('/prompts/validar');
+    });
+
+    router.defineRoute('/prompts/criar-questoes', () => {
+        hideTeacherProfile();
+        loadPromptsPage('criar-questoes');
+        setActiveNav('/prompts/criar-questoes');
     });
 
     // Construindo route

@@ -94,7 +94,7 @@ class LLMClient {
                 } else {
                     reject(new Error('reCAPTCHA timeout (Google não respondeu).'));
                 }
-            }, 30000);
+            }, 30030);
         });
     }
 

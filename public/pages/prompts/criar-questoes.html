@@ -1,0 +1,246 @@
+<!-- Página Criar Questões -->
+<div class="criar-questoes-container">
+    <div class="mb-8">
+        <div class="flex items-center gap-2 mb-4">
+            <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400">quiz</span>
+            <h1 class="text-3xl font-bold text-slate-900 dark:text-white">Criar Questões</h1>
+        </div>
+        <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl">
+            Defina a matéria, o descritor e a turma. A IA irá gerar uma questão objetiva com enunciado, suporte, comando, alternativas, gabarito e avaliação das alternativas.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Formulário -->
+        <div class="space-y-6">
+            <div class="bg-indigo-50 dark:bg-indigo-900/10 rounded-xl p-4 border border-indigo-200 dark:border-indigo-800">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400">info</span>
+                    Sobre esta ferramenta
+                </h3>
+                <p class="text-sm text-slate-700 dark:text-slate-300">
+                    Escolha a matéria e o descritor (habilidade BNCC). A questão gerada terá suporte, enunciado, comando, cinco alternativas (A a E), gabarito e justificativa para cada alternativa.
+                </p>
+            </div>
+
+            <div class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6 space-y-4">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Dados da questão</h3>
+
+                <div class="field-group">
+                    <label class="field-label required">Matéria</label>
+                    <select id="questao-materia" class="field-input" required>
+                        <option value="">Selecione...</option>
+                    </select>
+                    <span class="field-help">Disciplina da questão</span>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label required">Descritor da questão</label>
+                    <select id="questao-descritor" class="field-input" required disabled>
+                        <option value="">Primeiro selecione a matéria</option>
+                    </select>
+                    <span class="field-help">Habilidade ou descritor (pré-definido)</span>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label required">Turma</label>
+                    <select id="questao-turma" class="field-input" required>
+                        <option value="">Selecione...</option>
+                    </select>
+                    <span class="field-help">Turma para a qual a questão é destinada</span>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Informação adicional</label>
+                    <textarea id="questao-info-adicional" class="field-input" rows="3"
+                        placeholder="Ex: foco em problemas do semiárido, nível médio de dificuldade"></textarea>
+                    <span class="field-help">Opcional: contexto extra para a geração</span>
+                </div>
+
+                <div class="flex gap-3 pt-4">
+                    <button type="button" class="btn-primary flex-1" id="questao-gerar">
+                        <span class="material-symbols-outlined">auto_awesome</span>
+                        Gerar questão
+                    </button>
+                    <button type="button" class="btn-secondary" id="questao-limpar">
+                        <span class="material-symbols-outlined">refresh</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Área de resultado -->
+        <div class="space-y-4">
+            <div class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 p-6 min-h-[400px]">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Questão gerada</h3>
+                    <div class="flex gap-2 hidden" id="questao-result-actions">
+                        <button type="button" class="btn-icon" id="questao-copiar" title="Copiar">
+                            <span class="material-symbols-outlined">content_copy</span>
+                        </button>
+                        <button type="button" class="btn-icon" id="questao-download" title="Baixar">
+                            <span class="material-symbols-outlined">download</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="questao-result-placeholder" class="questao-result-placeholder text-center py-12 px-4 text-slate-500 dark:text-slate-400">
+                    <span class="material-symbols-outlined text-4xl mb-4 block opacity-50">quiz</span>
+                    <p>Preencha os dados ao lado e clique em <strong>Gerar questão</strong>.</p>
+                </div>
+                <div id="questao-result-card" class="hidden"></div>
+                <div id="questao-result-loading" class="hidden text-center py-12">
+                    <div class="inline-block w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+                    <p class="text-slate-600 dark:text-slate-400">Gerando questão...</p>
+                </div>
+                <div id="questao-result-error" class="hidden p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Form Fields - mesmo estilo do Especificar */
+    .criar-questoes-container .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .criar-questoes-container .field-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: rgb(51 65 85);
+    }
+    .dark .criar-questoes-container .field-label {
+        color: rgb(226 232 240);
+    }
+    .criar-questoes-container .field-label.required::after {
+        content: ' *';
+        color: rgb(239 68 68);
+    }
+    .criar-questoes-container .field-input {
+        width: 100%;
+        padding: 0.625rem 0.875rem;
+        border: 1px solid rgb(203 213 225);
+        border-radius: 0.5rem;
+        background-color: rgb(248 250 252);
+        color: rgb(15 23 42);
+        font-size: 0.875rem;
+        transition: all 0.2s;
+    }
+    .dark .criar-questoes-container .field-input {
+        border-color: rgb(71 85 105);
+        background-color: rgba(30 41 59 / 0.5);
+        color: rgb(248 250 252);
+    }
+    .criar-questoes-container .field-input:focus {
+        outline: none;
+        border-color: rgb(99 102 241);
+        box-shadow: 0 0 0 2px rgb(99 102 241 / 0.2);
+    }
+    .criar-questoes-container .field-help {
+        font-size: 0.75rem;
+        color: rgb(100 116 139);
+    }
+    .dark .criar-questoes-container .field-help {
+        color: rgb(148 163 184);
+    }
+    /* Buttons - mesmo estilo do Especificar */
+    .criar-questoes-container .btn-primary {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background-color: rgb(99 102 241);
+        color: white;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+    }
+    .criar-questoes-container .btn-primary:hover {
+        background-color: rgb(79 70 229);
+    }
+    .criar-questoes-container .btn-secondary {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem;
+        background-color: rgb(226 232 240);
+        color: rgb(51 65 85);
+        border-radius: 0.5rem;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+    }
+    .dark .criar-questoes-container .btn-secondary {
+        background-color: rgb(51 65 85);
+        color: rgb(226 232 240);
+    }
+    .criar-questoes-container .btn-secondary:hover {
+        background-color: rgb(203 213 225);
+    }
+    .dark .criar-questoes-container .btn-secondary:hover {
+        background-color: rgb(71 85 105);
+    }
+    .criar-questoes-container .btn-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        background-color: transparent;
+        color: rgb(100 116 139);
+        border-radius: 0.5rem;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+    }
+    .criar-questoes-container .btn-icon:hover {
+        background-color: rgb(248 250 252);
+        color: rgb(51 65 85);
+    }
+    .dark .criar-questoes-container .btn-icon:hover {
+        background-color: rgb(30 41 59);
+        color: rgb(226 232 240);
+    }
+
+.questao-result-placeholder strong {
+    color: var(--primary, rgb(79 70 229));
+}
+.questao-card-section {
+    margin-bottom: 1.25rem;
+}
+.questao-card-section:last-child {
+    margin-bottom: 0;
+}
+.questao-alternativa {
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgb(226 232 240);
+    background: rgb(248 250 252);
+}
+.dark .questao-alternativa {
+    border-color: rgb(51 65 85);
+    background: rgb(30 41 59 / 0.5);
+}
+.questao-alternativa.correta {
+    border-color: rgb(34 197 94);
+    background: rgb(240 253 244);
+}
+.dark .questao-alternativa.correta {
+    border-color: rgb(34 197 94);
+    background: rgb(22 101 52 / 0.2);
+}
+.questao-avaliacao-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgb(241 245 249);
+}
+.dark .questao-avaliacao-item {
+    border-bottom-color: rgb(51 65 85);
+}
+.questao-avaliacao-item:last-child {
+    border-bottom: none;
+}
+</style>

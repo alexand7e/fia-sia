@@ -35,14 +35,14 @@ O framework é dividido em duas áreas principais:
 ### Ambiente local
 1. Instale dependências: `npm install`
 2. Rode em desenvolvimento: `npm run dev`
-3. Acesse: `http://localhost:3000`
+3. Acesse: `http://localhost:3003`
 
 ### Docker (dev/prod)
 - Produção: `docker compose up app`
 - Desenvolvimento: `docker compose --profile dev up app-dev`
 
 ### Variáveis de ambiente
-- `PORT`: Porta do servidor (padrão `3000`)
+- `PORT`: Porta do servidor (padrão `3003`)
 - `PUBLIC_DIR`: Caminho do diretório de estáticos (padrão `./public`)
 
 ### Fluxo de Dados

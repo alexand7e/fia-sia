@@ -1,0 +1,54 @@
+{
+  "materias": [
+    { "id": "matematica", "nome": "Matemática" },
+    { "id": "lingua-portuguesa", "nome": "Língua Portuguesa" },
+    { "id": "ciencias-natureza", "nome": "Ciências da Natureza" },
+    { "id": "ciencias-humanas", "nome": "Ciências Humanas" },
+    { "id": "linguagens", "nome": "Linguagens" }
+  ],
+  "descritores": {
+    "matematica": [
+      { "id": "EM13MAT301", "texto": "EM13MAT301 - Problematizar situações reais com funções" },
+      { "id": "EM13MAT302", "texto": "EM13MAT302 - Resolver problemas que envolvem equações e inequações" },
+      { "id": "EM13MAT303", "texto": "EM13MAT303 - Analisar gráficos e tabelas de funções" },
+      { "id": "EM13MAT401", "texto": "EM13MAT401 - Aplicar conhecimentos de geometria plana e espacial" },
+      { "id": "EM13MAT501", "texto": "EM13MAT501 - Utilizar estatística e probabilidade em contextos reais" }
+    ],
+    "lingua-portuguesa": [
+      { "id": "EM13LP01", "texto": "EM13LP01 - Compreender textos em diferentes gêneros e suportes" },
+      { "id": "EM13LP02", "texto": "EM13LP02 - Produzir textos adequados ao contexto e à norma" },
+      { "id": "EM13LP03", "texto": "EM13LP03 - Analisar efeitos de sentido e recursos linguísticos" },
+      { "id": "EM13LGG601", "texto": "EM13LGG601 - Refletir sobre a língua e suas variedades" },
+      { "id": "EM13LGG603", "texto": "EM13LGG603 - Expressar-se e atuar em processos criativos" }
+    ],
+    "ciencias-natureza": [
+      { "id": "EM13CNT201", "texto": "EM13CNT201 - Compreender fenômenos químicos e biológicos" },
+      { "id": "EM13CNT203", "texto": "EM13CNT203 - Analisar questões ambientais e sustentabilidade" },
+      { "id": "EM13CNT301", "texto": "EM13CNT301 - Aplicar o método científico em investigações" },
+      { "id": "EM13CNT401", "texto": "EM13CNT401 - Relacionar energia e transformações da matéria" },
+      { "id": "EM13CNT501", "texto": "EM13CNT501 - Compreender evolução e diversidade biológica" }
+    ],
+    "ciencias-humanas": [
+      { "id": "EM13CHS101", "texto": "EM13CHS101 - Analisar processos históricos e geográficos" },
+      { "id": "EM13CHS102", "texto": "EM13CHS102 - Compreender relações de poder e cidadania" },
+      { "id": "EM13CHS201", "texto": "EM13CHS201 - Refletir sobre identidade e diversidade cultural" },
+      { "id": "EM13CHS301", "texto": "EM13CHS301 - Problematizar questões socioeconômicas" },
+      { "id": "EM13CHS401", "texto": "EM13CHS401 - Analisar fontes e evidências em humanidades" }
+    ],
+    "linguagens": [
+      { "id": "EM13LGG101", "texto": "EM13LGG101 - Compreender textos em língua estrangeira" },
+      { "id": "EM13LGG201", "texto": "EM13LGG201 - Produzir e analisar arte e mídia" },
+      { "id": "EM13LGG301", "texto": "EM13LGG301 - Refletir sobre práticas corporais e saúde" },
+      { "id": "EM13LGG401", "texto": "EM13LGG401 - Argumentar e debater com base em evidências" },
+      { "id": "EM13LGG501", "texto": "EM13LGG501 - Utilizar tecnologias digitais de forma crítica" }
+    ]
+  },
+  "turmasSugeridas": [
+    "1º ano A",
+    "1º ano B",
+    "2º ano A",
+    "2º ano B",
+    "3º ano A",
+    "3º ano B"
+  ]
+}

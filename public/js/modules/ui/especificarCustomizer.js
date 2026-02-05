@@ -419,7 +419,7 @@ class EspecificarCustomizer {
             setTimeout(() => {
                 document.body.removeChild(notification);
             }, 300);
-        }, 3000);
+        }, 3003);
     }
 }
 
