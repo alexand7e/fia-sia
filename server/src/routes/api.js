@@ -82,12 +82,14 @@ router.post('/execute', rateLimiter, verifyRecaptcha, async (req, res) => {
  * - materia: string (required)
  * - descritor: string (required)
  * - turma: string (required)
+ * - complexidade: 'facil' | 'medio' | 'dificil' (optional)
+ * - tamanho: 'curta' | 'media' | 'longa' (optional)
  * - infoAdicional: string (optional)
  * - recaptchaToken: string (required for first request)
  */
 router.post('/gerar-questao', rateLimiter, verifyRecaptcha, async (req, res) => {
     try {
-        const { materia, descritor, turma, infoAdicional } = req.body;
+        const { materia, descritor, turma, complexidade, tamanho, infoAdicional } = req.body;
 
         if (!materia || typeof materia !== 'string' || !materia.trim()) {
             return res.status(400).json({
@@ -121,6 +123,8 @@ router.post('/gerar-questao', rateLimiter, verifyRecaptcha, async (req, res) => 
             materia: materia.trim(),
             descritor: descritor.trim(),
             turma: turma.trim(),
+            complexidade: ['facil', 'medio', 'dificil'].includes(complexidade) ? complexidade : 'medio',
+            tamanho: ['curta', 'media', 'longa'].includes(tamanho) ? tamanho : 'media',
             infoAdicional: typeof infoAdicional === 'string' ? infoAdicional.trim() : undefined
         };
 

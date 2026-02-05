@@ -51,9 +51,29 @@
                 </div>
 
                 <div class="field-group">
+                    <label class="field-label required">Complexidade</label>
+                    <select id="questao-complexidade" class="field-input" required>
+                        <option value="facil">Fácil</option>
+                        <option value="medio" selected>Médio</option>
+                        <option value="dificil">Difícil</option>
+                    </select>
+                    <span class="field-help">Nível de dificuldade cognitiva da questão</span>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label required">Tamanho</label>
+                    <select id="questao-tamanho" class="field-input" required>
+                        <option value="curta">Curta</option>
+                        <option value="media" selected>Média</option>
+                        <option value="longa">Longa / Extensa</option>
+                    </select>
+                    <span class="field-help">Extensão do suporte e da questão</span>
+                </div>
+
+                <div class="field-group">
                     <label class="field-label">Informação adicional</label>
                     <textarea id="questao-info-adicional" class="field-input" rows="3"
-                        placeholder="Ex: foco em problemas do semiárido, nível médio de dificuldade"></textarea>
+                        placeholder="Ex: foco em problemas do semiárido"></textarea>
                     <span class="field-help">Opcional: contexto extra para a geração</span>
                 </div>
 

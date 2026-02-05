@@ -5,6 +5,8 @@ import deviceFingerprint from '../utils/deviceFingerprint.js';
 import rateLimitTracker from '../utils/rateLimitTracker.js';
 import llmClient from '../services/llm-client.js';
 
+const STORAGE_KEY_QUESTAO = 'sia:criar-questoes:ultima';
+
 let questaoData = { materias: [], descritores: {}, turmasSugeridas: [] };
 let lastQuestaoJson = null;
 
@@ -43,27 +45,15 @@ function renderQuestaoCard(questao) {
 
     let html = '';
 
-    if (questao.suporte) {
-        html += `
-            <div class="questao-card-section">
-                <h4 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">Suporte</h4>
-                <div class="text-slate-700 dark:text-slate-300 whitespace-pre-wrap">${escapeHtml(questao.suporte)}</div>
-            </div>`;
-    }
+    const enunciado = questao.enunciado ? escapeHtml(questao.enunciado) : '';
+    const suporte = questao.suporte ? escapeHtml(questao.suporte) : '';
+    const comando = questao.comando ? escapeHtml(questao.comando) : '';
+    const textoQuestao = [enunciado, suporte, comando].filter(Boolean).join('\n\n');
 
-    if (questao.enunciado) {
+    if (textoQuestao) {
         html += `
             <div class="questao-card-section">
-                <h4 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">Enunciado</h4>
-                <div class="text-slate-800 dark:text-slate-200">${escapeHtml(questao.enunciado)}</div>
-            </div>`;
-    }
-
-    if (questao.comando) {
-        html += `
-            <div class="questao-card-section">
-                <h4 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">Comando</h4>
-                <div class="text-slate-700 dark:text-slate-300 font-medium">${escapeHtml(questao.comando)}</div>
+                <div class="text-slate-700 dark:text-slate-300 whitespace-pre-wrap">${textoQuestao}</div>
             </div>`;
     }
 
@@ -104,12 +94,23 @@ function escapeHtml(text) {
 }
 
 function showPlaceholder() {
-    document.getElementById('questao-result-placeholder').classList.remove('hidden');
-    document.getElementById('questao-result-card').classList.add('hidden');
-    document.getElementById('questao-result-card').innerHTML = '';
-    document.getElementById('questao-result-loading').classList.add('hidden');
-    document.getElementById('questao-result-error').classList.add('hidden');
-    document.getElementById('questao-result-actions').classList.add('hidden');
+    lastQuestaoJson = null;
+    try {
+        sessionStorage.removeItem(STORAGE_KEY_QUESTAO);
+    } catch (e) {}
+    const placeholder = document.getElementById('questao-result-placeholder');
+    const card = document.getElementById('questao-result-card');
+    const loading = document.getElementById('questao-result-loading');
+    const errEl = document.getElementById('questao-result-error');
+    const actions = document.getElementById('questao-result-actions');
+    if (placeholder) placeholder.classList.remove('hidden');
+    if (card) {
+        card.classList.add('hidden');
+        card.innerHTML = '';
+    }
+    if (loading) loading.classList.add('hidden');
+    if (errEl) errEl.classList.add('hidden');
+    if (actions) actions.classList.add('hidden');
 }
 
 function showLoading() {
@@ -133,6 +134,11 @@ function showError(message) {
 
 function showCard(questao) {
     lastQuestaoJson = questao;
+    try {
+        sessionStorage.setItem(STORAGE_KEY_QUESTAO, JSON.stringify(questao));
+    } catch (e) {
+        console.warn('Não foi possível persistir a questão:', e);
+    }
     document.getElementById('questao-result-placeholder').classList.add('hidden');
     document.getElementById('questao-result-loading').classList.add('hidden');
     document.getElementById('questao-result-error').classList.add('hidden');
@@ -142,17 +148,34 @@ function showCard(questao) {
     document.getElementById('questao-result-actions').classList.remove('hidden');
 }
 
+async function ensureRecaptchaReady() {
+    if (llmClient.recaptchaSiteKey) return true;
+    try {
+        const res = await fetch(`${window.location.origin}/api/config`);
+        const data = await res.json();
+        if (data.success && data.data && data.data.recaptchaSiteKey) {
+            llmClient.initRecaptcha(data.data.recaptchaSiteKey);
+            return true;
+        }
+    } catch (e) {
+        console.warn('Erro ao carregar config para reCAPTCHA:', e);
+    }
+    return false;
+}
+
 async function callGerarQuestao(payload) {
     const fingerprint = await deviceFingerprint.getFingerprint();
-    const requireRecaptcha = rateLimitTracker.isFirstRequestOfDay();
     const body = { ...payload };
 
-    if (requireRecaptcha && llmClient.recaptchaSiteKey) {
+    const keyReady = await ensureRecaptchaReady();
+    if (keyReady) {
         try {
             body.recaptchaToken = await llmClient.getRecaptchaToken();
         } catch (e) {
-            throw new Error(`Falha de Segurança: ${e.message}`);
+            throw new Error(e.message || 'Falha ao carregar a verificação de segurança (reCAPTCHA). Tente atualizar a página.');
         }
+    } else {
+        throw new Error('Não foi possível carregar a chave do reCAPTCHA. Verifique a conexão e se o servidor está configurado (RECAPTCHA_HTML no .env).');
     }
 
     const response = await fetch(`${window.location.origin}/api/gerar-questao`, {
@@ -266,10 +289,26 @@ export function initCriarQuestoes() {
 
     setupMateriaDescritor();
 
+    // Restaurar questão persistida ao voltar para a aba (ou após refresh)
+    try {
+        const saved = sessionStorage.getItem(STORAGE_KEY_QUESTAO);
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            if (parsed && typeof parsed === 'object' && (parsed.enunciado || parsed.suporte || parsed.alternativas)) {
+                lastQuestaoJson = parsed;
+                showCard(parsed);
+            }
+        }
+    } catch (e) {
+        sessionStorage.removeItem(STORAGE_KEY_QUESTAO);
+    }
+
     btnGerar.addEventListener('click', async () => {
         const materia = document.getElementById('questao-materia').value;
         const descritor = document.getElementById('questao-descritor').value;
         const turma = document.getElementById('questao-turma').value;
+        const complexidade = document.getElementById('questao-complexidade')?.value || 'medio';
+        const tamanho = document.getElementById('questao-tamanho')?.value || 'media';
         const infoAdicional = document.getElementById('questao-info-adicional').value.trim();
 
         if (!materia || !descritor || !turma) {
@@ -289,6 +328,8 @@ export function initCriarQuestoes() {
                 materia: getMateriaNome(materia),
                 descritor: getDescritorTexto(materia, descritor),
                 turma,
+                complexidade,
+                tamanho,
                 infoAdicional: infoAdicional || undefined
             });
             showCard(questao);
@@ -307,11 +348,14 @@ export function initCriarQuestoes() {
                 descritorEl.disabled = true;
             }
             const turmaEl = document.getElementById('questao-turma');
+            const complexidadeEl = document.getElementById('questao-complexidade');
+            const tamanhoEl = document.getElementById('questao-tamanho');
             const infoEl = document.getElementById('questao-info-adicional');
             if (turmaEl) turmaEl.value = '';
+            if (complexidadeEl) complexidadeEl.value = 'medio';
+            if (tamanhoEl) tamanhoEl.value = 'media';
             if (infoEl) infoEl.value = '';
             showPlaceholder();
-            lastQuestaoJson = null;
         });
     }
 
