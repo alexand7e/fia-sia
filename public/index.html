@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apoio Professores de IA</title>
-    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#0f52ba">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -312,24 +314,45 @@
                 <span class="material-symbols-outlined">book</span>
                 <span>Meus Prompts</span>
             </a>
-            <a href="#/recursos"
-                class="nav-btn-mobile w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
-                data-route="/recursos" data-tab="recursos">
-                <span class="material-symbols-outlined">folder_open</span>
-                <span>Recursos</span>
-            </a>
             <a href="#/prompts/criar-questoes"
                 class="nav-btn-mobile w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
                 data-route="/prompts/criar-questoes">
                 <span class="material-symbols-outlined">quiz</span>
                 <span>Criar questões</span>
             </a>
-            <button
-                class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 dark:text-slate-600 cursor-not-allowed opacity-60"
-                disabled title="Em breve">
+            <a href="#/recursos"
+                class="nav-btn-mobile w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
+                data-route="/recursos" data-tab="recursos">
+                <span class="material-symbols-outlined">folder_open</span>
+                <span>Recursos</span>
+            </a>
+
+            <div class="my-3 border-t border-slate-200/70 dark:border-slate-800"></div>
+
+            <a href="#/apoio/referencias"
+                class="nav-btn-mobile w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
+                data-route="/apoio/referencias">
+                <span class="material-symbols-outlined">menu_book</span>
+                <span>Referências</span>
+            </a>
+            <a href="#/privacidade"
+                class="nav-btn-mobile w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
+                data-route="/privacidade">
+                <span class="material-symbols-outlined">security</span>
+                <span>Privacidade</span>
+            </a>
+            <a href="#/contato"
+                class="nav-btn-mobile w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
+                data-route="/contato">
+                <span class="material-symbols-outlined">mail</span>
+                <span>Fale Conosco</span>
+            </a>
+            <a href="#/settings"
+                class="nav-btn-mobile w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
+                data-route="/settings" data-tab="config">
                 <span class="material-symbols-outlined">settings</span>
                 <span>Configurações</span>
-            </button>
+            </a>
 
         </nav>
     </aside>

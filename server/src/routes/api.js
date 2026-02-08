@@ -5,6 +5,24 @@ const questaoService = require('../services/questao.service');
 const verifyRecaptcha = require('../middleware/recaptcha');
 const { rateLimiter, rateLimitStore } = require('../middleware/rateLimiter');
 
+const sovereigntyState = {
+    enabled: false
+};
+
+function isSovereigntyAvailable() {
+    const raw = process.env.SOBERANIA_AVAILABLE;
+    if (raw == null) return true;
+    const normalized = String(raw).trim().toLowerCase();
+    return normalized !== '0' && normalized !== 'false' && normalized !== 'no';
+}
+
+function getSovereigntyUnavailableMessage() {
+    const raw = process.env.SOBERANIA_UNAVAILABLE_MESSAGE;
+    if (raw == null) return 'Recurso indisponível no backend.';
+    const msg = String(raw).trim();
+    return msg.length ? msg : 'Recurso indisponível no backend.';
+}
+
 /**
  * POST /api/execute
  * Execute a prompt with the LLM
@@ -206,6 +224,52 @@ router.get('/config', (req, res) => {
         success: true,
         data: {
             recaptchaSiteKey: process.env.RECAPTCHA_HTML
+        }
+    });
+});
+
+router.get('/sovereignty/status', (_req, res) => {
+    const available = isSovereigntyAvailable();
+    return res.status(200).json({
+        success: true,
+        data: {
+            available,
+            enabled: available ? sovereigntyState.enabled : false,
+            message: available ? undefined : getSovereigntyUnavailableMessage()
+        }
+    });
+});
+
+router.post('/sovereignty/toggle', (req, res) => {
+    const available = isSovereigntyAvailable();
+
+    if (!available) {
+        return res.status(409).json({
+            success: false,
+            error: {
+                message: getSovereigntyUnavailableMessage(),
+                code: 'SOBERANIA_UNAVAILABLE'
+            }
+        });
+    }
+
+    const { enabled } = req.body;
+    if (typeof enabled !== 'boolean') {
+        return res.status(400).json({
+            success: false,
+            error: {
+                message: 'O campo "enabled" é obrigatório e deve ser boolean',
+                code: 'INVALID_PAYLOAD'
+            }
+        });
+    }
+
+    sovereigntyState.enabled = enabled;
+
+    return res.status(200).json({
+        success: true,
+        data: {
+            enabled: sovereigntyState.enabled
         }
     });
 });
