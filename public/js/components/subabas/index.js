@@ -1,0 +1,11 @@
+export { createGerenciadorSubabas } from './GerenciadorSubabas.js';
+export { SubabaContexto } from './SubabaContexto.js';
+export { SubabaCalendario } from './SubabaCalendario.js';
+export { SubabaBimestres } from './SubabaBimestres.js';
+export { SubabaUnidades } from './SubabaUnidades.js';
+export { SubabaSequenciaDidatica } from './SubabaSequenciaDidatica.js';
+export { SubabaAvaliacoes } from './SubabaAvaliacoes.js';
+export { SubabaMateriais } from './SubabaMateriais.js';
+export { SubabaRevisaoPublicacao } from './SubabaRevisaoPublicacao.js';
+export * from './parser.js';
+export * from './validator.js';

@@ -1,0 +1,21 @@
+<section class="space-y-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Planejamento</h1>
+      <p class="text-sm text-slate-500">Organize unidades e sequências didáticas do geral ao específico.</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <button id="planning-export" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90">Exportar</button>
+      <button id="planning-reset" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600">Reiniciar</button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <aside class="lg:col-span-1">
+      <div id="planning-subtabs-nav" class="subabas-nav space-y-1" role="tablist" aria-label="Subabas do planejamento"></div>
+    </aside>
+    <div class="lg:col-span-3">
+      <div id="planning-subtabs-panel" class="subabas-panel"></div>
+    </div>
+  </div>
+</section>

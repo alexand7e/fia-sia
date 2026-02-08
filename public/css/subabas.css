@@ -1,0 +1,26 @@
+.subabas-nav [role="tab"] {
+  width: 100%;
+}
+
+.subabas-nav [role="tab"][aria-selected="true"] {
+  background: rgb(248 250 252);
+  color: rgb(15 23 42);
+}
+
+.dark .subabas-nav [role="tab"][aria-selected="true"] {
+  background: rgb(30 41 59);
+  color: rgb(255 255 255);
+}
+
+.subabas-panel {
+  opacity: 1;
+  transition: opacity 220ms ease;
+}
+
+.subabas-panel.is-entering {
+  opacity: 0;
+}
+
+.subabas-panel.is-leaving {
+  opacity: 0;
+}

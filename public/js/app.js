@@ -14,6 +14,7 @@ import router from './modules/router.js';
 import llmClient from './modules/services/llm-client.js';
 import teacherProfileHome from './modules/ui/teacherProfileHome.js';
 import { initSettingsPage } from './modules/ui/settings.js';
+import { initPlanningPage } from './modules/ui/planning.js';
 
 
 const contentDiv = document.getElementById('content');
@@ -163,6 +164,7 @@ function setActiveNav(route) {
         '/dashboard': 'dashboard',
         '/prompts': 'prompts',
         '/meus-prompts': 'my-prompts',
+        '/planejamento': 'planejamento',
         '/recursos': 'recursos',
         '/config': 'config',
         '/privacidade': 'privacidade',
@@ -268,6 +270,12 @@ function showView(viewName) {
         case 'recursos':
             recursosView?.classList.remove('hidden');
             loadRecursosPage();
+            break;
+        case 'planejamento':
+            if (contentArea) {
+                contentArea.style.display = 'block';
+                // page loaded via route function
+            }
             break;
         case 'content':
             // Show content-area for dynamically loaded pages
@@ -678,6 +686,39 @@ function setupRouter() {
         // hideTeacherProfile is handled by loadRecursosPage switching view
         loadRecursosPage();
         setActiveNav('/recursos');
+    });
+
+    router.defineRoute('/planejamento', () => {
+        const contentArea = document.getElementById('content-area');
+        if (contentArea) {
+            showView('content');
+        }
+        (async () => {
+            try {
+                const response = await fetch('pages/planejamento.html');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const html = await response.text();
+                const area = document.getElementById('content-area');
+                if (area) {
+                    area.innerHTML = html;
+                }
+                setTimeout(() => initPlanningPage(), 50);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch (error) {
+                console.error('Erro ao carregar Planejamento:', error);
+                const area = document.getElementById('content-area');
+                if (area) {
+                    area.innerHTML = `
+                      <div class="p-8 text-center">
+                        <span class="material-symbols-outlined text-4xl text-red-500 mb-4 block">error</span>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Erro ao carregar Planejamento</h3>
+                        <p class="text-slate-600 dark:text-slate-400">Não foi possível carregar a página.</p>
+                      </div>
+                    `;
+                }
+            }
+        })();
+        setActiveNav('/planejamento');
     });
 
     router.defineRoute('/settings', () => {
