@@ -23,6 +23,65 @@ function getSovereigntyUnavailableMessage() {
     return msg.length ? msg : 'Recurso indisponível no backend.';
 }
 
+function extractFirstJsonBlock(input) {
+    if (typeof input !== 'string') return null;
+    const trimmed = input.trim();
+    if (!trimmed) return null;
+
+    try {
+        return JSON.parse(trimmed);
+    } catch {}
+
+    const fenced = trimmed.match(/```(?:json)?\\s*([\\s\\S]*?)\\s*```/i);
+    if (fenced && fenced[1]) {
+        try {
+            return JSON.parse(fenced[1].trim());
+        } catch {}
+    }
+
+    const startObj = trimmed.indexOf('{');
+    const startArr = trimmed.indexOf('[');
+    let start = -1;
+    if (startObj === -1) start = startArr;
+    else if (startArr === -1) start = startObj;
+    else start = Math.min(startObj, startArr);
+    if (start === -1) return null;
+
+    const open = trimmed[start];
+    const close = open === '{' ? '}' : ']';
+    let depth = 0;
+    let inString = false;
+    let escaped = false;
+
+    for (let i = start; i < trimmed.length; i++) {
+        const ch = trimmed[i];
+        if (inString) {
+            if (escaped) escaped = false;
+            else if (ch === '\\\\') escaped = true;
+            else if (ch === '\"') inString = false;
+            continue;
+        }
+
+        if (ch === '\"') {
+            inString = true;
+            continue;
+        }
+
+        if (ch === open) depth++;
+        if (ch === close) depth--;
+        if (depth === 0) {
+            const block = trimmed.slice(start, i + 1);
+            try {
+                return JSON.parse(block);
+            } catch {
+                return null;
+            }
+        }
+    }
+
+    return null;
+}
+
 /**
  * POST /api/execute
  * Execute a prompt with the LLM
@@ -31,6 +90,8 @@ function getSovereigntyUnavailableMessage() {
  * - prompt: string (required)
  * - model: 'base' | 'flash' (optional, default: 'base')
  * - recaptchaToken: string (required for first request)
+ * - responseFormat: 'text' | 'json' (optional, default: 'text')
+ * - systemPrompt: string (optional)
  * 
  * Headers:
  * - x-device-fingerprint: string (optional, for better rate limiting)
@@ -38,7 +99,7 @@ function getSovereigntyUnavailableMessage() {
  */
 router.post('/execute', rateLimiter, verifyRecaptcha, async (req, res) => {
     try {
-        const { prompt, model = 'base', maxTokens, temperature } = req.body;
+        const { prompt, model = 'base', maxTokens, temperature, responseFormat = 'text', systemPrompt } = req.body;
 
         // Validate prompt
         if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
@@ -62,18 +123,52 @@ router.post('/execute', rateLimiter, verifyRecaptcha, async (req, res) => {
             });
         }
 
+        if (responseFormat !== 'text' && responseFormat !== 'json') {
+            return res.status(400).json({
+                success: false,
+                error: {
+                    message: 'responseFormat inválido. Use "text" ou "json"',
+                    code: 'INVALID_RESPONSE_FORMAT'
+                }
+            });
+        }
+
         // Execute prompt
-        const result = await llmService.executePrompt(prompt, {
+        const finalPrompt = responseFormat === 'json'
+            ? `Retorne APENAS um JSON válido. Não use markdown.\\n\\n${prompt}`
+            : prompt;
+
+        const result = await llmService.executePrompt(finalPrompt, {
             model,
             maxTokens,
-            temperature
+            temperature,
+            ...(typeof systemPrompt === 'string' && systemPrompt.trim().length ? { systemPrompt: systemPrompt.trim() } : {})
         });
 
         if (!result.success) {
             return res.status(500).json(result);
         }
 
-        // Return success response with rate limit info
+        if (responseFormat === 'json') {
+            const json = extractFirstJsonBlock(result.data?.text);
+            if (!json) {
+                return res.status(502).json({
+                    success: false,
+                    error: {
+                        message: 'Falha ao converter resposta da IA para JSON',
+                        code: 'JSON_PARSE_FAILED',
+                        ...(process.env.NODE_ENV !== 'production' ? { detail: result.data?.text?.slice(0, 1000) } : {})
+                    }
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                data: { ...result.data, json },
+                rateLimit: req.rateLimit
+            });
+        }
+
         return res.status(200).json({
             success: true,
             data: result.data,

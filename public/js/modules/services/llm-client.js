@@ -109,7 +109,9 @@ class LLMClient {
             model = 'base',
             maxTokens = 2000,
             temperature = 0.7,
-            requireRecaptcha = rateLimitTracker.isFirstRequestOfDay()
+            requireRecaptcha = rateLimitTracker.isFirstRequestOfDay(),
+            responseFormat = 'text',
+            systemPrompt
         } = options;
 
         // Check rate limit
@@ -126,8 +128,13 @@ class LLMClient {
             prompt,
             model,
             maxTokens,
-            temperature
+            temperature,
+            responseFormat
         };
+
+        if (typeof systemPrompt === 'string' && systemPrompt.trim().length) {
+            body.systemPrompt = systemPrompt.trim();
+        }
 
         // Get reCAPTCHA token if needed
         if (requireRecaptcha && this.recaptchaSiteKey) {
