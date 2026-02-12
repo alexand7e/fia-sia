@@ -172,18 +172,22 @@ class TeacherProfileFormHome {
         const form = document.getElementById('teacher-profile-form-home');
         if (!form) return;
 
-        const formData = new FormData(form);
+        // Get values directly from inputs
+        const nameInput = document.getElementById('teacher-name-home');
+        const schoolInput = document.getElementById('teacher-school-home');
+        const levelSelect = document.getElementById('teacher-level-home');
 
         // Update profile object
-        this.profile.name = formData.get('name') || '';
-        this.profile.school = formData.get('school') || '';
-        this.profile.teachingLevel = formData.get('teachingLevel') || 'Ensino Médio';
+        this.profile.name = nameInput?.value?.trim() || '';
+        this.profile.school = schoolInput?.value?.trim() || '';
+        this.profile.teachingLevel = levelSelect?.value || 'Ensino Médio';
 
         // Save to localStorage
         const success = saveTeacherProfile(this.profile);
 
         if (success) {
             this.showSaveStatus('Salvo automaticamente', 'success');
+            console.log('Profile saved:', this.profile);
         } else {
             this.showSaveStatus('Erro ao salvar', 'error');
         }
