@@ -1,4 +1,4 @@
-O **Framework de Design Instrucional com IA** é uma iniciativa da **SIA Piauí** desenvolvida especificamente para apoiar os **professores da Rede Pública Estadual**. 
+O **Guia de Design Instrucional com IA** é uma iniciativa da **SIA Piauí** desenvolvida especificamente para apoiar os **professores da Rede Pública Estadual**. 
 
 Este sistema ajuda a utilizar Large Language Models (LLMs) com mais previsibilidade, reduzindo a "tentativa e erro" e aumentando a qualidade pedagógica do material produzido para o Ensino Médio.
 
@@ -9,7 +9,7 @@ Este sistema ajuda a utilizar Large Language Models (LLMs) com mais previsibilid
 - Roteiros de debate, atividades e questões por níveis (Taxonomia de Bloom)
 - Rubricas simples e critérios de avaliação formativa
 
-## Princípios Que Guiam o Framework
+## Princípios Que Guiam o Guia
 
 - **Relevância cultural**: exemplos do Piauí e do Nordeste quando fizer sentido
 - **Viabilidade**: materiais que funcionam com baixa conectividade (WhatsApp, impresso, quadro)

@@ -1,4 +1,4 @@
-# Framework de Design Instrucional com IA (SIA Piauí)
+# Guia de Design Instrucional com IA (SIA Piauí)
 
 Este projeto é uma ferramenta interativa projetada para auxiliar professores do Ensino Médio Público do Piauí na utilização de Inteligência Artificial (LLMs) para o design instrucional. Ele oferece uma metodologia estruturada, templates de prompts e exemplos práticos adaptados à realidade regional.
 

@@ -200,13 +200,32 @@ class EspecificarCustomizer {
             }
         });
 
-        // Auto-fill year/class fields
+        // Auto-fill year/class fields (handles both input and select elements)
         const yearFields = document.querySelectorAll('.field-input[data-placeholder="ANO"], .field-input[data-placeholder="ANO_SERIE"]');
         yearFields.forEach(field => {
             if (!field.value && contextData.ano) {
-                field.value = contextData.ano;
-                field.style.backgroundColor = 'rgb(254 249 195)';
-                field.title = 'Auto-preenchido do seu perfil';
+                if (field.tagName === 'SELECT') {
+                    // Try exact match first, then partial match for select options
+                    const options = Array.from(field.options);
+                    const exactMatch = options.find(opt => opt.value === contextData.ano);
+                    if (exactMatch) {
+                        field.value = exactMatch.value;
+                    } else {
+                        // Partial match: "1º Ano" matches option "1º"
+                        const partialMatch = options.find(opt =>
+                            opt.value && contextData.ano.startsWith(opt.value)
+                        );
+                        if (partialMatch) {
+                            field.value = partialMatch.value;
+                        }
+                    }
+                } else {
+                    field.value = contextData.ano;
+                }
+                if (field.value) {
+                    field.style.backgroundColor = 'rgb(254 249 195)';
+                    field.title = 'Auto-preenchido do seu perfil';
+                }
             }
         });
 
@@ -233,10 +252,11 @@ class EspecificarCustomizer {
         inputs.forEach(input => {
             const placeholder = input.dataset.placeholder;
             if (placeholder) {
-                const value = input.value.trim() || `[${placeholder}]`;
+                const isRequired = input.hasAttribute('required');
+                const value = input.value.trim() || (isRequired ? `[${placeholder}]` : 'Não especificado');
 
                 // Handle multi-line placeholders for adaptacao
-                if (placeholder === 'DIFERENCAS' && value !== `[${placeholder}]`) {
+                if (placeholder === 'DIFERENCAS' && value !== `[${placeholder}]` && value !== 'Não especificado') {
                     const lines = value.split('\n').filter(line => line.trim());
                     const formatted = lines.map(line => {
                         if (!line.trim().startsWith('-')) {
@@ -274,8 +294,8 @@ class EspecificarCustomizer {
     async copyPrompt(tab) {
         const prompt = this.generatePromptText(tab);
 
-        if (!prompt || prompt.includes('[')) {
-            this.showNotification('Preencha todos os campos antes de copiar', 'warning');
+        if (!prompt) {
+            this.showNotification('Preencha os campos para gerar o prompt antes de copiar', 'warning');
             return;
         }
 
@@ -300,8 +320,8 @@ class EspecificarCustomizer {
     savePrompt(tab) {
         const prompt = this.generatePromptText(tab);
 
-        if (!prompt || prompt.includes('[')) {
-            this.showNotification('Preencha todos os campos antes de salvar', 'warning');
+        if (!prompt) {
+            this.showNotification('Preencha os campos para gerar o prompt antes de salvar', 'warning');
             return;
         }
 
@@ -362,8 +382,8 @@ class EspecificarCustomizer {
 
         const prompt = this.generatePromptText(tab);
 
-        if (!prompt || prompt.includes('[')) {
-            this.showNotification('Preencha todos os campos antes de executar', 'warning');
+        if (!prompt) {
+            this.showNotification('Erro ao gerar o prompt. Tente novamente.', 'warning');
             return;
         }
 

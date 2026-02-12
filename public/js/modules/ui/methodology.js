@@ -34,7 +34,7 @@ export async function loadMethodology({
         const data = await response.json();
 
         if (pageTitle) pageTitle.textContent = data.title;
-        if (pageSubtitle) pageSubtitle.textContent = data.subtitle || 'Framework Educacional';
+        if (pageSubtitle) pageSubtitle.textContent = data.subtitle || 'Guia Educacional';
 
         const roadmapSteps = Array.isArray(data.roadmap) && data.roadmap.length > 0
             ? data.roadmap

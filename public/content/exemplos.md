@@ -1,6 +1,6 @@
 ## 1. Simulação do processo (Chat Interativo)
 
-Acompanhe como uma conversa com a IA evolui de um pedido genérico para um material pedagógico de alta qualidade, seguindo os princípios do nosso framework.
+Acompanhe como uma conversa com a IA evolui de um pedido genérico para um material pedagógico de alta qualidade, seguindo os princípios do nosso guia.
 
 <div class="examples-simulator" id="examples-simulator">
   <div class="chat-controls">
@@ -52,7 +52,7 @@ Adapte o plano para uma aula de 50 minutos sem internet, usando apenas: [RECURSO
 **Contexto**: Economia Doméstica e Preços de Energia.
 
 1. **Pedido Inicial**: "Crie uma aula sobre funções afins." (Resposta vira algo genérico).
-2. **Refinamento (Framework)**: "Use o modelo PBL. O problema central é o aumento da conta de luz em Teresina. Os alunos devem calcular a economia ao trocar lâmpadas incandescentes por LED."
+2. **Refinamento (Guia)**: "Use o modelo PBL. O problema central é o aumento da conta de luz em Teresina. Os alunos devem calcular a economia ao trocar lâmpadas incandescentes por LED."
 3. **Ajuste Final**: "Crie 5 exercícios, sendo 2 de nível médio e 1 desafio que envolva interpretar o gráfico da fatura de energia da Equatorial Piauí."
 
 ### Exemplo B — Linguagens (Sala Invertida / 2º Ano)

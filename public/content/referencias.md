@@ -1,6 +1,6 @@
 # Referências e Inspirações
 
-Para o desenvolvimento deste framework e para aprofundamento pedagógico, recomendamos as seguintes fontes:
+Para o desenvolvimento deste guia e para aprofundamento pedagógico, recomendamos as seguintes fontes:
 
 ## Metodologias Ativas
 - **Nova Escola**: [10 planos de aula que utilizam metodologias ativas](https://novaescola.org.br/conteudo/19773/10-planos-de-aula-que-utilizam-metodologias-ativas)
