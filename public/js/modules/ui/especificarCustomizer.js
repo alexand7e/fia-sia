@@ -3,7 +3,7 @@
 import { addMyPrompt } from './myPrompts.js';
 import llmExecutor from './llmExecutor.js';
 import llmClient from '../services/llm-client.js';
-import { getContextualData, isProfileComplete } from '../utils/teacherProfile.js';
+import { getContextualData, isProfileComplete, buildContextualSystemPrompt } from '../utils/teacherProfile.js';
 
 class EspecificarCustomizer {
     constructor() {
@@ -388,8 +388,9 @@ class EspecificarCustomizer {
         }
 
         try {
-            // Execute with LLM
-            await llmExecutor.execute(prompt, { model: 'base' });
+            // Execute with LLM, including teacher context as system prompt
+            const systemPrompt = buildContextualSystemPrompt();
+            await llmExecutor.execute(prompt, { model: 'base', systemPrompt });
         } catch (error) {
             console.error('Error executing prompt:', error);
             this.showNotification(error.message || 'Erro ao executar prompt', 'error');

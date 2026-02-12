@@ -4,6 +4,7 @@
 import deviceFingerprint from '../utils/deviceFingerprint.js';
 import rateLimitTracker from '../utils/rateLimitTracker.js';
 import llmClient from '../services/llm-client.js';
+import { getContextualData, isProfileComplete } from '../utils/teacherProfile.js';
 
 const STORAGE_KEY_QUESTAO = 'sia:criar-questoes:ultima';
 
@@ -342,6 +343,39 @@ export function initCriarQuestoes() {
             opt.textContent = t;
             turmaSelect.appendChild(opt);
         });
+
+        // Auto-fill from teacher profile
+        if (isProfileComplete()) {
+            const ctx = getContextualData();
+
+            // Auto-fill matéria if profile has a matching subject
+            if (ctx.disciplina && materiaSelect) {
+                const matchMateria = data.materias.find((m) =>
+                    m.nome.toLowerCase() === ctx.disciplina.toLowerCase()
+                );
+                if (matchMateria) {
+                    materiaSelect.value = matchMateria.id;
+                    materiaSelect.dispatchEvent(new Event('change'));
+                }
+            }
+
+            // Auto-fill turma from profile
+            if (ctx.ano && turmaSelect) {
+                const options = Array.from(turmaSelect.options);
+                const exactMatch = options.find(opt => opt.value === ctx.ano);
+                if (exactMatch) {
+                    turmaSelect.value = exactMatch.value;
+                } else {
+                    // Partial match: "1º Ano" matches "1º ano do Ensino Médio" etc.
+                    const partialMatch = options.find(opt =>
+                        opt.value && (ctx.ano.includes(opt.value) || opt.value.includes(ctx.ano))
+                    );
+                    if (partialMatch) {
+                        turmaSelect.value = partialMatch.value;
+                    }
+                }
+            }
+        }
     });
 
     setupMateriaDescritor();
@@ -366,7 +400,7 @@ export function initCriarQuestoes() {
         const turma = document.getElementById('questao-turma').value;
         const complexidade = document.getElementById('questao-complexidade')?.value || 'medio';
         const tamanho = document.getElementById('questao-tamanho')?.value || 'media';
-        const infoAdicional = document.getElementById('questao-info-adicional').value.trim();
+        let infoAdicional = document.getElementById('questao-info-adicional').value.trim();
 
         if (!materia || !descritor || !turma) {
             showError('Preencha Matéria, Descritor e Turma.');
@@ -377,6 +411,21 @@ export function initCriarQuestoes() {
             const st = rateLimitTracker.getStatus();
             showError(`Limite diário atingido. Tente após ${new Date(st.resetAt).toLocaleString('pt-BR')}`);
             return;
+        }
+
+        // Enrich with teacher profile context
+        if (isProfileComplete()) {
+            const ctx = getContextualData();
+            const contextParts = [];
+            if (ctx.escola) contextParts.push(`Escola: ${ctx.escola}`);
+            if (ctx.cidade) contextParts.push(`Localização: ${ctx.cidade}`);
+            if (ctx.nivel) contextParts.push(`Nível de ensino: ${ctx.nivel}`);
+            if (contextParts.length > 0) {
+                const profileContext = `Contexto do professor: ${contextParts.join('; ')}.`;
+                infoAdicional = infoAdicional
+                    ? `${profileContext} ${infoAdicional}`
+                    : profileContext;
+            }
         }
 
         showLoading();

@@ -105,6 +105,51 @@ export function getContextualData() {
 }
 
 /**
+ * Build a contextual system prompt from the teacher's profile data.
+ * Used to give the LLM awareness of who the teacher is and their context,
+ * so responses are more relevant and personalized.
+ * @returns {string} System prompt with teacher context
+ */
+export function buildContextualSystemPrompt() {
+    const profile = readTeacherProfile();
+    const hasData = profile.name || profile.subjects.length > 0 || profile.classes.length > 0;
+
+    let basePrompt = 'Você é um assistente especializado em educação, focado em ajudar professores do ensino médio público do Piauí. IMPORTANTE: Sempre complete suas respostas totalmente. Nunca pare no meio de uma frase ou seção. Se a resposta for longa, organize-a em seções claras e complete todas elas.';
+
+    if (!hasData) {
+        return basePrompt;
+    }
+
+    const contextParts = [];
+
+    if (profile.name) {
+        contextParts.push(`Nome do professor: ${profile.name}`);
+    }
+    if (profile.school) {
+        contextParts.push(`Escola: ${profile.school}`);
+    }
+    if (profile.city) {
+        contextParts.push(`Localização: ${profile.city}`);
+    }
+    if (profile.teachingLevel) {
+        contextParts.push(`Nível de ensino: ${profile.teachingLevel}`);
+    }
+    if (profile.subjects.length > 0) {
+        contextParts.push(`Disciplinas que leciona: ${profile.subjects.join(', ')}`);
+    }
+    if (profile.classes.length > 0) {
+        contextParts.push(`Turmas/Anos: ${profile.classes.join(', ')}`);
+    }
+    if (profile.experience) {
+        contextParts.push(`Experiência: ${profile.experience}`);
+    }
+
+    const contextBlock = `\n\nCONTEXTO DO PROFESSOR (use estas informações para personalizar suas respostas):\n${contextParts.map(p => `- ${p}`).join('\n')}\n\nConsidere esse contexto ao elaborar planos de aula, atividades e materiais. Adapte a linguagem, exemplos e recursos à realidade desse professor e suas turmas.`;
+
+    return basePrompt + contextBlock;
+}
+
+/**
  * Reset profile (for testing or clearing data)
  */
 export function resetTeacherProfile() {
