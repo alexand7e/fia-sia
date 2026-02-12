@@ -36,9 +36,9 @@ class LLMService {
     async executePrompt(prompt, options = {}) {
         const {
             model = 'base',
-            maxTokens = 2000,
+            maxTokens = 8000, // Aumentado para garantir respostas completas
             temperature = 0.7,
-            systemPrompt = 'Você é um assistente especializado em educação, focado em ajudar professores do ensino médio público do Piauí.'
+            systemPrompt = 'Você é um assistente especializado em educação, focado em ajudar professores do ensino médio público do Piauí. IMPORTANTE: Sempre complete suas respostas totalmente. Nunca pare no meio de uma frase ou seção. Se a resposta for longa, organize-a em seções claras e complete todas elas.'
         } = options;
 
         const modelName = model === 'flash' ? this.modelFlash : this.modelBase;

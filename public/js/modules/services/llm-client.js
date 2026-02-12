@@ -107,9 +107,9 @@ class LLMClient {
     async executePrompt(prompt, options = {}) {
         const {
             model = 'base',
-            maxTokens = 2000,
+            maxTokens = 8000, // Aumentado para garantir respostas completas
             temperature = 0.7,
-            requireRecaptcha = rateLimitTracker.isFirstRequestOfDay(),
+            requireRecaptcha = true, // Sempre exigir reCAPTCHA
             responseFormat = 'text',
             systemPrompt
         } = options;
@@ -136,14 +136,16 @@ class LLMClient {
             body.systemPrompt = systemPrompt.trim();
         }
 
-        // Get reCAPTCHA token if needed
-        if (requireRecaptcha && this.recaptchaSiteKey) {
+        // Get reCAPTCHA token (sempre obrigatório)
+        if (this.recaptchaSiteKey) {
             try {
                 body.recaptchaToken = await this.getRecaptchaToken();
             } catch (error) {
                 console.error('reCAPTCHA error:', error);
                 throw new Error(`Falha de Segurança: ${error.message}`);
             }
+        } else {
+            throw new Error('reCAPTCHA não inicializado. Recarregue a página.');
         }
 
         // Make API request

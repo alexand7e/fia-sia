@@ -97,7 +97,7 @@ function showPlaceholder() {
     lastQuestaoJson = null;
     try {
         sessionStorage.removeItem(STORAGE_KEY_QUESTAO);
-    } catch (e) {}
+    } catch (e) { }
     const placeholder = document.getElementById('questao-result-placeholder');
     const card = document.getElementById('questao-result-card');
     const loading = document.getElementById('questao-result-loading');
@@ -246,12 +246,69 @@ function copyQuestao() {
 
 function downloadQuestao() {
     if (!lastQuestaoJson) return;
-    const text = JSON.stringify(lastQuestaoJson, null, 2);
-    const blob = new Blob([text], { type: 'application/json' });
+
+    // Formatar a questão como texto legível
+    const lines = [];
+
+    // Adicionar suporte se existir
+    if (lastQuestaoJson.suporte) {
+        lines.push('SUPORTE:');
+        lines.push(lastQuestaoJson.suporte);
+        lines.push('');
+    }
+
+    // Adicionar enunciado se existir
+    if (lastQuestaoJson.enunciado) {
+        lines.push('ENUNCIADO:');
+        lines.push(lastQuestaoJson.enunciado);
+        lines.push('');
+    }
+
+    // Adicionar comando se existir
+    if (lastQuestaoJson.comando) {
+        lines.push('COMANDO:');
+        lines.push(lastQuestaoJson.comando);
+        lines.push('');
+    }
+
+    // Adicionar alternativas
+    if (lastQuestaoJson.alternativas) {
+        lines.push('ALTERNATIVAS:');
+        const alt = lastQuestaoJson.alternativas;
+        ['A', 'B', 'C', 'D', 'E'].forEach((letra) => {
+            if (alt[letra]) {
+                lines.push(`${letra}) ${alt[letra]}`);
+            }
+        });
+        lines.push('');
+    }
+
+    // Adicionar gabarito
+    if (lastQuestaoJson.gabarito) {
+        lines.push('GABARITO:');
+        lines.push(lastQuestaoJson.gabarito.toUpperCase());
+        lines.push('');
+    }
+
+    // Adicionar avaliação das alternativas se existir
+    if (lastQuestaoJson.avaliacaoAlternativas && Object.keys(lastQuestaoJson.avaliacaoAlternativas).length > 0) {
+        lines.push('AVALIAÇÃO DAS ALTERNATIVAS:');
+        const av = lastQuestaoJson.avaliacaoAlternativas;
+        ['A', 'B', 'C', 'D', 'E'].forEach((letra) => {
+            if (av[letra]) {
+                lines.push(`${letra}: ${av[letra]}`);
+            }
+        });
+        lines.push('');
+    }
+
+    // Criar o arquivo de texto
+    const text = lines.join('\n');
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `questao-${Date.now()}.json`;
+    a.download = `questao-${Date.now()}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
