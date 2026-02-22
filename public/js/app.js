@@ -15,7 +15,7 @@ import llmClient from './modules/services/llm-client.js';
 import teacherProfileHome from './modules/ui/teacherProfileHome.js';
 import { initSettingsPage } from './modules/ui/settings.js';
 import { initPlanningPage } from './modules/ui/planning.js';
-
+import { initHistoryViewer } from './modules/ui/historyViewer.js';
 
 const contentDiv = document.getElementById('content');
 const pageTitle = document.getElementById('page-title');
@@ -164,6 +164,7 @@ function setActiveNav(route) {
         '/dashboard': 'dashboard',
         '/prompts': 'prompts',
         '/meus-prompts': 'my-prompts',
+        '/meus-resultados': 'my-results',
         '/planejamento': 'planejamento',
         '/recursos': 'recursos',
         '/config': 'config',
@@ -247,6 +248,9 @@ function showView(viewName) {
     myPromptsView?.classList.add('hidden');
     recursosView?.classList.add('hidden');
 
+    const historyView = document.getElementById('history-view');
+    if (historyView) historyView.classList.add('hidden');
+
     // Default hiding content area unless it's a dynamic page
     if (contentArea) contentArea.style.display = 'none';
 
@@ -266,6 +270,12 @@ function showView(viewName) {
             myPromptsView?.classList.remove('hidden');
             initMyPrompts();
             renderMyPrompts();
+            break;
+        case 'my-results':
+            if (historyView) {
+                historyView.classList.remove('hidden');
+                initHistoryViewer();
+            }
             break;
         case 'recursos':
             recursosView?.classList.remove('hidden');
@@ -680,6 +690,12 @@ function setupRouter() {
         hideTeacherProfile();
         showView('my-prompts');
         setActiveNav('/meus-prompts');
+    });
+
+    router.defineRoute('/meus-resultados', () => {
+        hideTeacherProfile();
+        showView('my-results');
+        setActiveNav('/meus-resultados');
     });
 
     router.defineRoute('/recursos', () => {

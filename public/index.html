@@ -272,6 +272,20 @@
                     </div>
                 </section>
 
+                <!-- History / Resultados View -->
+                <section id="history-view" class="hidden">
+                    <div class="flex items-end justify-between mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-slate-900 dark:text-white">Meus Resultados</h3>
+                            <p class="text-sm text-slate-500 mt-1">Histórico de textos e planos gerados pela IA salvos
+                                localmente.</p>
+                        </div>
+                    </div>
+                    <div id="history-list" class="mt-4">
+                        <!-- History items will be injected here -->
+                    </div>
+                </section>
+
                 <!-- Recursos View -->
                 <section id="recursos-view" class="hidden">
                     <!-- Content will be loaded dynamically -->
@@ -314,6 +328,12 @@
                 data-route="/meus-prompts" data-tab="my-prompts">
                 <span class="material-symbols-outlined">book</span>
                 <span>Meus Prompts</span>
+            </a>
+            <a href="#/meus-resultados"
+                class="nav-btn-mobile w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
+                data-route="/meus-resultados" data-tab="my-results">
+                <span class="material-symbols-outlined">history</span>
+                <span>Meus Resultados</span>
             </a>
             <a href="#/planejamento"
                 class="nav-btn-mobile w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"

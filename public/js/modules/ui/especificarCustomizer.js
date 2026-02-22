@@ -155,9 +155,9 @@ class EspecificarCustomizer {
     }
 
     generatePrompt(tab) {
-        // Validate required fields
-        const tabContent = document.getElementById(`tab-${tab}`);
-        const requiredFields = tabContent.querySelectorAll('.field-input[required]');
+        // Only validate fields inside the currently active tab container
+        const activeTabContent = document.getElementById(`tab-${tab}`);
+        const requiredFields = activeTabContent.querySelectorAll('.field-input[required]');
         let isValid = true;
 
         requiredFields.forEach(field => {
@@ -190,11 +190,12 @@ class EspecificarCustomizer {
         const contextData = getContextualData();
         console.log('Auto-filling forms with teacher profile:', contextData);
 
-        // Auto-fill discipline fields
+        // Auto-fill discipline fields (handles arrays correctly now)
         const disciplineFields = document.querySelectorAll('.field-input[data-placeholder="DISCIPLINA"]');
         disciplineFields.forEach(field => {
-            if (!field.value && contextData.disciplina) {
-                field.value = contextData.disciplina;
+            const subjectToFill = contextData.disciplina || (contextData.disciplinas && contextData.disciplinas[0]);
+            if (!field.value && subjectToFill) {
+                field.value = subjectToFill;
                 field.style.backgroundColor = 'rgb(254 249 195)'; // Subtle yellow highlight
                 field.title = 'Auto-preenchido do seu perfil';
             }
@@ -203,24 +204,25 @@ class EspecificarCustomizer {
         // Auto-fill year/class fields (handles both input and select elements)
         const yearFields = document.querySelectorAll('.field-input[data-placeholder="ANO"], .field-input[data-placeholder="ANO_SERIE"]');
         yearFields.forEach(field => {
-            if (!field.value && contextData.ano) {
+            const classToFill = contextData.ano || (contextData.turmas && contextData.turmas[0]);
+            if (!field.value && classToFill) {
                 if (field.tagName === 'SELECT') {
                     // Try exact match first, then partial match for select options
                     const options = Array.from(field.options);
-                    const exactMatch = options.find(opt => opt.value === contextData.ano);
+                    const exactMatch = options.find(opt => opt.value === classToFill);
                     if (exactMatch) {
                         field.value = exactMatch.value;
                     } else {
                         // Partial match: "1º Ano" matches option "1º"
                         const partialMatch = options.find(opt =>
-                            opt.value && contextData.ano.startsWith(opt.value)
+                            opt.value && classToFill.startsWith(opt.value)
                         );
                         if (partialMatch) {
                             field.value = partialMatch.value;
                         }
                     }
                 } else {
-                    field.value = contextData.ano;
+                    field.value = classToFill;
                 }
                 if (field.value) {
                     field.style.backgroundColor = 'rgb(254 249 195)';
@@ -362,8 +364,8 @@ class EspecificarCustomizer {
 
     async executePrompt(tab) {
         // Validate required fields
-        const tabContent = document.getElementById(`tab-${tab}`);
-        const requiredFields = tabContent.querySelectorAll('.field-input[required]');
+        const activeTabContent = document.getElementById(`tab-${tab}`);
+        const requiredFields = activeTabContent.querySelectorAll('.field-input[required]');
         let isValid = true;
 
         requiredFields.forEach(field => {

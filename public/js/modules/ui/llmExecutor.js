@@ -53,6 +53,10 @@ class LLMExecutor {
                                 <span class="material-symbols-outlined">content_copy</span>
                                 Copiar
                             </button>
+                            <button id="llm-validate-response" class="llm-btn llm-btn-secondary" title="Validar Plano com IA" disabled>
+                                <span class="material-symbols-outlined">fact_check</span>
+                                Validar IA
+                            </button>
                             <button id="llm-close-modal" class="llm-btn llm-btn-primary">
                                 Fechar
                             </button>
@@ -90,6 +94,10 @@ class LLMExecutor {
         // Download button
         const downloadBtn = document.getElementById('llm-download-response');
         if (downloadBtn) downloadBtn.addEventListener('click', () => this.downloadResponse('txt'));
+
+        // Validate button
+        const validateBtn = document.getElementById('llm-validate-response');
+        if (validateBtn) validateBtn.addEventListener('click', () => this.validateResponse());
 
         // Overlay click
         const overlay = this.modal.querySelector('.llm-modal-overlay');
@@ -135,6 +143,7 @@ class LLMExecutor {
         document.getElementById('llm-copy-response').disabled = true;
         if (document.getElementById('llm-save-response')) document.getElementById('llm-save-response').disabled = true;
         if (document.getElementById('llm-download-response')) document.getElementById('llm-download-response').disabled = true;
+        if (document.getElementById('llm-validate-response')) document.getElementById('llm-validate-response').disabled = true;
     }
 
     hideLoading() {
@@ -162,6 +171,7 @@ class LLMExecutor {
         document.getElementById('llm-copy-response').disabled = false;
         document.getElementById('llm-save-response').disabled = false;
         document.getElementById('llm-download-response').disabled = false;
+        document.getElementById('llm-validate-response').disabled = false;
     }
 
     showError(message) {
@@ -247,6 +257,46 @@ class LLMExecutor {
         } catch (error) {
             console.error('Error saving result:', error);
             alert('Erro ao salvar resultado.');
+        }
+    }
+
+    async validateResponse() {
+        if (!this.currentResponse) return;
+
+        const validationPrompt = `Aja como um coordenador pedagógico crítico, rigoroso e construtivo.
+Por favor, analise a seguinte proposta de plano de aula e identifique:
+1) Pontos Fortes.
+2) Pontos de Melhoria.
+3) Viabilidade prática em uma sala de aula de escola pública.
+4) O que falta para ficar excelente.
+
+Proposta a validar:
+"""
+${this.currentResponse}
+"""`;
+
+        try {
+            this.showLoading();
+            this.updateRateLimitInfo();
+
+            const response = await llmClient.executePrompt(validationPrompt, { model: 'base' });
+
+            if (response.success) {
+                const combinedResponse = `### Resultado Original:\n\n${this.currentResponse}\n\n---\n\n### 🔍 Validação da IA (Coordenador Pedagógico):\n\n${response.data.text}`;
+                this.showResponse(combinedResponse);
+                this.currentResponse = combinedResponse;
+
+                const validateBtn = document.getElementById('llm-validate-response');
+                this.showButtonFeedback(validateBtn, 'check_circle', 'Validado!');
+            } else {
+                throw new Error(response.error?.message || 'Erro ao validar com IA');
+            }
+        } catch (error) {
+            console.error('Error validating response:', error);
+            this.showError(error.message);
+        } finally {
+            this.hideLoading();
+            this.updateRateLimitInfo();
         }
     }
 
